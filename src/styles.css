@@ -1,0 +1,62 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import url("https://fonts.googleapis.com/css2?family=K2D&display=swap");
+
+body,
+app-root {
+  font-family: "K2D", sans-serif;
+}
+
+.m-b-10 {
+  margin-bottom: 10px;
+}
+.m-t-5 {
+  margin-top: 5px;
+}
+.m-t-10 {
+  margin-top: 10px;
+}
+.m-t-15 {
+  margin-top: 15px;
+}
+.m-t-20 {
+  margin-top: 20px;
+}
+.m-t-25 {
+  margin-top: 25px;
+}
+
+.m-top-30 {
+  margin-top: 30px;
+}
+.gap-40 {
+  gap: 40px;
+}
+
+.mat-raised-button {
+  background-color: #2aaa8a !important;
+  color: white !important;
+}
+
+.flex {
+  display: flex;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+.gap-20 {
+  gap: 20px;
+}
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+.cursor {
+  cursor: pointer;
+}
