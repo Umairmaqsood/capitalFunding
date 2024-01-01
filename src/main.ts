@@ -3,7 +3,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 // import { environment } from './environments/environment';
 // import { AuthGuard, ErrorInterceptor, HttpConfigInterceptor } from '@berd/core';
@@ -28,25 +28,7 @@ const routes: Routes = [
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(
-      RouterModule.forRoot(routes),
-      BehaviorSubject,
-      BrowserModule,
-      BrowserAnimationsModule,
-      HttpClientModule,
-      BrowserAnimationsModule,
-      MatSnackBarModule,
-      MatDialogModule
-    ),
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: HttpConfigInterceptor,
-    //   multi: true,
-    // },
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: ErrorInterceptor,
-    //   multi: true,
-    // },
-  ],
+    importProvidersFrom(RouterModule.forRoot(routes), BehaviorSubject, BrowserModule, BrowserAnimationsModule, HttpClientModule, BrowserAnimationsModule, MatSnackBarModule, MatDialogModule),
+    provideAnimations()
+],
 }).catch((err) => console.error(err));

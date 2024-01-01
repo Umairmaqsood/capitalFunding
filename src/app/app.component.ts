@@ -6,6 +6,7 @@ import {
   LoginComponent,
   SignUpComponent,
 } from './authentication';
+import { PropertyDetailsComponent } from './components/property-details/property-details.component';
 
 @Component({
   selector: 'app-root',
@@ -16,10 +17,11 @@ import {
     LoginComponent,
     ForgotPasswordComponent,
     SignUpComponent,
+    PropertyDetailsComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = 'funding';
+  title = 'Capital Funding';
 }

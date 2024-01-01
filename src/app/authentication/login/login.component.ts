@@ -116,9 +116,9 @@ export interface LoginRequestData {
               >
             </section>
 
-            <button mat-button style="color:white" (click)="Forgetpwd()">
+            <!-- <button mat-button style="color:white" (click)="Forgetpwd()">
               Forget password
-            </button>
+            </button> -->
           </div>
           <mat-card-actions>
             <button
