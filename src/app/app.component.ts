@@ -7,6 +7,7 @@ import {
   SignUpComponent,
 } from './authentication';
 import { PropertyDetailsComponent } from './components/property-details/property-details.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { PropertyDetailsComponent } from './components/property-details/property
     ForgotPasswordComponent,
     SignUpComponent,
     PropertyDetailsComponent,
+    NavbarComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

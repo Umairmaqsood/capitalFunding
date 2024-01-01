@@ -1,32 +1,69 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MaterialModule } from '../../material/src/public-api';
+import { PropertyDetailsComponent } from '../property-details/property-details.component';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
   template: `
     <mat-toolbar color="warn">
       <button mat-icon-button (click)="drawer.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-      <span>RealEstate</span>
+      <span>CAPITAL FUND</span>
     </mat-toolbar>
 
     <mat-drawer-container class="app-container">
       <mat-drawer #drawer mode="side" opened="true">
         <!-- Side navigation links -->
         <mat-nav-list class="sidebar-list">
-          <a mat-list-item> Home</a>
-          <a mat-list-item>About</a>
-          <a mat-list-item>Contact</a>
+          <a
+            mat-list-item
+            routerLink="/property-details"
+            routerLinkActive="active"
+          >
+            <mat-icon>home</mat-icon>
+            Property Details
+          </a>
+          <a
+            mat-list-item
+            routerLink="/tenant-complaints"
+            routerLinkActive="active"
+          >
+            <mat-icon>report</mat-icon>
+            Tenant Complaints
+          </a>
+          <a
+            mat-list-item
+            routerLink="/tenant-details"
+            routerLinkActive="active"
+          >
+            <mat-icon>person</mat-icon>
+            Tenant Residency Info
+          </a>
+          <a
+            mat-list-item
+            routerLink="/tenant-payment"
+            routerLinkActive="active"
+          >
+            <mat-icon>payment</mat-icon>
+            Tenant Payments
+          </a>
+          <a
+            mat-list-item
+            routerLink="/users-details"
+            routerLinkActive="active"
+          >
+            <mat-icon>supervised_user_circle</mat-icon>
+            Tenants Details
+          </a>
           <!-- Add more navigation links as needed -->
         </mat-nav-list>
       </mat-drawer>
 
       <mat-drawer-content class="content">
         <ng-container>
-          <!-- <app-users-bio-data></app-users-bio-data> -->
+          <app-property-details></app-property-details>
         </ng-container>
         <!-- <router-outlet></router-outlet> -->
       </mat-drawer-content>
@@ -65,5 +102,6 @@ import { MaterialModule } from '../../material/src/public-api';
 }
 ,`,
   ],
+  imports: [CommonModule, MaterialModule, PropertyDetailsComponent],
 })
 export class NavbarComponent {}
