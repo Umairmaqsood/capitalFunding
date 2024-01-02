@@ -62,6 +62,7 @@ import {
             <input
               matInput
               type="number"
+              min="0"
               formControlName="numberofBedrooms"
               placeholder="Number of Bedrooms"
             />
@@ -72,6 +73,7 @@ import {
             <input
               matInput
               type="number"
+              min="0"
               formControlName="numberofBathrooms"
               placeholder="Number of Bathrooms"
             />
@@ -105,11 +107,6 @@ import {
 })
 export class PropertyDetailsDialogComponent implements OnInit {
   selectedRequestType!: requestType;
-
-  // availabilityOptions = [
-  //   { value: true, label: 'Yes' },
-  //   { value: false, label: 'No' },
-  // ];
   propertyDetailsForm = this.formBuilder.group({
     id: [''],
     propertyName: ['', Validators.required],

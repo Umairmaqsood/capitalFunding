@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MaterialModule } from '../../material/src/public-api';
 import { PropertyDetailsComponent } from '../property-details/property-details.component';
+import { TenantDetailsComponent } from '../tenant-details/tenant-details.component';
+import { TenantPaymentsComponent } from '../tenant-payments/tenant-payments.component';
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -63,7 +66,9 @@ import { PropertyDetailsComponent } from '../property-details/property-details.c
 
       <mat-drawer-content class="content">
         <ng-container>
-          <app-property-details></app-property-details>
+          <!-- <app-property-details></app-property-details> -->
+          <!-- <app-tenant-payments></app-tenant-payments> -->
+          <app-tenant-details></app-tenant-details>
         </ng-container>
         <!-- <router-outlet></router-outlet> -->
       </mat-drawer-content>
@@ -102,6 +107,12 @@ import { PropertyDetailsComponent } from '../property-details/property-details.c
 }
 ,`,
   ],
-  imports: [CommonModule, MaterialModule, PropertyDetailsComponent],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    PropertyDetailsComponent,
+    TenantDetailsComponent,
+    TenantPaymentsComponent,
+  ],
 })
 export class NavbarComponent {}
