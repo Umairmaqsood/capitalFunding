@@ -3,11 +3,17 @@ import { Component, Inject } from '@angular/core';
 import { MaterialModule } from '../../material/src/public-api';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
 
 @Component({
   selector: 'app-tenant-payments-dialog',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    AsyncSpinnerComponent,
+  ],
   template: `
     <mat-card>
       <div style="padding: 30px;">
@@ -106,6 +112,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styles: ['.full { width: 100%; }'],
 })
 export class TenantPaymentsDialogComponent {
+  isAsyncCall = false;
+
   selectedRequestType!: requestType;
   tenantPaymentsForm = this.formBuilder.group({
     id: ['', Validators.required],

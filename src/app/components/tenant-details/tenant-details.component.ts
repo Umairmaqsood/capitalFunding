@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MaterialModule } from '../../material/src/public-api';
 import { TenantsDetailsResidencyDialogComponent } from '../tenants-details-residency-dialog/tenants-details-residency-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
 
 export interface TenantResidencyInfo {
   id: string;
@@ -34,7 +35,7 @@ const TENANT_RESIDENCY_DATA: TenantResidencyInfo[] = [
 @Component({
   selector: 'app-tenant-details',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
   template: `
     <div style="padding: 30px">
       <p>tenant-details works!</p>
@@ -147,6 +148,8 @@ const TENANT_RESIDENCY_DATA: TenantResidencyInfo[] = [
   ],
 })
 export class TenantDetailsComponent {
+  isAsyncCall = false;
+
   displayedColumns: string[] = [
     'id',
     'userId',

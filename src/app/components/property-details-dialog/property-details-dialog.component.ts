@@ -8,11 +8,17 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
 
 @Component({
   selector: 'app-property-details-dialog',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    AsyncSpinnerComponent,
+  ],
   template: `
     <mat-card>
       <div style="padding: 30px;">
@@ -106,6 +112,8 @@ import {
   styles: ['.full{width:100%}'],
 })
 export class PropertyDetailsDialogComponent implements OnInit {
+  isAsyncCall = false;
+
   selectedRequestType!: requestType;
   propertyDetailsForm = this.formBuilder.group({
     id: [''],

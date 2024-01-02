@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { PropertyDetailsDialogComponent } from '../property-details-dialog/property-details-dialog.component';
 import { MatPaginator } from '@angular/material/paginator';
+import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
 
 export interface PropertyDetails {
   id: string;
@@ -43,7 +44,7 @@ const PROPERTY_DATA: PropertyDetails[] = [
 @Component({
   selector: 'app-property-details',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
   template: `
     <div style="padding:30px">
       <p>property-details works!</p>
@@ -185,6 +186,7 @@ const PROPERTY_DATA: PropertyDetails[] = [
   ],
 })
 export class PropertyDetailsComponent {
+  isAsyncCall = false;
   displayedColumns: string[] = [
     'id',
     'propertyName',

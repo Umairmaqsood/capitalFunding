@@ -5,6 +5,7 @@ import { TenantPaymentsDialogComponent } from '../tenant-payments-dialog/tenant-
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
 
 export interface TenantsPayment {
   id: string;
@@ -44,7 +45,7 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
 @Component({
   selector: 'app-tenant-payments',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
   template: `
     <div style="padding: 30px">
       <p>tenant-payments works!</p>
@@ -178,6 +179,8 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
   ],
 })
 export class TenantPaymentsComponent {
+  isAsyncCall = false;
+
   displayedColumns: string[] = [
     'id',
     'tenantId',

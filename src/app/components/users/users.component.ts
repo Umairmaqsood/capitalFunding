@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { UsersTenantsDataDialogComponent } from '../users-tenants-data-dialog/users-tenants-data-dialog.component';
+import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
 
 export interface UsersData {
   id: string;
@@ -31,7 +32,7 @@ const usersData: UsersData[] = [
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
   template: ` <div style="padding: 30px">
     <p>User Data works!</p>
 
@@ -149,6 +150,8 @@ const usersData: UsersData[] = [
   ],
 })
 export class UsersComponent {
+  isAsyncCall = false;
+
   displayedColumns: string[] = [
     'id',
     'name',
