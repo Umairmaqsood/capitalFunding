@@ -96,6 +96,22 @@ export class TenantsDetailsResidencyDialogComponent {
     movedOut: [Validators.required],
   });
 
+  get id() {
+    return this.tenantsDetailsForm.controls.id;
+  }
+  get userId() {
+    return this.tenantsDetailsForm.controls.userId;
+  }
+  get propertyId() {
+    return this.tenantsDetailsForm.controls.propertyId;
+  }
+  get movedIn() {
+    return this.tenantsDetailsForm.controls.movedIn;
+  }
+  get movedOut() {
+    return this.tenantsDetailsForm.controls.movedOut;
+  }
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder

@@ -4,6 +4,7 @@ import { MaterialModule } from '../../material/src/public-api';
 import { PropertyDetailsComponent } from '../property-details/property-details.component';
 import { TenantDetailsComponent } from '../tenant-details/tenant-details.component';
 import { TenantPaymentsComponent } from '../tenant-payments/tenant-payments.component';
+import { UsersComponent } from '../users/users.component';
 
 @Component({
   selector: 'app-navbar',
@@ -68,7 +69,8 @@ import { TenantPaymentsComponent } from '../tenant-payments/tenant-payments.comp
         <ng-container>
           <!-- <app-property-details></app-property-details> -->
           <!-- <app-tenant-payments></app-tenant-payments> -->
-          <app-tenant-details></app-tenant-details>
+          <!-- <app-tenant-details></app-tenant-details> -->
+          <app-users></app-users>
         </ng-container>
         <!-- <router-outlet></router-outlet> -->
       </mat-drawer-content>
@@ -113,6 +115,7 @@ import { TenantPaymentsComponent } from '../tenant-payments/tenant-payments.comp
     PropertyDetailsComponent,
     TenantDetailsComponent,
     TenantPaymentsComponent,
+    UsersComponent,
   ],
 })
 export class NavbarComponent {}
