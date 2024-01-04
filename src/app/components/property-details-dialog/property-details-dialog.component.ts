@@ -103,7 +103,9 @@ import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component'
           </mat-form-field>
 
           <div style="margin-top: 20px;">
-            <button mat-raised-button color="primary">Submit</button>
+            <button mat-raised-button color="primary" (click)="saveData()">
+              Submit
+            </button>
           </div>
         </form>
       </div>
@@ -178,6 +180,14 @@ export class PropertyDetailsDialogComponent implements OnInit {
     return this.propertyDetailsForm.controls.description;
   }
 
+  saveData() {
+    if (this.selectedRequestType === 'create') {
+      this.createPropertyDetails();
+    } else if (this.selectedRequestType === 'update') {
+      this.updatePropertyDetails();
+    }
+  }
+
   patchValue() {
     const data = this.data;
     if (
@@ -195,6 +205,33 @@ export class PropertyDetailsDialogComponent implements OnInit {
         description: data.item.description,
       });
     }
+  }
+
+  updatePropertyDetails() {
+    const updatedData = {
+      id: this.id.value,
+      propertyName: this.propertyName.value,
+      address: this.address.value,
+      typeofProperty: this.typeofProperty.value,
+      numberofBedrooms: this.numberofBedrooms.value,
+      numberofBathrooms: this.numberofBathrooms.value,
+      isAvailable: this.isAvailable.value,
+      description: this.description.value,
+    };
+    console.log(updatedData, 'updateddata');
+  }
+
+  createPropertyDetails() {
+    const createdData = {
+      propertyName: this.propertyName.value,
+      address: this.address.value,
+      typeofProperty: this.typeofProperty.value,
+      numberofBedrooms: this.numberofBedrooms.value,
+      numberofBathrooms: this.numberofBathrooms.value,
+      isAvailable: this.isAvailable.value,
+      description: this.description.value,
+    };
+    console.log(createdData, 'createddata');
   }
 }
 

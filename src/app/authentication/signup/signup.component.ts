@@ -36,6 +36,18 @@ import { MaterialModule } from '../../material/src/public-api';
             >
           </mat-form-field>
 
+          <!-- Email -->
+          <mat-form-field appearance="outline">
+            <mat-label>Enter your email</mat-label>
+            <input matInput formControlName="email" required />
+            <mat-error *ngIf="form['email'].errors?.['required']"
+              >Email is <strong>required</strong></mat-error
+            >
+            <mat-error *ngIf="form['email'].errors?.['email']"
+              >Email is <strong>not valid</strong></mat-error
+            >
+          </mat-form-field>
+
           <!-- Password -->
 
           <mat-form-field appearance="outline">
@@ -127,20 +139,8 @@ import { MaterialModule } from '../../material/src/public-api';
             Passwords do not match
           </div>
 
-          <!-- Email -->
-          <mat-form-field appearance="outline">
-            <mat-label>Enter your email</mat-label>
-            <input matInput formControlName="email" required />
-            <mat-error *ngIf="form['email'].errors?.['required']"
-              >Email is <strong>required</strong></mat-error
-            >
-            <mat-error *ngIf="form['email'].errors?.['email']"
-              >Email is <strong>not valid</strong></mat-error
-            >
-          </mat-form-field>
-
           <!-----Date of Birth---->
-
+          <!-- 
           <mat-form-field appearance="outline">
             <mat-label>Choose a date</mat-label>
             <input
@@ -149,7 +149,7 @@ import { MaterialModule } from '../../material/src/public-api';
               [matDatepicker]="picker"
             />
 
-            <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+            <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle
               matIconSuffix
               [for]="picker"
@@ -159,35 +159,29 @@ import { MaterialModule } from '../../material/src/public-api';
             <mat-error *ngIf="form['dateOfBirth'].errors?.['required']"
               >Date of birth is <strong>required</strong></mat-error
             >
-          </mat-form-field>
+          </mat-form-field> -->
 
-          <!-- Phone Number -->
+          <!-- Gender -->
           <mat-form-field appearance="outline">
-            <mat-label>Phone Number</mat-label>
-            <input
-              matInput
-              formControlName="phoneNumber"
-              required
-              maxlength="10"
-            />
-            <mat-error *ngIf="form['phoneNumber'].errors?.['required']"
-              >Phone number is <strong>required</strong></mat-error
-            >
-            <mat-error
-              *ngIf="!form['phoneNumber'].errors?.['required'] && form['phoneNumber'].errors?.['pattern']"
-            >
-              Please enter a valid number
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender" required>
+              <mat-option value="male">Male</mat-option>
+              <mat-option value="female">Female</mat-option>
+              <mat-option value="others">Others</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form['gender']?.errors?.['required']">
+              Gender is <strong>required</strong>
             </mat-error>
           </mat-form-field>
 
-          <!--  Location -->
+          <!-- Location
           <mat-form-field appearance="outline">
             <mat-label>Location</mat-label>
             <input matInput formControlName="location" />
             <mat-error *ngIf="form['location'].errors?.['required']"
               >Location is <strong>required</strong></mat-error
-            >
-          </mat-form-field>
+            > -->
+          <!-- </mat-form-field> -->
 
           <mat-card-actions class="jc-center">
             <!-- <button
@@ -299,17 +293,19 @@ export class SignUpComponent {
         name: ['', Validators.required],
 
         email: ['', [Validators.required, Validators.email]],
-        phoneNumber: [
-          '',
-          [Validators.required, Validators.pattern(MOBILE_PATTERN)],
-        ],
-        dateOfBirth: ['', Validators.required],
+        // phoneNumber: [
+        //   '',
+        //   [Validators.required, Validators.pattern(MOBILE_PATTERN)],
+        // ],
+        // dateOfBirth: ['', Validators.required],
+        gender: ['', Validators.required],
+
         password: [
           '',
           Validators.compose([Validators.required, this.patternValidator()]),
         ],
         confirmpassword: ['', Validators.required],
-        location: ['', Validators.required],
+        // location: ['', Validators.required],
       },
       { validators: this.passwordsMatchValidator }
     );
@@ -341,9 +337,10 @@ export class SignUpComponent {
       email: this.signupForm.value.email,
       password: this.signupForm.value.password,
       name: this.signupForm.value.name,
-      phoneNumber: this.signupForm.value.phoneNumber,
-      location: this.signupForm.value.location,
-      dateOfBirth: this.signupForm.value.dateOfBirth,
+      gender: this.signupForm.value.gender,
+      // phoneNumber: this.signupForm.value.phoneNumber,
+      // location: this.signupForm.value.location,
+      // dateOfBirth: this.signupForm.value.dateOfBirth,
     };
 
     this.isAsyncCall = true;

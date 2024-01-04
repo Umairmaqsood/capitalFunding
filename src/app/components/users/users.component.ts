@@ -34,10 +34,15 @@ const usersData: UsersData[] = [
   standalone: true,
   imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
   template: ` <div style="padding: 30px">
-    <p>User Data works!</p>
-
+    <div
+      style="width: 100%; border-radius:5px; border: 3px solid #212121; padding: 5px; margin-bottom:10px"
+    >
+      <h1 style="text-align: center; margin: 0; font-weight:bold">
+        Tenants Details
+      </h1>
+    </div>
     <div class="flex" style="justify-content: space-between">
-      <mat-form-field appearance="outline">
+      <mat-form-field>
         <mat-label>Search</mat-label>
         <input
           matInput

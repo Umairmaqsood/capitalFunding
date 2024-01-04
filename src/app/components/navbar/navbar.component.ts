@@ -5,6 +5,8 @@ import { PropertyDetailsComponent } from '../property-details/property-details.c
 import { TenantDetailsComponent } from '../tenant-details/tenant-details.component';
 import { TenantPaymentsComponent } from '../tenant-payments/tenant-payments.component';
 import { UsersComponent } from '../users/users.component';
+import { TenantComplaintsComponent } from '../tenant-complaints/tenant-complaints.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -39,7 +41,7 @@ import { UsersComponent } from '../users/users.component';
           </a>
           <a
             mat-list-item
-            routerLink="/tenant-details"
+            routerLink="/tenant-residency-info"
             routerLinkActive="active"
           >
             <mat-icon>person</mat-icon>
@@ -55,7 +57,7 @@ import { UsersComponent } from '../users/users.component';
           </a>
           <a
             mat-list-item
-            routerLink="/users-details"
+            routerLink="/tenants-details"
             routerLinkActive="active"
           >
             <mat-icon>supervised_user_circle</mat-icon>
@@ -66,13 +68,8 @@ import { UsersComponent } from '../users/users.component';
       </mat-drawer>
 
       <mat-drawer-content class="content">
-        <ng-container>
-          <!-- <app-property-details></app-property-details> -->
-          <!-- <app-tenant-payments></app-tenant-payments> -->
-          <!-- <app-tenant-details></app-tenant-details> -->
-          <app-users></app-users>
-        </ng-container>
-        <!-- <router-outlet></router-outlet> -->
+        <ng-container></ng-container>
+        <router-outlet></router-outlet>
       </mat-drawer-content>
     </mat-drawer-container>
   `,
@@ -116,6 +113,8 @@ import { UsersComponent } from '../users/users.component';
     TenantDetailsComponent,
     TenantPaymentsComponent,
     UsersComponent,
+    TenantComplaintsComponent,
+    RouterModule,
   ],
 })
 export class NavbarComponent {}
