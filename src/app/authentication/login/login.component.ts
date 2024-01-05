@@ -11,6 +11,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { MaterialModule } from '../../material/src/public-api';
+import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 
 export interface LoginRequestData {
   rememberMe: boolean;
@@ -26,14 +27,14 @@ export interface LoginRequestData {
       <div class="content"></div>
     </div>
 
-    <div class="login" style="position: fixed;top:30px;width:100%;">
+    <div class="login" style="position: fixed;top:70px;width:100%;">
       <mat-card
-        style=" padding: 1px 30px; background-color: #2d3436 !important;
-        color: white !important; display:block; margin:0px auto;border-radius: 20px;width:380px"
+        style=" padding: 1px 30px;;
+        color: black !important; display:block; margin:0px auto;border-radius: 10px;width:380px"
       >
         <div style="justify-content: center;display:flex;">
           <mat-card-header>
-            <h1 style="text-align: center !important; color:white !important">
+            <h1 style="text-align: center !important; font-weight:bold">
               Login
             </h1></mat-card-header
           >
@@ -111,9 +112,7 @@ export interface LoginRequestData {
             style="align-items: center; justify-content:space-between; "
           >
             <section class="example-section">
-              <mat-checkbox class="example-margin"
-                ><div style="color: white;">Remember me</div></mat-checkbox
-              >
+              <mat-checkbox class="example-margin">Remember me</mat-checkbox>
             </section>
 
             <!-- <button mat-button style="color:white" (click)="Forgetpwd()">
@@ -136,7 +135,7 @@ export interface LoginRequestData {
         </form>
         <!-- Sign up functionality is currently not required -->
         <div>
-          <h6 style="text-align:end;color: white;">
+          <h6 style="text-align:end;">
             Don't have an account,
             <button mat-button>
               <a style="color: red;" (click)="Signup()">Sign up</a>
@@ -148,6 +147,17 @@ export interface LoginRequestData {
   `,
   styles: [
     `
+      .container {
+        background: linear-gradient(
+          to right,
+          blue,
+          red
+        ); /* Apply a gradient with blue and red */
+        height: 100vh; /* Set height to cover the entire viewport */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
       .content {
         flex: 1;
         overflow: auto;
@@ -174,7 +184,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router, // private authService: AuthService,
+    private router: Router,
+    private authService: AuthenticationService,
     // private authenService: AuthenticationService,
     private snackbar: MatSnackBar
   ) {}
@@ -196,30 +207,31 @@ export class LoginComponent implements OnInit {
 
     const data: LoginRequestData = this.loginForm.value;
 
-    // this.authenService.login(data).subscribe(
-    //   (res: any) => {
-    //     console.log(res, 'response');
-    //     const isContentCreator = localStorage.getItem('isContentCreator');
-    //     const decodedToken: any = jwtDecode(res.userToken);
-    //     const userId = decodedToken._id;
+    this.authService.login(data).subscribe(
+      (res: any) => {
+        console.log(res, 'response');
+        const decodedToken: any = jwtDecode(res.results);
+        const userId = decodedToken.Id;
+        console.log(userId, 'userid');
+        if (res.status === 200) {
+          this.router.navigate(['']); // Navigating to the route with an empty path ('')
+          this.showSnackbar();
+          this.isAsyncCall = false;
+        }
 
-    //     if (res.status === 200 && isContentCreator === 'true') {
-    //       this.router.navigate(['/home-page', userId]); // Navigating with the user ID as a parameter
-    //       this.showSnackbar();
-    //       this.isAsyncCall = false;
-    //     } else if (res.status === 200 && isContentCreator === 'false') {
-    //       this.router.navigate(['/news-feed', userId]); // Navigating with the user ID as a parameter
-    //       this.showSnackbar();
-    //       this.isAsyncCall = false;
-    //     }
-    //   },
-    //   (error) => {
-    //     // Handle error scenarios if needed
-    //     console.error(error);
-    //     this.errorSnackBar();
-    //     this.isAsyncCall = false;
-    //   }
-    // );
+        // else if (res.status === 200 && isContentCreator === 'false') {
+        //   this.router.navigate(['/news-feed', userId]); // Navigating with the user ID as a parameter
+        //   this.showSnackbar();
+        //   this.isAsyncCall = false;
+        // }
+      },
+      (error) => {
+        // Handle error scenarios if needed
+        console.error(error);
+        this.errorSnackBar();
+        this.isAsyncCall = false;
+      }
+    );
   }
 
   Signup() {

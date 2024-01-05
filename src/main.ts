@@ -25,10 +25,10 @@ import { USER_COMP } from './app/users-components';
 //   enableProdMode();
 // }
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   children: AUTH_ROUTE,
-  // },
+  {
+    path: 'auth',
+    children: AUTH_ROUTE,
+  },
   {
     path: '',
     children: COMP_ROUTE,

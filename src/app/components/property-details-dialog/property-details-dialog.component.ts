@@ -9,6 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
+import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 
 @Component({
   selector: 'app-property-details-dialog',
@@ -130,7 +131,8 @@ export class PropertyDetailsDialogComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthenticationService
   ) {
     console.log(data, 'data');
   }
@@ -182,7 +184,7 @@ export class PropertyDetailsDialogComponent implements OnInit {
 
   saveData() {
     if (this.selectedRequestType === 'create') {
-      this.createPropertyDetails();
+      this.createPropertyDetail();
     } else if (this.selectedRequestType === 'update') {
       this.updatePropertyDetails();
     }
@@ -221,8 +223,9 @@ export class PropertyDetailsDialogComponent implements OnInit {
     console.log(updatedData, 'updateddata');
   }
 
-  createPropertyDetails() {
+  createPropertyDetail() {
     const createdData = {
+      Id: '',
       propertyName: this.propertyName.value,
       address: this.address.value,
       typeofProperty: this.typeofProperty.value,
@@ -232,6 +235,11 @@ export class PropertyDetailsDialogComponent implements OnInit {
       description: this.description.value,
     };
     console.log(createdData, 'createddata');
+    this.authService.createpropertyDetails(createdData)?.subscribe((res) => {
+      if (res) {
+        console.log(res, 'response of create');
+      }
+    });
   }
 }
 

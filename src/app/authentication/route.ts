@@ -13,9 +13,4 @@ export const AUTH_ROUTE: Route[] = [
     path: 'sign-up',
     component: SignUpComponent,
   },
-
-  {
-    path: 'forgot-password',
-    component: ForgotPasswordComponent,
-  },
 ];
