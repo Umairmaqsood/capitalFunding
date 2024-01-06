@@ -103,7 +103,9 @@ import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component'
           </mat-form-field>
 
           <div style="margin-top: 20px;">
-            <button mat-raised-button color="primary">Submit</button>
+            <button mat-raised-button color="primary" (click)="saveData()">
+              Submit
+            </button>
           </div>
         </form>
       </div>
@@ -131,6 +133,31 @@ export class TenantPaymentsDialogComponent {
     private formBuilder: FormBuilder
   ) {}
 
+  get id() {
+    return this.tenantPaymentsForm.controls.id;
+  }
+  get tenantId() {
+    return this.tenantPaymentsForm.controls.tenantId;
+  }
+  get rent() {
+    return this.tenantPaymentsForm.controls.rent;
+  }
+  get areaMaintainienceFee() {
+    return this.tenantPaymentsForm.controls.areaMaintainienceFee;
+  }
+  get isLate() {
+    return this.tenantPaymentsForm.controls.isLate;
+  }
+  get lateFee() {
+    return this.tenantPaymentsForm.controls.lateFee;
+  }
+  get rentPayedAt() {
+    return this.tenantPaymentsForm.controls.rentPayedAt;
+  }
+  get month() {
+    return this.tenantPaymentsForm.controls.month;
+  }
+
   ngOnInit(): void {
     this.selectedRequestType = this.data.requestType;
     // Disable fields for viewing
@@ -157,6 +184,40 @@ export class TenantPaymentsDialogComponent {
         month: data.item.month,
       });
     }
+  }
+
+  saveData() {
+    if (this.selectedRequestType === 'create') {
+      this.createTenantsPayments();
+    } else if (this.selectedRequestType === 'update') {
+      this.updateTenantsPayments();
+    }
+  }
+  createTenantsPayments() {
+    const createData = {
+      id: this.id.value,
+      tenantId: this.tenantId.value,
+      rent: this.rent.value,
+      areaMaintainienceFee: this.areaMaintainienceFee.value,
+      isLate: this.isLate.value,
+      lateFee: this.lateFee.value,
+      rentPayedAt: this.rentPayedAt.value,
+      month: this.month.value,
+    };
+    console.log(createData, 'createData');
+  }
+  updateTenantsPayments() {
+    const updateData = {
+      id: this.id.value,
+      tenantId: this.tenantId.value,
+      rent: this.rent.value,
+      areaMaintainienceFee: this.areaMaintainienceFee.value,
+      isLate: this.isLate.value,
+      lateFee: this.lateFee.value,
+      rentPayedAt: this.rentPayedAt.value,
+      month: this.month.value,
+    };
+    console.log(updateData, 'updateData');
   }
 }
 

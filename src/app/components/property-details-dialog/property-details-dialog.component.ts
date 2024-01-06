@@ -225,7 +225,7 @@ export class PropertyDetailsDialogComponent implements OnInit {
 
   createPropertyDetail() {
     const createdData = {
-      Id: '',
+      id: '',
       propertyName: this.propertyName.value,
       address: this.address.value,
       typeofProperty: this.typeofProperty.value,
@@ -235,7 +235,7 @@ export class PropertyDetailsDialogComponent implements OnInit {
       description: this.description.value,
     };
     console.log(createdData, 'createddata');
-    this.authService.createpropertyDetails(createdData)?.subscribe((res) => {
+    this.authService.createpropertyDetails(createdData).subscribe((res) => {
       if (res) {
         console.log(res, 'response of create');
       }

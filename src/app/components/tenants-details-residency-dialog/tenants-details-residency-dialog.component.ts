@@ -84,7 +84,9 @@ import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component'
           </mat-form-field>
 
           <div style="margin-top: 20px;">
-            <button mat-raised-button color="primary">Submit</button>
+            <button mat-raised-button color="primary" (click)="saveData()">
+              Submit
+            </button>
           </div>
         </form>
       </div>
@@ -148,6 +150,35 @@ export class TenantsDetailsResidencyDialogComponent {
         movedOut: data.item.movedOut,
       });
     }
+  }
+
+  saveData() {
+    if (this.selectedRequestType === 'create') {
+      this.createTenatsDetailsResidency();
+    } else if (this.selectedRequestType === 'update') {
+      this.updateTenatsDetailsResidency();
+    }
+  }
+
+  createTenatsDetailsResidency() {
+    const createData = {
+      id: this.id.value,
+      userId: this.userId.value,
+      property: this.propertyId.value,
+      movedIn: this.movedIn.value,
+      movedOut: this.movedOut.value,
+    };
+    console.log(createData, 'createData');
+  }
+  updateTenatsDetailsResidency() {
+    const updateData = {
+      id: this.id.value,
+      userId: this.userId.value,
+      property: this.propertyId.value,
+      movedIn: this.movedIn.value,
+      movedOut: this.movedOut.value,
+    };
+    console.log(updateData, 'updateData');
   }
 }
 

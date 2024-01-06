@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, range } from 'rxjs';
+import { BehaviorSubject, Observable, of, range } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LoginRequestData } from '../../../../authentication';
 import {
@@ -68,17 +68,26 @@ export class AuthenticationService {
 
   createpropertyDetails(data: any) {
     const currentUser = localStorage.getItem('currentUser');
-    const userToken = currentUser ? JSON.parse(currentUser).userToken : null;
+    const results = currentUser ? JSON.parse(currentUser) : null;
 
-    // Set the token in the Authorization header
-    const headers = {
-      headers: new HttpHeaders().set('bearer', userToken || ''),
-    };
+    console.log(results, 'tokenresult');
 
-    return this.http.post<any>(
-      this.backendUrl + '/addNewProperty',
-      headers,
-      data
-    );
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.post<any>(
+        this.backendUrl + '/addNewProperty',
+        data,
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+      // Handle the case when the token is not available
+      // You might want to handle this case or throw an error
+      // For now, returning null or an empty observable for demonstration
+      return of(null); // You can return an observable with a null value
+    }
   }
 }

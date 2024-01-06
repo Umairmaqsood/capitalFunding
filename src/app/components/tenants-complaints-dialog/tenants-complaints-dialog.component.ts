@@ -65,7 +65,9 @@ import { MaterialModule } from '../../material/src/public-api';
           </mat-form-field>
 
           <div style="margin-top: 20px;">
-            <button mat-raised-button color="primary">Submit</button>
+            <button mat-raised-button color="primary" (click)="saveData()">
+              Submit
+            </button>
           </div>
         </form>
       </div>
@@ -92,7 +94,6 @@ export class TenantsComplaintsDialogComponent {
   get title() {
     return this.tenantsComplaintsForm.controls.title;
   }
-
   get details() {
     return this.tenantsComplaintsForm.controls.details;
   }
@@ -128,6 +129,35 @@ export class TenantsComplaintsDialogComponent {
         isFixed: data.item.isFixed,
       });
     }
+  }
+
+  saveData() {
+    if (this.selectedRequestType === 'create') {
+      this.createTenantDetails();
+    } else if (this.selectedRequestType === 'update') {
+      this.updateTenantDetails();
+    }
+  }
+
+  updateTenantDetails() {
+    const updatedData = {
+      id: this.id.value,
+      tenantId: this.tenantId.value,
+      title: this.title.value,
+      details: this.details.value,
+      isFixed: this.isFixed.value,
+    };
+    console.log('updatedData', updatedData);
+  }
+  createTenantDetails() {
+    const createdData = {
+      id: this.id.value,
+      tenantId: this.tenantId.value,
+      title: this.title.value,
+      details: this.details.value,
+      isFixed: this.isFixed.value,
+    };
+    console.log('creteData', createdData);
   }
 }
 

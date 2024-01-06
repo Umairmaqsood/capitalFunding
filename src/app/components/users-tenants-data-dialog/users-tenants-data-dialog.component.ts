@@ -82,7 +82,9 @@ import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component'
           </mat-form-field>
 
           <div style="margin-top: 20px;">
-            <button mat-raised-button color="primary">Submit</button>
+            <button mat-raised-button color="primary" (click)="saveData()">
+              Submit
+            </button>
           </div>
         </form>
       </div>
@@ -115,6 +117,9 @@ export class UsersTenantsDataDialogComponent {
   }
   get gender() {
     return this.usersDetailsForm.controls.gender;
+  }
+  get role() {
+    return this.usersDetailsForm.controls.role;
   }
   get isActive() {
     return this.usersDetailsForm.controls.isActive;
@@ -155,6 +160,38 @@ export class UsersTenantsDataDialogComponent {
         isEmailVerified: data.item.isEmailVerified,
       });
     }
+  }
+
+  saveData() {
+    if (this.selectedRequestType === 'create') {
+      this.createUserData();
+    } else if (this.selectedRequestType === 'update') {
+      this.updateUserData();
+    }
+  }
+  createUserData() {
+    const createData = {
+      id: this.id.value,
+      name: this.name.value,
+      email: this.email.value,
+      gender: this.gender.value,
+      role: this.role.value,
+      isActive: this.isActive.value,
+      isEmailVerified: this.isEmailVerified.value,
+    };
+    console.log(createData, 'createdata');
+  }
+  updateUserData() {
+    const updateData = {
+      id: this.id.value,
+      name: this.name.value,
+      email: this.email.value,
+      gender: this.gender.value,
+      role: this.role.value,
+      isActive: this.isActive.value,
+      isEmailVerified: this.isEmailVerified.value,
+    };
+    console.log(updateData, 'updatedata');
   }
 }
 
