@@ -241,6 +241,11 @@ export class TenantDetailsComponent implements OnInit {
           this.dataSource = new MatTableDataSource(data);
           this.isAsyncCall = false;
         }
+        (error: any) => {
+          this.error();
+          this.isAsyncCall = false;
+          console.error('Error Occured:', error);
+        };
       });
   }
 
@@ -300,9 +305,12 @@ export class TenantDetailsComponent implements OnInit {
         this.deleteSnackBar();
         this.getTenantsDetailsResidency();
         this.isAsyncCall = false;
-      } else {
-        this.isAsyncCall = false;
       }
+      (error: any) => {
+        this.error();
+        this.isAsyncCall = false;
+        console.error('Error Occured:', error);
+      };
     });
   }
 
@@ -310,5 +318,11 @@ export class TenantDetailsComponent implements OnInit {
     const config = new MatSnackBarConfig();
     config.duration = 5000;
     this.snackbar.open(`DATA DELETED SUCCESSFULLY`, 'X', config);
+  }
+
+  error(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackbar.open(`AN ERROR OCCURED!`, 'X', config);
   }
 }

@@ -306,6 +306,11 @@ export class PropertyDetailsComponent implements OnInit {
           this.dataSource = new MatTableDataSource(data);
           this.isAsyncCall = false;
         }
+        (error: any) => {
+          this.error();
+          this.isAsyncCall = false;
+          console.error('Error Occured:', error);
+        };
       });
   }
 
@@ -364,9 +369,12 @@ export class PropertyDetailsComponent implements OnInit {
         this.deleteSnackBar();
         this.getPropertyDetails();
         this.isAsyncCall = false;
-      } else {
-        this.isAsyncCall = false;
       }
+      (error: any) => {
+        this.error();
+        this.isAsyncCall = false;
+        console.error('Error Occured:', error);
+      };
     });
   }
 
@@ -374,5 +382,10 @@ export class PropertyDetailsComponent implements OnInit {
     const config = new MatSnackBarConfig();
     config.duration = 5000;
     this.snackbar.open(`DATA DELETED SUCCESSFULLY`, 'X', config);
+  }
+  error(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackbar.open(`AN ERROR OCCURED!`, 'X', config);
   }
 }

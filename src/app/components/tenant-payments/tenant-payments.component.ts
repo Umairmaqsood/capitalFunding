@@ -291,9 +291,12 @@ export class TenantPaymentsComponent implements OnInit {
           const data = res.results.items;
           this.dataSource = new MatTableDataSource(data);
           this.isAsyncCall = false;
-        } else {
-          this.isAsyncCall = false;
         }
+        (error: any) => {
+          this.error();
+          this.isAsyncCall = false;
+          console.error('Error Occured:', error);
+        };
       });
   }
 
@@ -356,9 +359,12 @@ export class TenantPaymentsComponent implements OnInit {
           this.deleteSnackBar();
           this.getTenantsPaymentsInformations();
           this.isAsyncCall = false;
-        } else {
-          this.isAsyncCall = false;
         }
+        (error: any) => {
+          this.error();
+          this.isAsyncCall = false;
+          console.error('Error Occured:', error);
+        };
       });
   }
 
@@ -366,5 +372,10 @@ export class TenantPaymentsComponent implements OnInit {
     const config = new MatSnackBarConfig();
     config.duration = 5000;
     this.snackbar.open(`DATA DELETED SUCCESSFULLY`, 'X', config);
+  }
+  error(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackbar.open(`AN ERROR OCCURED!`, 'X', config);
   }
 }
