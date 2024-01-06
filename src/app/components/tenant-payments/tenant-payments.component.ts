@@ -48,7 +48,7 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
   imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
   template: `
     <div style="padding: 30px">
-      <div
+      <!-- <div
         style="width: 100%; border-radius: 5px; padding: 5px; margin-bottom: 10px;
   background: linear-gradient(to right, red, #a80056);
 "
@@ -58,7 +58,7 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
         >
           Tenants Payment Info
         </h1>
-      </div>
+      </div> -->
       <div class="flex" style="justify-content: space-between">
         <mat-form-field appearance="outline">
           <mat-label>Search</mat-label>
@@ -74,7 +74,7 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
           mat-raised-button
           (click)="createTenantPaymentDialog({})"
           style="background: linear-gradient(to right, red, #a80056); color: white;
-        margin-top:10px; padding:20px;"
+        margin-top:10px; padding:25px 30px;font-weight:bold;"
         >
           Create
         </button>
@@ -87,7 +87,7 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               ID
             </th>
@@ -99,7 +99,7 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Tenant ID
             </th>
@@ -111,7 +111,7 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Rent
             </th>
@@ -123,7 +123,7 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Area Maintenance Fee
             </th>
@@ -137,7 +137,7 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Is Late
             </th>
@@ -149,7 +149,7 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Late Fee
             </th>
@@ -161,12 +161,12 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Rent Payed At
             </th>
             <td mat-cell *matCellDef="let element">
-              {{ element.rentPayedAt }}
+              {{ element.rentPayedAt | date : 'dd-MM-yyyy' }}
             </td>
           </ng-container>
 
@@ -175,7 +175,7 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Month
             </th>
@@ -187,7 +187,7 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Action
             </th>

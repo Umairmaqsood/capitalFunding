@@ -47,7 +47,7 @@ const PROPERTY_DATA: PropertyDetails[] = [
   imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
   template: `
     <div style="padding:30px">
-      <div
+      <!-- <div
         style="width: 100%; border-radius: 5px; padding: 5px; margin-bottom: 10px;
   background: linear-gradient(to right, red, #a80056);
 "
@@ -57,7 +57,7 @@ const PROPERTY_DATA: PropertyDetails[] = [
         >
           Tenant Property Details
         </h1>
-      </div>
+      </div> -->
       <div class="flex" style="justify-content:space-between">
         <mat-form-field appearance="outline">
           <mat-label>Search</mat-label>
@@ -73,7 +73,7 @@ const PROPERTY_DATA: PropertyDetails[] = [
           mat-raised-button
           (click)="createPropertyDetailsDialog({})"
           style="background: linear-gradient(to right, red, #a80056); color: white;
-        margin-top:10px; padding:20px;"
+        margin-top:10px; padding:25px 30px;font-weight:bold"
         >
           Create
         </button>
@@ -86,7 +86,7 @@ const PROPERTY_DATA: PropertyDetails[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               ID
             </th>
@@ -98,7 +98,7 @@ const PROPERTY_DATA: PropertyDetails[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Property Name
             </th>
@@ -112,7 +112,7 @@ const PROPERTY_DATA: PropertyDetails[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Address
             </th>
@@ -124,7 +124,7 @@ const PROPERTY_DATA: PropertyDetails[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Type of Property
             </th>
@@ -138,7 +138,7 @@ const PROPERTY_DATA: PropertyDetails[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Number of Bedrooms
             </th>
@@ -152,7 +152,7 @@ const PROPERTY_DATA: PropertyDetails[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Number of Bathrooms
             </th>
@@ -166,7 +166,7 @@ const PROPERTY_DATA: PropertyDetails[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Is Available
             </th>
@@ -180,12 +180,18 @@ const PROPERTY_DATA: PropertyDetails[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Description
             </th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.description }}
+
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              [matTooltip]="truncateText(element.description, 100)"
+            >
+              {{ truncateText(element.description, 18) }}
             </td>
           </ng-container>
 
@@ -194,7 +200,7 @@ const PROPERTY_DATA: PropertyDetails[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Action
             </th>
@@ -281,6 +287,14 @@ export class PropertyDetailsComponent {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  truncateText(text: string, maxLength: number): string {
+    if (text?.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    } else {
+      return text;
+    }
   }
 
   createPropertyDetailsDialog(item: any) {

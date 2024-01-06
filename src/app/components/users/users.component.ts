@@ -34,7 +34,7 @@ const usersData: UsersData[] = [
   standalone: true,
   imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
   template: ` <div style="padding: 30px">
-    <div
+    <!-- <div
       style="width: 100%; border-radius: 5px; padding: 5px; margin-bottom: 10px;
   background: linear-gradient(to right, red, #a80056);
 "
@@ -44,7 +44,7 @@ const usersData: UsersData[] = [
       >
         Tenants Details
       </h1>
-    </div>
+    </div> -->
     <div class="flex" style="justify-content: space-between">
       <mat-form-field appearance="outline">
         <mat-label>Search</mat-label>
@@ -60,7 +60,7 @@ const usersData: UsersData[] = [
         mat-raised-button
         (click)="createUsersDataDialog({})"
         style="background: linear-gradient(to right, red, #a80056); color: white;
-        margin-top:10px; padding:20px;"
+        margin-top:10px; padding:25px 30px;font-weight:bold;"
       >
         Create
       </button>
@@ -74,7 +74,7 @@ const usersData: UsersData[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               ID
             </th>
@@ -86,7 +86,7 @@ const usersData: UsersData[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Name
             </th>
@@ -98,7 +98,7 @@ const usersData: UsersData[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Email
             </th>
@@ -110,7 +110,7 @@ const usersData: UsersData[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Gender
             </th>
@@ -122,7 +122,7 @@ const usersData: UsersData[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Role
             </th>
@@ -134,7 +134,7 @@ const usersData: UsersData[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Active
             </th>
@@ -146,7 +146,7 @@ const usersData: UsersData[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Email Verified
             </th>
@@ -160,7 +160,7 @@ const usersData: UsersData[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Action
             </th>

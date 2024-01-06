@@ -29,9 +29,9 @@ import { RouterModule } from '@angular/router';
             routerLinkActive="active"
           >
             <div class="flex gap-10">
-              <mat-icon>home</mat-icon>
+              <mat-icon class="color">home</mat-icon>
 
-              <div>Property Details</div>
+              <div class="color">Property Details</div>
             </div>
           </a>
           <a
@@ -40,8 +40,8 @@ import { RouterModule } from '@angular/router';
             routerLinkActive="active"
           >
             <div class="flex gap-10">
-              <mat-icon>report</mat-icon>
-              <div>Tenant Complaints</div>
+              <mat-icon class="color">report</mat-icon>
+              <div class="color">Tenant Complaints</div>
             </div>
           </a>
           <a
@@ -50,8 +50,8 @@ import { RouterModule } from '@angular/router';
             routerLinkActive="active"
           >
             <div class="flex gap-10">
-              <mat-icon>person</mat-icon>
-              <div>Tenant Residency Info</div>
+              <mat-icon class="color">person</mat-icon>
+              <div class="color">Tenant Residency Info</div>
             </div>
           </a>
           <a
@@ -60,8 +60,8 @@ import { RouterModule } from '@angular/router';
             routerLinkActive="active"
           >
             <div class="flex gap-10">
-              <mat-icon>payment</mat-icon>
-              <div>Tenant Payments</div>
+              <mat-icon class="color">payment</mat-icon>
+              <div class="color">Tenant Payments</div>
             </div>
           </a>
           <a
@@ -70,8 +70,8 @@ import { RouterModule } from '@angular/router';
             routerLinkActive="active"
           >
             <div class="flex gap-10">
-              <mat-icon>supervised_user_circle</mat-icon>
-              <div>Tenants Details</div>
+              <mat-icon class="color">supervised_user_circle</mat-icon>
+              <div class="color">Tenants Details</div>
             </div>
           </a>
           <!-- Add more navigation links as needed -->
@@ -88,7 +88,12 @@ import { RouterModule } from '@angular/router';
     `/* Adjusting drawer width for different screen sizes */
 .mat-drawer {
   width: 250px;
-}
+  background: linear-gradient(
+    to right,
+          #f44336,
+          #009688
+        ); /* Apply a gradient with blue and red */
+        display: flex;}
 /* Media query for smaller screens */
 @media screen and (max-width: 768px) {
   .mat-drawer {
@@ -103,8 +108,7 @@ import { RouterModule } from '@angular/router';
 }
 
 .sidebar-list {
-  // background-color: #1a1a1a;
-  padding: 10px; 
+  padding:40px 10px; 
 }
 
 /* Styling for the links inside the sidebar navigation list */
@@ -125,6 +129,11 @@ import { RouterModule } from '@angular/router';
         display: flex;
        
     }
+    .color{
+      color:white;
+      font-weight:400
+    }
+ 
 ,`,
   ],
   imports: [

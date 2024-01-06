@@ -38,7 +38,7 @@ const TENANT_RESIDENCY_DATA: TenantResidencyInfo[] = [
   imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
   template: `
     <div style="padding: 30px">
-      <div
+      <!-- <div
         style="width: 100%; border-radius: 5px; padding: 5px; margin-bottom: 10px;
   background: linear-gradient(to right, red, #a80056);
 "
@@ -48,7 +48,7 @@ const TENANT_RESIDENCY_DATA: TenantResidencyInfo[] = [
         >
           Tenants Residency Info
         </h1>
-      </div>
+      </div> -->
 
       <div class="flex" style="justify-content: space-between">
         <mat-form-field appearance="outline">
@@ -65,7 +65,7 @@ const TENANT_RESIDENCY_DATA: TenantResidencyInfo[] = [
           mat-raised-button
           (click)="createTenantPaymentResidency({})"
           style="background: linear-gradient(to right, red, #a80056); color: white;
-        margin-top:10px; padding:20px;"
+        margin-top:10px; padding:25px 30px;font-weight:bold"
         >
           Create
         </button>
@@ -79,7 +79,7 @@ const TENANT_RESIDENCY_DATA: TenantResidencyInfo[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               ID
             </th>
@@ -91,7 +91,7 @@ const TENANT_RESIDENCY_DATA: TenantResidencyInfo[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               User ID
             </th>
@@ -103,7 +103,7 @@ const TENANT_RESIDENCY_DATA: TenantResidencyInfo[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Property ID
             </th>
@@ -115,11 +115,13 @@ const TENANT_RESIDENCY_DATA: TenantResidencyInfo[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Moved In
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.movedIn }}</td>
+            <td mat-cell *matCellDef="let element">
+              {{ element.movedIn | date : 'dd-MM-yyyy' }}
+            </td>
           </ng-container>
 
           <!-- Moved Out Column -->
@@ -127,11 +129,13 @@ const TENANT_RESIDENCY_DATA: TenantResidencyInfo[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Moved Out
             </th>
-            <td mat-cell *matCellDef="let element">{{ element.movedOut }}</td>
+            <td mat-cell *matCellDef="let element">
+              {{ element.movedOut | date : 'dd-MM-yyyy' }}
+            </td>
           </ng-container>
 
           <!-- Action Column -->
@@ -139,7 +143,7 @@ const TENANT_RESIDENCY_DATA: TenantResidencyInfo[] = [
             <th
               mat-header-cell
               *matHeaderCellDef
-              style="background-color:black; color:white"
+              style="background-color:#2c3e50; color:white"
             >
               Action
             </th>
