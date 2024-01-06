@@ -53,6 +53,15 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full">
+              <mat-label>Password</mat-label>
+              <input
+                matInput
+                formControlName="password"
+                placeholder="password"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
               <mat-label>Gender</mat-label>
               <mat-select formControlName="gender">
                 <mat-option value="male">Male</mat-option>
@@ -105,6 +114,7 @@ export class UsersTenantsDataDialogComponent {
     id: ['', Validators.required],
     name: ['', Validators.required],
     email: ['', Validators.required],
+    password: ['', Validators.required],
     gender: ['', Validators.required],
     role: ['', Validators.required],
     isActive: ['', Validators.required],
@@ -119,6 +129,9 @@ export class UsersTenantsDataDialogComponent {
   }
   get email() {
     return this.usersDetailsForm.controls.email;
+  }
+  get password() {
+    return this.usersDetailsForm.controls.password;
   }
   get gender() {
     return this.usersDetailsForm.controls.gender;
@@ -162,6 +175,7 @@ export class UsersTenantsDataDialogComponent {
         id: data.item.id,
         name: data.item.name,
         email: data.item.email,
+        password: data.item.password,
         gender: data.item.gender,
         role: data.item.role,
         isActive: data.item.isActive,
@@ -182,6 +196,7 @@ export class UsersTenantsDataDialogComponent {
       id: this.id.value,
       name: this.name.value,
       email: this.email.value,
+      password: this.password.value,
       gender: this.gender.value,
       role: this.role.value,
       isActive: this.isActive.value,
@@ -204,6 +219,7 @@ export class UsersTenantsDataDialogComponent {
       id: this.id.value,
       name: this.name.value,
       email: this.email.value,
+      password: this.password.value,
       gender: this.gender.value,
       role: this.role.value,
       isActive: this.isActive.value,

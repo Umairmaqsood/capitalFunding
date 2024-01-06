@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MaterialModule } from '../../material/src/public-api';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,24 +13,13 @@ export interface UsersData {
   id: string;
   name: string;
   email: string;
+  password: string;
   gender: string;
   role: string;
   isActive: boolean;
   isEmailVerified: boolean;
 }
 
-const usersData: UsersData[] = [
-  {
-    id: '1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    gender: 'male',
-    role: 'admin',
-    isActive: true,
-    isEmailVerified: true,
-  },
-  // Add more user data here as needed
-];
 @Component({
   selector: 'app-users',
   standalone: true,
@@ -81,7 +70,13 @@ const usersData: UsersData[] = [
               >
                 ID
               </th>
-              <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [matTooltip]="truncateText(element.id, 100)"
+              >
+                {{ truncateText(element.id, 8) }}
+              </td>
             </ng-container>
 
             <!-- Name Column -->
@@ -105,7 +100,31 @@ const usersData: UsersData[] = [
               >
                 Email
               </th>
-              <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [matTooltip]="truncateText(element.email, 100)"
+              >
+                {{ truncateText(element.email, 8) }}
+              </td>
+            </ng-container>
+
+            <!-- Password Column -->
+            <ng-container matColumnDef="password">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="background-color:#2c3e50; color:white"
+              >
+                Password
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [matTooltip]="truncateText(element.password, 100)"
+              >
+                {{ truncateText(element.password, 8) }}
+              </td>
             </ng-container>
 
             <!-- Gender Column -->
@@ -222,13 +241,14 @@ const usersData: UsersData[] = [
     `,
   ],
 })
-export class UsersComponent {
+export class UsersComponent implements OnInit {
   isAsyncCall = false;
 
   displayedColumns: string[] = [
     'id',
     'name',
     'email',
+    'password',
     'gender',
     'role',
     'isActive',
@@ -241,10 +261,22 @@ export class UsersComponent {
     private snackbar: MatSnackBar
   ) {}
 
+  ngOnInit() {
+    this.getUserInformation();
+  }
+
   @ViewChild(MatPaginator, { static: false })
   set paginator(value: MatPaginator) {
     if (this.dataSource) {
       this.dataSource.paginator = value;
+    }
+  }
+
+  truncateText(text: string, maxLength: number): string {
+    if (text?.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    } else {
+      return text;
     }
   }
 

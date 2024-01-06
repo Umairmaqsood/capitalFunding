@@ -60,14 +60,14 @@ const TENANT_COMPLAINTS_DATA: TenantComplaints[] = [
           />
         </mat-form-field>
 
-        <button
+        <!-- <button
           mat-raised-button
           (click)="createTenantComplaintsDialog({})"
           style="background: linear-gradient(to right, red, #a80056); color: white;
         margin-top:10px; padding:25px 30px;font-weight:bold;"
         >
           Create
-        </button>
+        </button> -->
       </div>
 
       <div>
