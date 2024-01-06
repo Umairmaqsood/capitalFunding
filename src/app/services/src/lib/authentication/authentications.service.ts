@@ -121,7 +121,7 @@ export class AuthenticationService {
         Authorization: `Bearer ${results.results}`,
       });
 
-      return this.http.post<any>(
+      return this.http.get<any>(
         this.backendUrl + `/deleteProperty?propertyId=${propertyId}`,
 
         { headers } // Pass the headers in the request options

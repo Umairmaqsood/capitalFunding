@@ -7,6 +7,7 @@ import { PropertyDetailsDialogComponent } from '../property-details-dialog/prope
 import { MatPaginator } from '@angular/material/paginator';
 import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
 import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 export interface PropertyDetails {
   id: string;
@@ -263,7 +264,8 @@ export class PropertyDetailsComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private snackbar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -359,9 +361,18 @@ export class PropertyDetailsComponent implements OnInit {
     this.isAsyncCall = true;
     this.authService.deletepropertyDetails(item.id ?? '').subscribe((res) => {
       if (res) {
+        this.deleteSnackBar();
         this.getPropertyDetails();
+        this.isAsyncCall = false;
+      } else {
         this.isAsyncCall = false;
       }
     });
+  }
+
+  deleteSnackBar(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackbar.open(`DATA DELETED SUCCESSFULLY`, 'X', config);
   }
 }
