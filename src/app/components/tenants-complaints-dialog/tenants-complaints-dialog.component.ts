@@ -180,18 +180,18 @@ export class TenantsComplaintsDialogComponent {
       isFixed: this.isFixed.value,
     };
     console.log('updatedData', updatedData);
-    this.isAsyncCall = true;
-    this.authService
-      .updateTenantsComplaints(updatedData)
-      .subscribe((result) => {
-        if (result) {
-          this.updateSnackabr();
-          this.dialogRef.close(true);
-          this.isAsyncCall = false;
-        } else {
-          this.isAsyncCall = false;
-        }
-      });
+    // this.isAsyncCall = true;
+    // this.authService
+    //   .updateTenantsComplaints(updatedData)
+    //   .subscribe((result) => {
+    //     if (result) {
+    //       this.updateSnackabr();
+    //       this.dialogRef.close(true);
+    //       this.isAsyncCall = false;
+    //     } else {
+    //       this.isAsyncCall = false;
+    //     }
+    //   });
   }
   createTenantDetails() {
     const createdData = {

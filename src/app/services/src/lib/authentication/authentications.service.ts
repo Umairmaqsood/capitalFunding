@@ -179,7 +179,7 @@ export class AuthenticationService {
       return of(null); // You can return an observable with a null value
     }
   }
-  updateTenantsComplaints(data: any) {
+  updateTenantsComplaints(complainId: string) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
@@ -191,8 +191,8 @@ export class AuthenticationService {
       });
 
       return this.http.post<any>(
-        this.backendUrl + '/updateProperty',
-        data,
+        this.backendUrl + `/updateComplain?complainId=${complainId}`,
+
         { headers } // Pass the headers in the request options
       );
     } else {
@@ -201,7 +201,7 @@ export class AuthenticationService {
       return of(null); // You can return an observable with a null value
     }
   }
-  deleteTenantsComplaints(propertyId: string) {
+  deleteTenantsComplaints(complainId: string) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
@@ -213,7 +213,7 @@ export class AuthenticationService {
       });
 
       return this.http.get<any>(
-        this.backendUrl + `/deleteProperty?propertyId=${propertyId}`,
+        this.backendUrl + `/removeComplain?complainId=${complainId}`,
 
         { headers } // Pass the headers in the request options
       );
@@ -578,6 +578,76 @@ export class AuthenticationService {
 
       return this.http.get<any>(
         this.backendUrl + `/dropDownPropertyName`,
+
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
+  getMontlyFair(tenantId: string) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/getMonthlyFair?tenantId=${tenantId}`,
+
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
+  getPaymentHistory(tenantId: string, page: number, pageSize: number) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl +
+          `/paymentsHistory?tenantId=${tenantId}&page=${page}&pageSize=${pageSize}`,
+
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
+  getUsersComplaints(tenantId: string, page: number, pageSize: number) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/getComplaints?tenantId=${tenantId}`,
 
         { headers } // Pass the headers in the request options
       );
