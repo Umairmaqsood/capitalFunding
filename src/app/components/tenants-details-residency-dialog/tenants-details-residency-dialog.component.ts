@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MaterialModule } from '../../material/src/public-api';
 import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 
 @Component({
   selector: 'app-tenants-details-residency-dialog',
@@ -34,10 +36,10 @@ import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component'
         </ng-container>
 
         <form [formGroup]="tenantsDetailsForm">
-          <mat-form-field appearance="outline" class="full">
+          <!-- <mat-form-field appearance="outline" class="full">
             <mat-label>ID</mat-label>
             <input matInput formControlName="id" placeholder="ID" />
-          </mat-form-field>
+          </mat-form-field> -->
 
           <mat-form-field appearance="outline" class="full">
             <mat-label>User ID</mat-label>
@@ -124,7 +126,10 @@ export class TenantsDetailsResidencyDialogComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar,
+    private authService: AuthenticationService,
+    private dialogRef: MatDialogRef<TenantsDetailsResidencyDialogComponent>
   ) {}
 
   ngOnInit(): void {
@@ -164,21 +169,53 @@ export class TenantsDetailsResidencyDialogComponent {
     const createData = {
       id: this.id.value,
       userId: this.userId.value,
-      property: this.propertyId.value,
+      propertyId: this.propertyId.value,
       movedIn: this.movedIn.value,
       movedOut: this.movedOut.value,
     };
     console.log(createData, 'createData');
+    this.isAsyncCall = true;
+    this.authService.createTenantsResidency(createData).subscribe((result) => {
+      if (result) {
+        this.createSnackbar();
+        this.dialogRef.close(true);
+        this.isAsyncCall = false;
+      } else {
+        this.isAsyncCall = false;
+      }
+    });
   }
   updateTenatsDetailsResidency() {
     const updateData = {
       id: this.id.value,
       userId: this.userId.value,
-      property: this.propertyId.value,
+      propertyId: this.propertyId.value,
       movedIn: this.movedIn.value,
       movedOut: this.movedOut.value,
     };
     console.log(updateData, 'updateData');
+    this.isAsyncCall = true;
+    this.authService.updateTenantsResidency(updateData).subscribe((result) => {
+      if (result) {
+        this.updateSnackbar();
+        this.dialogRef.close(true);
+        this.isAsyncCall = false;
+      } else {
+        this.isAsyncCall = false;
+      }
+    });
+  }
+
+  updateSnackbar(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackBar.open(`DATA UPDATED SUCCESSFULLY`, 'X', config);
+  }
+
+  createSnackbar(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackBar.open(`DATA CREATED SUCCESSFULLY`, 'X', config);
   }
 }
 

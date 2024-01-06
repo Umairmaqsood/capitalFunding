@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MaterialModule } from '../../material/src/public-api';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 
 @Component({
   selector: 'app-tenants-complaints-dialog',
@@ -10,6 +12,7 @@ import { MaterialModule } from '../../material/src/public-api';
   imports: [CommonModule, MaterialModule, ReactiveFormsModule],
   template: `
     <mat-card>
+      <!-- <ng-container *ngIf="!isAsyncCall"></ng-container> -->
       <div style="padding: 30px;">
         <div style="display: flex; justify-content: flex-end;">
           <button mat-icon-button aria-label="close dialog" mat-dialog-close>
@@ -28,10 +31,10 @@ import { MaterialModule } from '../../material/src/public-api';
         </ng-container>
 
         <form [formGroup]="tenantsComplaintsForm">
-          <mat-form-field appearance="outline" class="full">
+          <!-- <mat-form-field appearance="outline" class="full">
             <mat-label>ID</mat-label>
             <input matInput formControlName="id" placeholder="ID" />
-          </mat-form-field>
+          </mat-form-field> -->
 
           <mat-form-field appearance="outline" class="full">
             <mat-label>Tenant ID</mat-label>
@@ -76,6 +79,7 @@ import { MaterialModule } from '../../material/src/public-api';
   styles: ['.full{width:100%}'],
 })
 export class TenantsComplaintsDialogComponent {
+  isAsyncCall = false;
   selectedRequestType!: requestType;
   tenantsComplaintsForm = this.formBuilder.group({
     id: ['', Validators.required],
@@ -103,7 +107,10 @@ export class TenantsComplaintsDialogComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar,
+    private authService: AuthenticationService,
+    private dialogRef: MatDialogRef<TenantsComplaintsDialogComponent>
   ) {}
 
   ngOnInit(): void {
@@ -157,7 +164,29 @@ export class TenantsComplaintsDialogComponent {
       details: this.details.value,
       isFixed: this.isFixed.value,
     };
-    console.log('creteData', createdData);
+    this.isAsyncCall = true;
+    this.authService
+      .createTenantsComplaints(createdData)
+      .subscribe((result) => {
+        if (result) {
+          this.createSnackabr();
+          this.dialogRef.close(true);
+          this.isAsyncCall = false;
+        } else {
+          this.isAsyncCall = false;
+        }
+      });
+  }
+  updateSnackabr(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackBar.open(`DATA UPDATED SUCCESSFULLY`, 'X', config);
+  }
+
+  createSnackabr(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackBar.open(`DATA CREATED SUCCESSFULLY`, 'X', config);
   }
 }
 

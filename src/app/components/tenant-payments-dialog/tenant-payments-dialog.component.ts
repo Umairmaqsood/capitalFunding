@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { MaterialModule } from '../../material/src/public-api';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 
 @Component({
   selector: 'app-tenant-payments-dialog',
@@ -16,99 +18,102 @@ import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component'
   ],
   template: `
     <mat-card>
-      <div style="padding: 30px;">
-        <div style="display: flex; justify-content: flex-end;">
-          <button mat-icon-button aria-label="close dialog" mat-dialog-close>
-            <mat-icon>close</mat-icon>
-          </button>
-        </div>
-
-        <ng-container *ngIf="selectedRequestType === 'create'">
-          <h2>Create Tenant Payment</h2>
-        </ng-container>
-        <ng-container *ngIf="selectedRequestType === 'update'">
-          <h2>Update Tenant Payment</h2>
-        </ng-container>
-
-        <ng-container *ngIf="selectedRequestType === 'view'">
-          <h2>View Tenant Payment</h2>
-        </ng-container>
-
-        <form [formGroup]="tenantPaymentsForm">
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Tenant ID</mat-label>
-            <input
-              matInput
-              formControlName="tenantId"
-              placeholder="Tenant ID"
-            />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Rent</mat-label>
-            <input
-              matInput
-              type="number"
-              formControlName="rent"
-              placeholder="Rent"
-            />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Area Maintenance Fee</mat-label>
-            <input
-              matInput
-              type="number"
-              formControlName="areaMaintainienceFee"
-              placeholder="Area Maintenance Fee"
-            />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Is Late</mat-label>
-            <mat-select formControlName="isLate">
-              <mat-option [value]="true">Yes</mat-option>
-              <mat-option [value]="false">No</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Late Fee</mat-label>
-            <input
-              matInput
-              type="number"
-              formControlName="lateFee"
-              placeholder="Late Fee"
-            />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Rent Payed At</mat-label>
-            <input
-              matInput
-              [matDatepicker]="picker"
-              formControlName="rentPayedAt"
-              placeholder="Rent Payed At"
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="picker"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Month</mat-label>
-            <input matInput formControlName="month" placeholder="Month" />
-          </mat-form-field>
-
-          <div style="margin-top: 20px;">
-            <button mat-raised-button color="primary" (click)="saveData()">
-              Submit
+      <ng-container *ngIf="!isAsyncCall">
+        <div style="padding: 30px;">
+          <div style="display: flex; justify-content: flex-end;">
+            <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+              <mat-icon>close</mat-icon>
             </button>
           </div>
-        </form>
-      </div>
+
+          <ng-container *ngIf="selectedRequestType === 'create'">
+            <h2>Create Tenant Payment</h2>
+          </ng-container>
+          <ng-container *ngIf="selectedRequestType === 'update'">
+            <h2>Update Tenant Payment</h2>
+          </ng-container>
+
+          <ng-container *ngIf="selectedRequestType === 'view'">
+            <h2>View Tenant Payment</h2>
+          </ng-container>
+
+          <form [formGroup]="tenantPaymentsForm">
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Tenant ID</mat-label>
+              <input
+                matInput
+                formControlName="tenantId"
+                placeholder="Tenant ID"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Rent</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="rent"
+                placeholder="Rent"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Area Maintenance Fee</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="areaMaintainienceFee"
+                placeholder="Area Maintenance Fee"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Is Late</mat-label>
+              <mat-select formControlName="isLate">
+                <mat-option [value]="true">Yes</mat-option>
+                <mat-option [value]="false">No</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Late Fee</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="lateFee"
+                placeholder="Late Fee"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Rent Payed At</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="rentPayedAt"
+                placeholder="Rent Payed At"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Month</mat-label>
+              <input matInput formControlName="month" placeholder="Month" />
+            </mat-form-field>
+
+            <div style="margin-top: 20px;">
+              <button mat-raised-button color="primary" (click)="saveData()">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </ng-container>
+      <app-async-spinner *ngIf="isAsyncCall"></app-async-spinner>
     </mat-card>
   `,
   styles: ['.full { width: 100%; }'],
@@ -130,7 +135,10 @@ export class TenantPaymentsDialogComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private dialogRef: MatDialogRef<TenantPaymentsDialogComponent>,
+    private snackbar: MatSnackBar,
+    private authService: AuthenticationService
   ) {}
 
   get id() {
@@ -205,6 +213,18 @@ export class TenantPaymentsDialogComponent {
       month: this.month.value,
     };
     console.log(createData, 'createData');
+    this.isAsyncCall = true;
+    this.authService
+      .createTenantsPaymentsInfo(createData)
+      .subscribe((result) => {
+        if (result) {
+          this.createSnackbar();
+          this.dialogRef.close(true);
+          this.isAsyncCall = false;
+        } else {
+          this.isAsyncCall = false;
+        }
+      });
   }
   updateTenantsPayments() {
     const updateData = {
@@ -218,6 +238,30 @@ export class TenantPaymentsDialogComponent {
       month: this.month.value,
     };
     console.log(updateData, 'updateData');
+
+    this.isAsyncCall = true;
+    this.authService
+      .updateTenantsPaymentsInfo(updateData)
+      .subscribe((result) => {
+        if (result) {
+          this.updateSnackbar();
+          this.dialogRef.close(true);
+          this.isAsyncCall = false;
+        } else {
+          this.isAsyncCall = false;
+        }
+      });
+  }
+  updateSnackbar(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackbar.open(`DATA UPDATED SUCCESSFULLY`, 'X', config);
+  }
+
+  createSnackbar(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackbar.open(`DATA CREATED SUCCESSFULLY`, 'X', config);
   }
 }
 

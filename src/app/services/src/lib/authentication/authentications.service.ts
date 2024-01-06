@@ -156,6 +156,371 @@ export class AuthenticationService {
       return of(null); // You can return an observable with a null value
     }
   }
+
+  createTenantsComplaints(data: any) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.post<any>(
+        this.backendUrl + '/newComplaint',
+        data,
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+  updateTenantsComplaints(data: any) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.post<any>(
+        this.backendUrl + '/updateProperty',
+        data,
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+  deleteTenantsComplaints(propertyId: string) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/deleteProperty?propertyId=${propertyId}`,
+
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
+  getTenantsComplaints(page: number, pageSize: number) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/getAllProperties?page=${page}&pageSize=${pageSize}`,
+        {
+          headers,
+        }
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
+  createTenantsResidency(data: any) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.post<any>(
+        this.backendUrl + '/addNewContract',
+        data,
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+  updateTenantsResidency(data: any) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.post<any>(
+        this.backendUrl + '/updateContract',
+        data,
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+  deleteTenantsResidency(recordId: string) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/deleteContract?recordId=${recordId}`,
+
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
+  getTenantsResidency(page: number, pageSize: number) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/getAllContract?page=${page}&pageSize=${pageSize}`,
+        {
+          headers,
+        }
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
+  createTenantsPaymentsInfo(data: any) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.post<any>(
+        this.backendUrl + '/addNewPayment',
+        data,
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+  updateTenantsPaymentsInfo(data: any) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.post<any>(
+        this.backendUrl + '/updatePayments',
+        data,
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+  deleteTenantsPaymentsInfo(recordId: string) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/deletePayment?recordId=${recordId}`,
+
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
+  getTenantsPaymentsInfo(page: number, pageSize: number) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/getAllPayments?page=${page}&pageSize=${pageSize}`,
+        {
+          headers,
+        }
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
+  createUsersInfo(data: any) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.post<any>(
+        this.backendUrl + '/addNewTenant',
+        data,
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+  updateUsersInfo(data: any) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.post<any>(
+        this.backendUrl + '/updateTenantInfo',
+        data,
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+  deleteUsersInfo(recordId: string) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/deleteTenants?recordId=${recordId}`,
+
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
+  getUsersInfo(page: number, pageSize: number) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/getAllTenants?page=${page}&pageSize=${pageSize}`,
+        {
+          headers,
+        }
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);

@@ -210,7 +210,7 @@ export class TenantComplaintsComponent {
 
   constructor(private dialog: MatDialog) {}
 
-  dataSource = new MatTableDataSource(TENANT_COMPLAINTS_DATA);
+  dataSource = new MatTableDataSource([]);
 
   @ViewChild(MatPaginator, { static: false })
   set paginator(value: MatPaginator) {
