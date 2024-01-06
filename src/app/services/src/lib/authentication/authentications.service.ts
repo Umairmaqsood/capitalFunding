@@ -521,6 +521,73 @@ export class AuthenticationService {
     }
   }
 
+  getDropDownTenantName() {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/dropDownTenantName`,
+
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+  getDropDownUserName() {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/dropDownUserName`,
+
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+  getDropDownPropertyName() {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/dropDownPropertyName`,
+
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);

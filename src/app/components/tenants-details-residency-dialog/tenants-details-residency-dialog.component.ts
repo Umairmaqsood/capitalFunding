@@ -42,17 +42,24 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
           </mat-form-field> -->
 
           <mat-form-field appearance="outline" class="full">
-            <mat-label>User ID</mat-label>
-            <input matInput formControlName="userId" placeholder="User ID" />
+            <mat-label>User Name</mat-label>
+            <mat-select formControlName="userId" placeholder="User ID">
+              <mat-option *ngFor="let user of userIds" [value]="user.id">
+                {{ user.name }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full">
-            <mat-label>Property ID</mat-label>
-            <input
-              matInput
-              formControlName="propertyId"
-              placeholder="Property ID"
-            />
+            <mat-label>Property Name</mat-label>
+            <mat-select formControlName="propertyId" placeholder="Property ID">
+              <mat-option
+                *ngFor="let property of propertyIds"
+                [value]="property.id"
+              >
+                {{ property.name }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full">
@@ -98,6 +105,8 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
 })
 export class TenantsDetailsResidencyDialogComponent {
   isAsyncCall = false;
+  userIds: any[] = [];
+  propertyIds: any[] = [];
 
   selectedRequestType!: requestType;
   tenantsDetailsForm = this.formBuilder.group({
@@ -139,6 +148,27 @@ export class TenantsDetailsResidencyDialogComponent {
       this.tenantsDetailsForm.disable();
     }
     this.patchValue();
+    this.getUserDropDown();
+    this.getPropertyNameDropDown();
+  }
+
+  getUserDropDown() {
+    this.isAsyncCall = true;
+    this.authService.getDropDownUserName().subscribe((res) => {
+      if (res) {
+        console.log(res, 'respone ofuser dropdown');
+        this.isAsyncCall = false;
+      }
+    });
+  }
+  getPropertyNameDropDown() {
+    this.isAsyncCall = true;
+    this.authService.getDropDownPropertyName().subscribe((res) => {
+      if (res) {
+        console.log(res, 'respone of propertyName');
+        this.isAsyncCall = false;
+      }
+    });
   }
 
   patchValue() {
