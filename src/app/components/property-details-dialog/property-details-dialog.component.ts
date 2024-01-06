@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MaterialModule } from '../../material/src/public-api';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   FormBuilder,
   FormGroup,
@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
 import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-property-details-dialog',
@@ -21,96 +22,99 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
     AsyncSpinnerComponent,
   ],
   template: `
-    <mat-card>
-      <div style="padding: 30px;">
-        <div style="display: flex; justify-content: flex-end;">
-          <button mat-icon-button aria-label="close dialog" mat-dialog-close>
-            <mat-icon>close</mat-icon>
-          </button>
-        </div>
-
-        <ng-container *ngIf="selectedRequestType === 'create'">
-          <h2>Create Property Details</h2>
-        </ng-container>
-        <ng-container *ngIf="selectedRequestType === 'update'">
-          <h2>Update Property Details</h2>
-        </ng-container>
-
-        <ng-container *ngIf="selectedRequestType === 'view'">
-          <h2>View Property Details</h2>
-        </ng-container>
-
-        <form [formGroup]="propertyDetailsForm">
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Property Name</mat-label>
-            <input
-              matInput
-              formControlName="propertyName"
-              placeholder="Property Name"
-            />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Address</mat-label>
-            <input matInput formControlName="address" placeholder="Address" />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Type of Property</mat-label>
-            <input
-              matInput
-              formControlName="typeofProperty"
-              placeholder="Type of Property"
-            />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Number of Bedrooms</mat-label>
-            <input
-              matInput
-              type="number"
-              min="0"
-              formControlName="numberofBedrooms"
-              placeholder="Number of Bedrooms"
-            />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Number of Bathrooms</mat-label>
-            <input
-              matInput
-              type="number"
-              min="0"
-              formControlName="numberofBathrooms"
-              placeholder="Number of Bathrooms"
-            />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Is Available</mat-label>
-            <mat-select formControlName="isAvailable">
-              <mat-option [value]="true">true</mat-option>
-              <mat-option [value]="false">false</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Description</mat-label>
-            <textarea
-              matInput
-              formControlName="description"
-              placeholder="Description"
-            ></textarea>
-          </mat-form-field>
-
-          <div style="margin-top: 20px;">
-            <button mat-raised-button color="primary" (click)="saveData()">
-              Submit
+    <ng-container *ngIf="!isAsyncCall">
+      <mat-card>
+        <div style="padding: 30px;">
+          <div style="display: flex; justify-content: flex-end;">
+            <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+              <mat-icon>close</mat-icon>
             </button>
           </div>
-        </form>
-      </div>
-    </mat-card>
+
+          <ng-container *ngIf="selectedRequestType === 'create'">
+            <h2>Create Property Details</h2>
+          </ng-container>
+          <ng-container *ngIf="selectedRequestType === 'update'">
+            <h2>Update Property Details</h2>
+          </ng-container>
+
+          <ng-container *ngIf="selectedRequestType === 'view'">
+            <h2>View Property Details</h2>
+          </ng-container>
+
+          <form [formGroup]="propertyDetailsForm">
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Property Name</mat-label>
+              <input
+                matInput
+                formControlName="propertyName"
+                placeholder="Property Name"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Address</mat-label>
+              <input matInput formControlName="address" placeholder="Address" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Type of Property</mat-label>
+              <input
+                matInput
+                formControlName="typeofProperty"
+                placeholder="Type of Property"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Number of Bedrooms</mat-label>
+              <input
+                matInput
+                type="number"
+                min="0"
+                formControlName="numberofBedrooms"
+                placeholder="Number of Bedrooms"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Number of Bathrooms</mat-label>
+              <input
+                matInput
+                type="number"
+                min="0"
+                formControlName="numberofBathrooms"
+                placeholder="Number of Bathrooms"
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Is Available</mat-label>
+              <mat-select formControlName="isAvailable">
+                <mat-option [value]="true">true</mat-option>
+                <mat-option [value]="false">false</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Description</mat-label>
+              <textarea
+                matInput
+                formControlName="description"
+                placeholder="Description"
+              ></textarea>
+            </mat-form-field>
+
+            <div style="margin-top: 20px;">
+              <button mat-raised-button color="primary" (click)="saveData()">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </mat-card>
+    </ng-container>
+    <app-async-spinner *ngIf="isAsyncCall"></app-async-spinner>
   `,
   styles: ['.full{width:100%}'],
 })
@@ -132,10 +136,10 @@ export class PropertyDetailsDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
-    private authService: AuthenticationService
-  ) {
-    console.log(data, 'data');
-  }
+    private authService: AuthenticationService,
+    private dialogRef: MatDialogRef<PropertyDetailsDialogComponent>,
+    private snackBar: MatSnackBar
+  ) {}
   ngOnInit(): void {
     this.selectedRequestType = this.data.requestType;
     if (this.selectedRequestType === 'view') {
@@ -220,7 +224,16 @@ export class PropertyDetailsDialogComponent implements OnInit {
       isAvailable: this.isAvailable.value,
       description: this.description.value,
     };
-    console.log(updatedData, 'updateddata');
+    this.isAsyncCall = true;
+    this.authService.updatepropertyDetails(updatedData).subscribe((result) => {
+      if (result) {
+        this.updateSnackabr();
+        this.dialogRef.close(true);
+        this.isAsyncCall = false;
+      } else {
+        this.isAsyncCall = false;
+      }
+    });
   }
 
   createPropertyDetail() {
@@ -234,12 +247,28 @@ export class PropertyDetailsDialogComponent implements OnInit {
       isAvailable: this.isAvailable.value,
       description: this.description.value,
     };
-    console.log(createdData, 'createddata');
-    this.authService.createpropertyDetails(createdData).subscribe((res) => {
-      if (res) {
-        console.log(res, 'response of create');
+    this.isAsyncCall = true;
+    this.authService.createpropertyDetails(createdData).subscribe((result) => {
+      if (result) {
+        this.createSnackabr();
+        this.dialogRef.close(true);
+        this.isAsyncCall = false;
+      } else {
+        this.isAsyncCall = false;
       }
     });
+  }
+
+  updateSnackabr(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackBar.open(`DATA UPDATED SUCCESSFULLY`, 'X', config);
+  }
+
+  createSnackabr(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackBar.open(`DATA CREATED SUCCESSFULLY`, 'X', config);
   }
 }
 

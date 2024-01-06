@@ -84,10 +84,81 @@ export class AuthenticationService {
       );
     } else {
       console.error('Token not available');
-      // Handle the case when the token is not available
-      // You might want to handle this case or throw an error
-      // For now, returning null or an empty observable for demonstration
+
       return of(null); // You can return an observable with a null value
     }
+  }
+  updatepropertyDetails(data: any) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.post<any>(
+        this.backendUrl + '/updateProperty',
+        data,
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+  deletepropertyDetails(propertyId: string) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.post<any>(
+        this.backendUrl + `/deleteProperty?propertyId=${propertyId}`,
+
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
+  getPropertyDetails(page: number, pageSize: number) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/getAllProperties?page=${page}&pageSize=${pageSize}`,
+        {
+          headers,
+        }
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+  logout() {
+    localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null);
+    this.router.navigateByUrl('/auth');
   }
 }

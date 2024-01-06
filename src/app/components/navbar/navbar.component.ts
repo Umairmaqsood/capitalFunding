@@ -7,6 +7,9 @@ import { TenantPaymentsComponent } from '../tenant-payments/tenant-payments.comp
 import { UsersComponent } from '../users/users.component';
 import { TenantComplaintsComponent } from '../tenant-complaints/tenant-complaints.component';
 import { RouterModule } from '@angular/router';
+import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-navbar',
@@ -74,6 +77,13 @@ import { RouterModule } from '@angular/router';
               <div class="color">Tenants Details</div>
             </div>
           </a>
+
+          <!-- Logout Button -->
+          <div class="logout-button">
+            <button mat-raised-button color="warn" (click)="logout()">
+              <mat-icon style="color:white">logout</mat-icon>
+            </button>
+          </div>
           <!-- Add more navigation links as needed -->
         </mat-nav-list>
       </mat-drawer>
@@ -133,6 +143,12 @@ import { RouterModule } from '@angular/router';
       color:white;
       font-weight:400
     }
+    .logout-button {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      width: calc(100% - 40px); /* Adjust width as needed */
+    }
  
 ,`,
   ],
@@ -147,4 +163,18 @@ import { RouterModule } from '@angular/router';
     RouterModule,
   ],
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+  constructor(
+    // private authService: AuthenticationService,
+    private snackbar: MatSnackBar
+  ) {}
+  logout() {
+    // this.authService.logout();
+    this.logoutSnackbar();
+  }
+  logoutSnackbar(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackbar.open(`LOGGED OUT SUCCESSFULLY`, 'X', config);
+  }
+}
