@@ -288,7 +288,7 @@ export class TenantPaymentsComponent implements OnInit {
       .subscribe((res) => {
         if (res) {
           console.log(res, 'responseoftenantspayments');
-          const data = res.results.items;
+          const data = res?.results?.items;
           this.dataSource = new MatTableDataSource(data);
           this.isAsyncCall = false;
         }
