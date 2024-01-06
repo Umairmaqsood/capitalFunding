@@ -35,14 +35,18 @@ const usersData: UsersData[] = [
   imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
   template: ` <div style="padding: 30px">
     <div
-      style="width: 100%; border-radius:5px; border: 3px solid #212121; padding: 5px; margin-bottom:10px"
+      style="width: 100%; border-radius: 5px; padding: 5px; margin-bottom: 10px;
+  background: linear-gradient(to right, red, #a80056);
+"
     >
-      <h1 style="text-align: center; margin: 0; font-weight:bold">
+      <h1
+        style="text-align: center; margin: 0; font-weight: bold; color: white;"
+      >
         Tenants Details
       </h1>
     </div>
     <div class="flex" style="justify-content: space-between">
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Search</mat-label>
         <input
           matInput
@@ -52,7 +56,12 @@ const usersData: UsersData[] = [
         />
       </mat-form-field>
 
-      <button mat-raised-button (click)="createUsersDataDialog({})">
+      <button
+        mat-raised-button
+        (click)="createUsersDataDialog({})"
+        style="background: linear-gradient(to right, red, #a80056); color: white;
+        margin-top:10px; padding:20px;"
+      >
         Create
       </button>
     </div>
@@ -62,43 +71,85 @@ const usersData: UsersData[] = [
         <table mat-table [dataSource]="dataSource">
           <!-- ID Column -->
           <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              ID
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Name
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.name }}</td>
           </ng-container>
 
           <!-- Email Column -->
           <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Email
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.email }}</td>
           </ng-container>
 
           <!-- Gender Column -->
           <ng-container matColumnDef="gender">
-            <th mat-header-cell *matHeaderCellDef>Gender</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Gender
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.gender }}</td>
           </ng-container>
 
           <!-- Role Column -->
           <ng-container matColumnDef="role">
-            <th mat-header-cell *matHeaderCellDef>Role</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Role
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.role }}</td>
           </ng-container>
 
           <!-- Active Column -->
           <ng-container matColumnDef="isActive">
-            <th mat-header-cell *matHeaderCellDef>Active</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Active
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.isActive }}</td>
           </ng-container>
 
           <!-- Email Verified Column -->
           <ng-container matColumnDef="isEmailVerified">
-            <th mat-header-cell *matHeaderCellDef>Email Verified</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Email Verified
+            </th>
             <td mat-cell *matCellDef="let element">
               {{ element.isEmailVerified }}
             </td>
@@ -106,7 +157,13 @@ const usersData: UsersData[] = [
 
           <!-- Action Column -->
           <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Action
+            </th>
             <td
               mat-cell
               *matCellDef="let row"

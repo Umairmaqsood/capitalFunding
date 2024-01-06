@@ -38,8 +38,17 @@ const TENANT_COMPLAINTS_DATA: TenantComplaints[] = [
   imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
   template: `
     <div style="padding: 30px">
-      <p>tenant-complaints!</p>
-
+      <div
+        style="width: 100%; border-radius: 5px; padding: 5px; margin-bottom: 10px;
+  background: linear-gradient(to right, red, #a80056);
+"
+      >
+        <h1
+          style="text-align: center; margin: 0; font-weight: bold; color: white;"
+        >
+          Tenants Complaints
+        </h1>
+      </div>
       <div class="flex" style="justify-content: space-between">
         <mat-form-field appearance="outline">
           <mat-label>Search</mat-label>
@@ -51,7 +60,12 @@ const TENANT_COMPLAINTS_DATA: TenantComplaints[] = [
           />
         </mat-form-field>
 
-        <button mat-raised-button (click)="createTenantComplaintsDialog({})">
+        <button
+          mat-raised-button
+          (click)="createTenantComplaintsDialog({})"
+          style="background: linear-gradient(to right, red, #a80056); color: white;
+        margin-top:10px; padding:20px;"
+        >
           Create
         </button>
       </div>
@@ -61,37 +75,73 @@ const TENANT_COMPLAINTS_DATA: TenantComplaints[] = [
           <!-- Define columns based on the TenantComplaints interface -->
           <!-- ID Column -->
           <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              ID
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
           </ng-container>
 
           <!-- Tenant ID Column -->
           <ng-container matColumnDef="tenantId">
-            <th mat-header-cell *matHeaderCellDef>Tenant ID</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Tenant ID
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.tenantId }}</td>
           </ng-container>
 
           <!-- Title Column -->
           <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Title
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.title }}</td>
           </ng-container>
 
           <!-- Details Column -->
           <ng-container matColumnDef="details">
-            <th mat-header-cell *matHeaderCellDef>Details</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Details
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.details }}</td>
           </ng-container>
 
           <!-- Is Fixed Column -->
           <ng-container matColumnDef="isFixed">
-            <th mat-header-cell *matHeaderCellDef>Is Fixed</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Is Fixed
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.isFixed }}</td>
           </ng-container>
 
           <!-- Action Column -->
           <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Action
+            </th>
             <td
               mat-cell
               *matCellDef="let row"

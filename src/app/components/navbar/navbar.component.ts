@@ -28,40 +28,51 @@ import { RouterModule } from '@angular/router';
             routerLink="/property-details"
             routerLinkActive="active"
           >
-            <mat-icon>home</mat-icon>
-            Property Details
+            <div class="flex gap-10">
+              <mat-icon>home</mat-icon>
+
+              <div>Property Details</div>
+            </div>
           </a>
           <a
             mat-list-item
             routerLink="/tenant-complaints"
             routerLinkActive="active"
           >
-            <mat-icon>report</mat-icon>
-            Tenant Complaints
+            <div class="flex gap-10">
+              <mat-icon>report</mat-icon>
+              <div>Tenant Complaints</div>
+            </div>
           </a>
           <a
             mat-list-item
             routerLink="/tenant-residency-info"
             routerLinkActive="active"
           >
-            <mat-icon>person</mat-icon>
-            Tenant Residency Info
+            <div class="flex gap-10">
+              <mat-icon>person</mat-icon>
+              <div>Tenant Residency Info</div>
+            </div>
           </a>
           <a
             mat-list-item
             routerLink="/tenant-payment"
             routerLinkActive="active"
           >
-            <mat-icon>payment</mat-icon>
-            Tenant Payments
+            <div class="flex gap-10">
+              <mat-icon>payment</mat-icon>
+              <div>Tenant Payments</div>
+            </div>
           </a>
           <a
             mat-list-item
             routerLink="/tenants-details"
             routerLinkActive="active"
           >
-            <mat-icon>supervised_user_circle</mat-icon>
-            Tenants Details
+            <div class="flex gap-10">
+              <mat-icon>supervised_user_circle</mat-icon>
+              <div>Tenants Details</div>
+            </div>
           </a>
           <!-- Add more navigation links as needed -->
         </mat-nav-list>
@@ -93,7 +104,7 @@ import { RouterModule } from '@angular/router';
 
 .sidebar-list {
   // background-color: #1a1a1a;
-  padding: 16px; 
+  padding: 10px; 
 }
 
 /* Styling for the links inside the sidebar navigation list */
@@ -104,6 +115,16 @@ import { RouterModule } from '@angular/router';
 .mat-nav-list a:hover {
   background-color: darkgreen; /* Change background color on hover */
 }
+ /* Gradient for mat-toolbar */
+ mat-toolbar {
+  background: linear-gradient(
+          to right,
+          red,
+          blue
+        ); /* Apply a gradient with blue and red */
+        display: flex;
+       
+    }
 ,`,
   ],
   imports: [

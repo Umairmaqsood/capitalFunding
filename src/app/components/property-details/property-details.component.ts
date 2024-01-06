@@ -47,8 +47,17 @@ const PROPERTY_DATA: PropertyDetails[] = [
   imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
   template: `
     <div style="padding:30px">
-      <p>property-details works!</p>
-
+      <div
+        style="width: 100%; border-radius: 5px; padding: 5px; margin-bottom: 10px;
+  background: linear-gradient(to right, red, #a80056);
+"
+      >
+        <h1
+          style="text-align: center; margin: 0; font-weight: bold; color: white;"
+        >
+          Tenant Property Details
+        </h1>
+      </div>
       <div class="flex" style="justify-content:space-between">
         <mat-form-field appearance="outline">
           <mat-label>Search</mat-label>
@@ -60,7 +69,12 @@ const PROPERTY_DATA: PropertyDetails[] = [
           />
         </mat-form-field>
 
-        <button mat-raised-button (click)="createPropertyDetailsDialog({})">
+        <button
+          mat-raised-button
+          (click)="createPropertyDetailsDialog({})"
+          style="background: linear-gradient(to right, red, #a80056); color: white;
+        margin-top:10px; padding:20px;"
+        >
           Create
         </button>
       </div>
@@ -69,13 +83,25 @@ const PROPERTY_DATA: PropertyDetails[] = [
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
           <!-- ID Column -->
           <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              ID
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
           </ng-container>
 
           <!-- Property Name Column -->
           <ng-container matColumnDef="propertyName">
-            <th mat-header-cell *matHeaderCellDef>Property Name</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Property Name
+            </th>
             <td mat-cell *matCellDef="let element">
               {{ element.propertyName }}
             </td>
@@ -83,13 +109,25 @@ const PROPERTY_DATA: PropertyDetails[] = [
 
           <!-- Address Column -->
           <ng-container matColumnDef="address">
-            <th mat-header-cell *matHeaderCellDef>Address</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Address
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.address }}</td>
           </ng-container>
 
           <!-- Type of Property Column -->
           <ng-container matColumnDef="typeofProperty">
-            <th mat-header-cell *matHeaderCellDef>Type of Property</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Type of Property
+            </th>
             <td mat-cell *matCellDef="let element">
               {{ element.typeofProperty }}
             </td>
@@ -97,7 +135,13 @@ const PROPERTY_DATA: PropertyDetails[] = [
 
           <!-- Number of Bedrooms Column -->
           <ng-container matColumnDef="numberofBedrooms">
-            <th mat-header-cell *matHeaderCellDef>Number of Bedrooms</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Number of Bedrooms
+            </th>
             <td mat-cell *matCellDef="let element">
               {{ element.numberofBedrooms }}
             </td>
@@ -105,7 +149,13 @@ const PROPERTY_DATA: PropertyDetails[] = [
 
           <!-- Number of Bathrooms Column -->
           <ng-container matColumnDef="numberofBathrooms">
-            <th mat-header-cell *matHeaderCellDef>Number of Bathrooms</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Number of Bathrooms
+            </th>
             <td mat-cell *matCellDef="let element">
               {{ element.numberofBathrooms }}
             </td>
@@ -113,7 +163,13 @@ const PROPERTY_DATA: PropertyDetails[] = [
 
           <!-- Is Available Column -->
           <ng-container matColumnDef="isAvailable">
-            <th mat-header-cell *matHeaderCellDef>Is Available</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Is Available
+            </th>
             <td mat-cell *matCellDef="let element">
               {{ element.isAvailable }}
             </td>
@@ -121,7 +177,13 @@ const PROPERTY_DATA: PropertyDetails[] = [
 
           <!-- Description Column -->
           <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Description
+            </th>
             <td mat-cell *matCellDef="let element">
               {{ element.description }}
             </td>
@@ -129,7 +191,13 @@ const PROPERTY_DATA: PropertyDetails[] = [
 
           <!-- Action Column -->
           <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Action
+            </th>
             <td
               mat-cell
               *matCellDef="let row"

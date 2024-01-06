@@ -48,8 +48,17 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
   imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
   template: `
     <div style="padding: 30px">
-      <p>tenant-payments works!</p>
-
+      <div
+        style="width: 100%; border-radius: 5px; padding: 5px; margin-bottom: 10px;
+  background: linear-gradient(to right, red, #a80056);
+"
+      >
+        <h1
+          style="text-align: center; margin: 0; font-weight: bold; color: white;"
+        >
+          Tenants Payment Info
+        </h1>
+      </div>
       <div class="flex" style="justify-content: space-between">
         <mat-form-field appearance="outline">
           <mat-label>Search</mat-label>
@@ -61,7 +70,12 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
           />
         </mat-form-field>
 
-        <button mat-raised-button (click)="createTenantPaymentDialog({})">
+        <button
+          mat-raised-button
+          (click)="createTenantPaymentDialog({})"
+          style="background: linear-gradient(to right, red, #a80056); color: white;
+        margin-top:10px; padding:20px;"
+        >
           Create
         </button>
       </div>
@@ -70,25 +84,49 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
           <!-- ID Column -->
           <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              ID
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
           </ng-container>
 
           <!-- Tenant ID Column -->
           <ng-container matColumnDef="tenantId">
-            <th mat-header-cell *matHeaderCellDef>Tenant ID</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Tenant ID
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.tenantId }}</td>
           </ng-container>
 
           <!-- Rent Column -->
           <ng-container matColumnDef="rent">
-            <th mat-header-cell *matHeaderCellDef>Rent</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Rent
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.rent }}</td>
           </ng-container>
 
           <!-- Area Maintenance Fee Column -->
           <ng-container matColumnDef="areaMaintainienceFee">
-            <th mat-header-cell *matHeaderCellDef>Area Maintenance Fee</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Area Maintenance Fee
+            </th>
             <td mat-cell *matCellDef="let element">
               {{ element.areaMaintainienceFee }}
             </td>
@@ -96,19 +134,37 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
 
           <!-- Is Late Column -->
           <ng-container matColumnDef="isLate">
-            <th mat-header-cell *matHeaderCellDef>Is Late</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Is Late
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.isLate }}</td>
           </ng-container>
 
           <!-- Late Fee Column -->
           <ng-container matColumnDef="lateFee">
-            <th mat-header-cell *matHeaderCellDef>Late Fee</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Late Fee
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.lateFee }}</td>
           </ng-container>
 
           <!-- Rent Payed At Column -->
           <ng-container matColumnDef="rentPayedAt">
-            <th mat-header-cell *matHeaderCellDef>Rent Payed At</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Rent Payed At
+            </th>
             <td mat-cell *matCellDef="let element">
               {{ element.rentPayedAt }}
             </td>
@@ -116,13 +172,25 @@ const TENANTS_PAYMENTS_DATA: TenantsPayment[] = [
 
           <!-- Month Column -->
           <ng-container matColumnDef="month">
-            <th mat-header-cell *matHeaderCellDef>Month</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Month
+            </th>
             <td mat-cell *matCellDef="let element">{{ element.month }}</td>
           </ng-container>
 
           <!-- Action Column -->
           <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="background-color:black; color:white"
+            >
+              Action
+            </th>
             <td
               mat-cell
               *matCellDef="let row"
