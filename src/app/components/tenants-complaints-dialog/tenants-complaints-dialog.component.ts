@@ -46,6 +46,18 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full">
+            <mat-label>Tenant Name</mat-label>
+            <mat-select formControlName="tenantId" placeholder="Tenant Name">
+              <mat-option
+                *ngFor="let tentName of tenantName"
+                [value]="tentName.id"
+              >
+                {{ tentName.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full">
             <mat-label>Title</mat-label>
             <input matInput formControlName="title" placeholder="Title" />
           </mat-form-field>
@@ -80,6 +92,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
 })
 export class TenantsComplaintsDialogComponent {
   isAsyncCall = false;
+  tenantName: any[] = [];
   selectedRequestType!: requestType;
   tenantsComplaintsForm = this.formBuilder.group({
     id: ['', Validators.required],
@@ -120,6 +133,18 @@ export class TenantsComplaintsDialogComponent {
       this.tenantsComplaintsForm.disable();
     }
     this.patchValue();
+    this.getTenantNameDropDown();
+  }
+
+  getTenantNameDropDown() {
+    this.isAsyncCall = true;
+    this.authService.getDropDownPropertyName().subscribe((res) => {
+      if (res) {
+        console.log(res, 'respone of tenantnamedropdown');
+        this.tenantName = res?.results;
+        this.isAsyncCall = false;
+      }
+    });
   }
 
   patchValue() {
@@ -155,6 +180,18 @@ export class TenantsComplaintsDialogComponent {
       isFixed: this.isFixed.value,
     };
     console.log('updatedData', updatedData);
+    this.isAsyncCall = true;
+    this.authService
+      .updateTenantsComplaints(updatedData)
+      .subscribe((result) => {
+        if (result) {
+          this.updateSnackabr();
+          this.dialogRef.close(true);
+          this.isAsyncCall = false;
+        } else {
+          this.isAsyncCall = false;
+        }
+      });
   }
   createTenantDetails() {
     const createdData = {

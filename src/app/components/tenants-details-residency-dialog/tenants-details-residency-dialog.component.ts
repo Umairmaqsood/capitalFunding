@@ -157,6 +157,7 @@ export class TenantsDetailsResidencyDialogComponent {
     this.authService.getDropDownUserName().subscribe((res) => {
       if (res) {
         console.log(res, 'respone ofuser dropdown');
+        this.userIds = res?.results;
         this.isAsyncCall = false;
       }
     });
@@ -166,6 +167,7 @@ export class TenantsDetailsResidencyDialogComponent {
     this.authService.getDropDownPropertyName().subscribe((res) => {
       if (res) {
         console.log(res, 'respone of propertyName');
+        this.propertyIds = res?.results;
         this.isAsyncCall = false;
       }
     });

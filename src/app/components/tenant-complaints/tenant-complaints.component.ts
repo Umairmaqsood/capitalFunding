@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MaterialModule } from '../../material/src/public-api';
 import { MatDialog } from '@angular/material/dialog';
 import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
 import { TenantsComplaintsDialogComponent } from '../tenants-complaints-dialog/tenants-complaints-dialog.component';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 
 export interface TenantComplaints {
   id: string;
@@ -196,7 +198,7 @@ const TENANT_COMPLAINTS_DATA: TenantComplaints[] = [
     `,
   ],
 })
-export class TenantComplaintsComponent {
+export class TenantComplaintsComponent implements OnInit {
   isAsyncCall = false;
 
   displayedColumns: string[] = [
@@ -208,7 +210,15 @@ export class TenantComplaintsComponent {
     'action',
   ];
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private authService: AuthenticationService,
+    private snackbar: MatSnackBar
+  ) {}
+
+  ngOnInit() {
+    this.getTenantsComplaints();
+  }
 
   dataSource = new MatTableDataSource([]);
 
@@ -236,7 +246,7 @@ export class TenantComplaintsComponent {
 
     dialog.afterClosed().subscribe((res) => {
       if (res) {
-        console.log(res, 'response');
+        this.getTenantsComplaints();
       }
     });
   }
@@ -252,7 +262,7 @@ export class TenantComplaintsComponent {
 
     dialog.afterClosed().subscribe((res) => {
       if (res) {
-        console.log(res, 'response');
+        this.getTenantsComplaints();
       }
     });
   }
@@ -271,5 +281,56 @@ export class TenantComplaintsComponent {
         console.log(res, 'response');
       }
     });
+  }
+
+  page = 1;
+  pageSize = 10;
+  getTenantsComplaints() {
+    this.isAsyncCall = true;
+    this.authService.getTenantsComplaints(this.page, this.pageSize).subscribe(
+      (res) => {
+        if (res) {
+          console.log(res, 'responseoftenantsresidency');
+          const data = res?.results?.items;
+          this.dataSource = new MatTableDataSource(data);
+          this.isAsyncCall = false;
+        }
+      },
+      (error: any) => {
+        console.error('Error Occurred:', error);
+        this.error();
+        this.isAsyncCall = false;
+      }
+    );
+  }
+
+  deleteTenantsComplaints(item: TenantComplaints) {
+    this.isAsyncCall = true;
+    this.authService.deleteTenantsResidency(item.id ?? '').subscribe(
+      (res) => {
+        if (res) {
+          this.deleteSnackBar();
+          this.getTenantsComplaints();
+        }
+        this.isAsyncCall = false;
+      },
+      (error: any) => {
+        console.error('Error occurred:', error);
+        this.error();
+        this.isAsyncCall = false;
+      }
+    );
+  }
+
+  deleteSnackBar(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackbar.open(`DATA DELETED SUCCESSFULLY`, 'X', config);
+  }
+
+  error(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackbar.open(`AN ERROR OCCURED!`, 'X', config);
   }
 }

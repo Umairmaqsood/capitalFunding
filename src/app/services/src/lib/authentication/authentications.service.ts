@@ -236,7 +236,7 @@ export class AuthenticationService {
       });
 
       return this.http.get<any>(
-        this.backendUrl + `/getAllProperties?page=${page}&pageSize=${pageSize}`,
+        this.backendUrl + `/getAllComplains?page=${page}&pageSize=${pageSize}`,
         {
           headers,
         }

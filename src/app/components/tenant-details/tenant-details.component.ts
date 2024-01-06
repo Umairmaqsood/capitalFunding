@@ -73,29 +73,28 @@ export interface TenantResidencyInfo {
               <td mat-cell *matCellDef="let element">{{ element.id }}</td>
             </ng-container>
 
-            <!-- Tenant ID Column -->
-            <ng-container matColumnDef="userId">
+            <ng-container matColumnDef="userName">
               <th
                 mat-header-cell
                 *matHeaderCellDef
                 style="background-color:#2c3e50; color:white"
               >
-                User ID
+                User Name
               </th>
-              <td mat-cell *matCellDef="let element">{{ element.userId }}</td>
+              <td mat-cell *matCellDef="let element">{{ element.userName }}</td>
             </ng-container>
 
             <!-- Property ID Column -->
-            <ng-container matColumnDef="propertyId">
+            <ng-container matColumnDef="propertyName">
               <th
                 mat-header-cell
                 *matHeaderCellDef
                 style="background-color:#2c3e50; color:white"
               >
-                Property ID
+                Property Name
               </th>
               <td mat-cell *matCellDef="let element">
-                {{ element.propertyId }}
+                {{ element.propertyName }}
               </td>
             </ng-container>
 
@@ -198,8 +197,8 @@ export class TenantDetailsComponent implements OnInit {
 
   displayedColumns: string[] = [
     'id',
-    'userId',
-    'propertyId',
+    'userName',
+    'propertyName',
     'movedIn',
     'movedOut',
     'action',
@@ -236,10 +235,10 @@ export class TenantDetailsComponent implements OnInit {
       (res) => {
         if (res) {
           console.log(res, 'responseoftenantsresidency');
-          const data = res.results.items;
+          const data = res?.results?.items;
           this.dataSource = new MatTableDataSource(data);
+          this.isAsyncCall = false;
         }
-        this.isAsyncCall = false;
       },
       (error: any) => {
         console.error('Error Occurred:', error);
