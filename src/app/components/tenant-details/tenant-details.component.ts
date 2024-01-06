@@ -232,21 +232,21 @@ export class TenantDetailsComponent implements OnInit {
   pageSize = 10;
   getTenantsDetailsResidency() {
     this.isAsyncCall = true;
-    this.authService
-      .getTenantsResidency(this.page, this.pageSize)
-      .subscribe((res) => {
+    this.authService.getTenantsResidency(this.page, this.pageSize).subscribe(
+      (res) => {
         if (res) {
           console.log(res, 'responseoftenantsresidency');
           const data = res.results.items;
           this.dataSource = new MatTableDataSource(data);
-          this.isAsyncCall = false;
         }
-        (error: any) => {
-          this.error();
-          this.isAsyncCall = false;
-          console.error('Error Occured:', error);
-        };
-      });
+        this.isAsyncCall = false;
+      },
+      (error: any) => {
+        console.error('Error Occurred:', error);
+        this.error();
+        this.isAsyncCall = false;
+      }
+    );
   }
 
   createTenantPaymentResidency(item: any) {
@@ -300,18 +300,20 @@ export class TenantDetailsComponent implements OnInit {
 
   deleteTenantsResidency(item: TenantResidencyInfo) {
     this.isAsyncCall = true;
-    this.authService.deleteTenantsResidency(item.id ?? '').subscribe((res) => {
-      if (res) {
-        this.deleteSnackBar();
-        this.getTenantsDetailsResidency();
+    this.authService.deleteTenantsResidency(item.id ?? '').subscribe(
+      (res) => {
+        if (res) {
+          this.deleteSnackBar();
+          this.getTenantsDetailsResidency();
+        }
         this.isAsyncCall = false;
-      }
+      },
       (error: any) => {
+        console.error('Error occurred:', error);
         this.error();
         this.isAsyncCall = false;
-        console.error('Error Occured:', error);
-      };
-    });
+      }
+    );
   }
 
   deleteSnackBar(): void {

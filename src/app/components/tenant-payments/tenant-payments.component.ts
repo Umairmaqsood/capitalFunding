@@ -283,21 +283,20 @@ export class TenantPaymentsComponent implements OnInit {
   pageSize = 10;
   getTenantsPaymentsInformations() {
     this.isAsyncCall = true;
-    this.authService
-      .getTenantsPaymentsInfo(this.page, this.pageSize)
-      .subscribe((res) => {
+    this.authService.getTenantsPaymentsInfo(this.page, this.pageSize).subscribe(
+      (res) => {
         if (res) {
           console.log(res, 'responseoftenantspayments');
           const data = res?.results?.items;
           this.dataSource = new MatTableDataSource(data);
-          this.isAsyncCall = false;
         }
-        (error: any) => {
-          this.error();
-          this.isAsyncCall = false;
-          console.error('Error Occured:', error);
-        };
-      });
+        this.isAsyncCall = false;
+      },
+      (error: any) => {
+        this.error(); // Handle the error as required
+        this.isAsyncCall = false;
+      }
+    );
   }
 
   createTenantPaymentDialog(item: any) {
@@ -352,20 +351,20 @@ export class TenantPaymentsComponent implements OnInit {
 
   deleteTenantPaymentDialog(item: TenantsPayment) {
     this.isAsyncCall = true;
-    this.authService
-      .deleteTenantsPaymentsInfo(item.id ?? '')
-      .subscribe((res) => {
+    this.authService.deleteTenantsPaymentsInfo(item.id ?? '').subscribe(
+      (res) => {
         if (res) {
           this.deleteSnackBar();
           this.getTenantsPaymentsInformations();
-          this.isAsyncCall = false;
         }
-        (error: any) => {
-          this.error();
-          this.isAsyncCall = false;
-          console.error('Error Occured:', error);
-        };
-      });
+        this.isAsyncCall = false;
+      },
+      (error: any) => {
+        console.error('Error occurred:', error);
+        this.error();
+        this.isAsyncCall = false;
+      }
+    );
   }
 
   deleteSnackBar(): void {

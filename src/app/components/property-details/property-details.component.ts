@@ -298,20 +298,20 @@ export class PropertyDetailsComponent implements OnInit {
   pageSize = 10;
   getPropertyDetails() {
     this.isAsyncCall = true;
-    this.authService
-      .getPropertyDetails(this.page, this.pageSize)
-      .subscribe((res) => {
+    this.authService.getPropertyDetails(this.page, this.pageSize).subscribe(
+      (res) => {
         if (res) {
           const data = res.results.items;
           this.dataSource = new MatTableDataSource(data);
-          this.isAsyncCall = false;
         }
-        (error: any) => {
-          this.error();
-          this.isAsyncCall = false;
-          console.error('Error Occured:', error);
-        };
-      });
+        this.isAsyncCall = false;
+      },
+      (error: any) => {
+        console.error('Error Occurred:', error);
+        this.error();
+        this.isAsyncCall = false;
+      }
+    );
   }
 
   createPropertyDetailsDialog(item: any) {
@@ -364,18 +364,20 @@ export class PropertyDetailsComponent implements OnInit {
   }
   deletePropertyDetails(item: PropertyDetails) {
     this.isAsyncCall = true;
-    this.authService.deletepropertyDetails(item.id ?? '').subscribe((res) => {
-      if (res) {
-        this.deleteSnackBar();
-        this.getPropertyDetails();
+    this.authService.deletepropertyDetails(item.id ?? '').subscribe(
+      (res) => {
+        if (res) {
+          this.deleteSnackBar();
+          this.getPropertyDetails();
+        }
         this.isAsyncCall = false;
-      }
+      },
       (error: any) => {
+        console.error('Error Occurred:', error);
         this.error();
         this.isAsyncCall = false;
-        console.error('Error Occured:', error);
-      };
-    });
+      }
+    );
   }
 
   deleteSnackBar(): void {
