@@ -212,18 +212,18 @@ export class LoginComponent implements OnInit {
         console.log(res, 'response');
         const decodedToken: any = jwtDecode(res.results);
         const userId = decodedToken.Id;
-        console.log(userId, 'userid');
-        if (res.status === 200) {
-          this.router.navigate(['']); // Navigating to the route with an empty path ('')
+        const role = decodedToken.Role;
+
+        if (res.status === 200 && role === 'admin') {
+          this.router.navigate(['/admin', userId]); // Navigating to the route with an empty path ('')
           this.showSnackbar();
           this.isAsyncCall = false;
         }
-
-        // else if (res.status === 200 && isContentCreator === 'false') {
-        //   this.router.navigate(['/news-feed', userId]); // Navigating with the user ID as a parameter
-        //   this.showSnackbar();
-        //   this.isAsyncCall = false;
-        // }
+        if (res.status === 200 && role === 'user') {
+          this.router.navigate(['/user', userId]); // Navigating with the user ID as a parameter
+          this.showSnackbar();
+          this.isAsyncCall = false;
+        }
       },
       (error) => {
         // Handle error scenarios if needed

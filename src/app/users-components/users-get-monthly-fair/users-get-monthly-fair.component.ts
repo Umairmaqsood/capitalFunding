@@ -28,8 +28,9 @@ export class UsersGetMonthlyFairComponent {
     private snackBar: MatSnackBar
   ) {}
 
-  ngOnInit() {
-    this.userId = localStorage.getItem('Id');
+  async ngOnInit() {
+    this.userId = await localStorage.getItem('Id');
+    console.log(this.userId, 'UserId');
     this.getMonthlyFair();
   }
 

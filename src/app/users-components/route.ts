@@ -15,15 +15,13 @@ export const USER_COMP: Route[] = [
     component: UsersGetMonthlyFairComponent,
   },
   {
-    path: 'create-complaint',
-    component: CreateUsersComplaintsComponent,
-  },
-
-  {
     path: 'get-payment-history',
     component: UsersGetPaymentHistoryComponent,
   },
-
+  {
+    path: 'create-complaint',
+    component: CreateUsersComplaintsComponent,
+  },
   {
     path: 'get-users-complaint',
     component: GetUsersComplaintsComponent,
