@@ -23,14 +23,12 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
 
     <div class="container">
       <div class="center">
-        <mat-card class="signup-card">
-          <!-- <mat-card-header> -->
+        <mat-card class="signup-card" *ngIf="resetPasswordStep === 1">
           <h1
             style="text-align: center !important; font-weight:bold; margin-top:10px"
           >
             Sign Up
           </h1>
-          <!-- </mat-card-header> -->
 
           <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
             <!-- Name -->
@@ -164,18 +162,6 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
             </mat-form-field>
 
             <mat-card-actions class="jc-center">
-              <!-- <button
-              type="submit"
-              style="width:50%;color:white;align:center;"
-              mat-button
-              [disabled]="signupForm.invalid"
-              [ngStyle]="{
-                'background-color': signupForm.invalid ? '#2aaa8a' : '#2aaa8a'
-              }"
-            >
-              Sign Up
-            </button> -->
-
               <app-async-spinner-button
                 style="width:50%;color:white;align:center;"
                 [isAsyncCall]="isAsyncCall"
@@ -197,6 +183,23 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
               </button>
             </h6>
           </div>
+        </mat-card>
+
+        <mat-card *ngIf="resetPasswordStep === 2">
+          <mat-card-header>
+            <mat-card-title>Enter OTP</mat-card-title>
+          </mat-card-header>
+          <form class="example-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Enter OTP</mat-label>
+              <input matInput type="text" formControlName="otp" required />
+            </mat-form-field>
+            <mat-card-actions>
+              <button type="submit" mat-raised-button class="mat-btn">
+                Verify OTP
+              </button>
+            </mat-card-actions>
+          </form>
         </mat-card>
       </div>
     </div>
@@ -259,6 +262,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
   ],
 })
 export class SignUpComponent {
+  resetPasswordStep = 1;
   hide1 = true;
   hide2 = true;
   hasSpecialCharacter = new RegExp(/[ [!@#$%^&*()_+-=[]{};':"|,.<>/);
@@ -330,26 +334,36 @@ export class SignUpComponent {
     this.isAsyncCall = true;
     this.authService.signup(userObj).subscribe(
       (res: any) => {
-        if (res.status === 200) {
-          this.router.navigateByUrl('');
+        if (res) {
           this.successSnackbarRegistered();
+          this.resetPasswordStep === 2;
+          this.isAsyncCall = false;
+        }
+      },
+      (error: any) => {
+        if (error.status === 409) {
+          this.errorSnackbarRegistered();
+          this.isAsyncCall = false;
+        } else if (error.status === 400) {
+          this.errorSnackbar();
+          this.isAsyncCall = false;
+        } else {
+          this.error();
           this.isAsyncCall = false;
         }
       }
-      //   (error: any) => {
-      //     if (error.status === 409) {
-      //       this.errorSnackbarRegistered();
-      //       this.isAsyncCall = false;
-      //     } else if (error.status === 400) {
-      //       this.errorSnackbar();
-      //       this.isAsyncCall = false;
-      //     } else {
-      //       this.error();
-      //       this.isAsyncCall = false;
-      //     }
-      //   }
     );
   }
+
+  getOtp() {
+    this.isAsyncCall = false;
+    this.authService.verifyEmail('').subscribe((res) => {
+      if (res) {
+        console.log('verify email', res);
+      }
+    });
+  }
+
   get form() {
     return this.signupForm.controls;
   }
@@ -371,7 +385,7 @@ export class SignUpComponent {
     const config = new MatSnackBarConfig();
     config.duration = 5000;
     this.snackbar.open(
-      `USER ACCOUNT CREATED SUCCESSFULLY. SUCCESS`,
+      `ACCOUNT CREATED SUCCESSFULLY. 6 DIGITS OTP HAS BEEN SEND TO YOUR EMAIL.`,
       'X',
       config
     );
