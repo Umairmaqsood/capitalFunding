@@ -116,8 +116,13 @@ export interface TenantComplaints {
               >
                 Details
               </th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.complaintDetails }}
+
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [matTooltip]="truncateText(element.complaintDetails, 100)"
+              >
+                {{ truncateText(element.complaintDetails, 8) }}
               </td>
             </ng-container>
 
@@ -130,7 +135,14 @@ export interface TenantComplaints {
               >
                 Status
               </th>
-              <td mat-cell *matCellDef="let element">{{ element.isFixed }}</td>
+              <td mat-cell *matCellDef="let element">
+                <span
+                  class="custom-badge"
+                  [ngClass]="input.value ? 'true' : 'false'"
+                >
+                  {{ input.value ? 'Fixed' : 'Pending' }}
+                </span>
+              </td>
             </ng-container>
 
             <ng-container matColumnDef="complainDate">
@@ -207,6 +219,36 @@ export interface TenantComplaints {
       .cellColor:hover {
         cursor: pointer;
         background-color: lightgreen !important;
+      }
+
+      .custom-badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        animation: blink 1.5s infinite;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .false {
+        background-color: red;
+        color: white;
+      }
+
+      .true {
+        background-color: green;
+        color: white;
       }
     `,
   ],
