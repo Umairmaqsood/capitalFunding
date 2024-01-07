@@ -39,12 +39,15 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
 
           <form [formGroup]="tenantPaymentsForm">
             <mat-form-field appearance="outline" class="full">
-              <mat-label>Tenant ID</mat-label>
-              <input
-                matInput
-                formControlName="tenantId"
-                placeholder="Tenant ID"
-              />
+              <mat-label>Tenant Name</mat-label>
+              <mat-select formControlName="tenantId" placeholder="Tenant Name">
+                <mat-option
+                  *ngFor="let tentName of tenantName"
+                  [value]="tentName.id"
+                >
+                  {{ tentName.name }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full">
@@ -120,6 +123,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
 })
 export class TenantPaymentsDialogComponent {
   isAsyncCall = false;
+  tenantName: any[] = [];
 
   selectedRequestType!: requestType;
   tenantPaymentsForm = this.formBuilder.group({
@@ -173,6 +177,18 @@ export class TenantPaymentsDialogComponent {
       this.tenantPaymentsForm.disable();
     }
     this.patchValue();
+    this.getTenantNameDropDown();
+  }
+
+  getTenantNameDropDown() {
+    this.isAsyncCall = true;
+    this.authService.getDropDownTenantName().subscribe((res) => {
+      if (res) {
+        console.log(res, 'respone of tenantnamedropdown');
+        this.tenantName = res?.results;
+        this.isAsyncCall = false;
+      }
+    });
   }
 
   patchValue() {

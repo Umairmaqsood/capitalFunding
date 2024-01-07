@@ -70,7 +70,13 @@ export interface TenantResidencyInfo {
               >
                 ID
               </th>
-              <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [matTooltip]="truncateText(element.id, 100)"
+              >
+                {{ truncateText(element.id, 8) }}
+              </td>
             </ng-container>
 
             <ng-container matColumnDef="userName">
@@ -220,6 +226,13 @@ export class TenantDetailsComponent implements OnInit {
   set paginator(value: MatPaginator) {
     if (this.dataSource) {
       this.dataSource.paginator = value;
+    }
+  }
+  truncateText(text: string, maxLength: number): string {
+    if (text?.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    } else {
+      return text;
     }
   }
 

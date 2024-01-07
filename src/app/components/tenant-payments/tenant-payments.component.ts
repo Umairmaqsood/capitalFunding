@@ -80,15 +80,17 @@ export interface TenantsPayment {
             </ng-container>
 
             <!-- Tenant ID Column -->
-            <ng-container matColumnDef="tenantId">
+            <ng-container matColumnDef="tenantName">
               <th
                 mat-header-cell
                 *matHeaderCellDef
                 style="background-color:#2c3e50; color:white"
               >
-                Tenant ID
+                Tenant Name
               </th>
-              <td mat-cell *matCellDef="let element">{{ element.tenantId }}</td>
+              <td mat-cell *matCellDef="let element">
+                {{ element.tenantName }}
+              </td>
             </ng-container>
 
             <!-- Rent Column -->
@@ -262,7 +264,7 @@ export class TenantPaymentsComponent implements OnInit {
 
   displayedColumns: string[] = [
     'id',
-    'tenantId',
+    'tenantName',
     'rent',
     'areaMaintainienceFee',
     'isLate',

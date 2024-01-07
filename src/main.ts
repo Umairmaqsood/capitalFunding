@@ -33,10 +33,10 @@ const routes: Routes = [
     path: '',
     children: COMP_ROUTE,
   },
-  // {
-  //   path: '',
-  //   children: USER_COMP,
-  // },
+  {
+    path: '',
+    children: USER_COMP,
+  },
 ];
 
 bootstrapApplication(AppComponent, {

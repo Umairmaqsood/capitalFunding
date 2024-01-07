@@ -588,7 +588,7 @@ export class AuthenticationService {
     }
   }
 
-  getMontlyFair(tenantId: string) {
+  getMontlyFair(userId: string) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
@@ -600,7 +600,7 @@ export class AuthenticationService {
       });
 
       return this.http.get<any>(
-        this.backendUrl + `/getMonthlyFair?tenantId=${tenantId}`,
+        this.backendUrl + `/getMonthlyFair?userId=${userId}`,
 
         { headers } // Pass the headers in the request options
       );
@@ -611,7 +611,7 @@ export class AuthenticationService {
     }
   }
 
-  getPaymentHistory(tenantId: string, page: number, pageSize: number) {
+  getPaymentHistory(userId: string, page: number, pageSize: number) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
@@ -624,7 +624,7 @@ export class AuthenticationService {
 
       return this.http.get<any>(
         this.backendUrl +
-          `/paymentsHistory?tenantId=${tenantId}&page=${page}&pageSize=${pageSize}`,
+          `/paymentsHistory?userId=${userId}&page=${page}&pageSize=${pageSize}`,
 
         { headers } // Pass the headers in the request options
       );
@@ -635,7 +635,7 @@ export class AuthenticationService {
     }
   }
 
-  getUsersComplaints(tenantId: string, page: number, pageSize: number) {
+  getUsersComplaints(userId: string) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
@@ -647,7 +647,30 @@ export class AuthenticationService {
       });
 
       return this.http.get<any>(
-        this.backendUrl + `/getComplaints?tenantId=${tenantId}`,
+        this.backendUrl + `/getComplaints?userId=${userId}`,
+
+        { headers }
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
+  getTenantId(userId: string) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    console.log(results, 'tokenresult');
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/getTenantId?userId=${userId}`,
 
         { headers } // Pass the headers in the request options
       );
