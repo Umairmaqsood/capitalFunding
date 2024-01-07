@@ -54,6 +54,7 @@ import { AsyncSpinnerComponent } from '../../components';
                 mat-raised-button
                 color="primary"
                 (click)="createTenantDetails()"
+                [disabled]="!tenantsComplaintsForm.valid"
               >
                 Submit
               </button>

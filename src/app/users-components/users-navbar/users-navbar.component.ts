@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { MaterialModule } from '../../material/src/public-api';
 import { RouterModule } from '@angular/router';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 
 @Component({
   selector: 'app-users-navbar',
@@ -137,10 +138,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
   imports: [CommonModule, MaterialModule, RouterModule],
 })
 export class UsersNavbarComponent {
-  constructor(
-    // private authService: AuthenticationService,
-    private snackbar: MatSnackBar
-  ) {}
+  constructor(private snackbar: MatSnackBar) {}
   logout() {
     // this.authService.logout();
     this.logoutSnackbar();

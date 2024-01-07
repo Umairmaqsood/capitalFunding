@@ -64,7 +64,11 @@ export class AuthenticationService {
   }
 
   signup(data: any) {
-    return this.http.post<any>(this.backendUrl + '/register', { data });
+    return this.http.post<any>(this.backendUrl + '/register', data);
+  }
+
+  verifyEmail(data: any) {
+    return this.http.post<any>(this.backendUrl + '/verifyEmail', data);
   }
 
   createpropertyDetails(data: any) {

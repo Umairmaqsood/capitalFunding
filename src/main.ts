@@ -26,7 +26,7 @@ import { USER_COMP } from './app/users-components';
 // }
 const routes: Routes = [
   {
-    path: 'auth',
+    path: '',
     children: AUTH_ROUTE,
   },
   {
