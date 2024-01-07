@@ -35,7 +35,7 @@ import { MatTableDataSource } from '@angular/material/table';
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="tenantId">
+            <!-- <ng-container matColumnDef="tenantId">
               <th
                 mat-header-cell
                 *matHeaderCellDef
@@ -50,7 +50,7 @@ import { MatTableDataSource } from '@angular/material/table';
               >
                 {{ truncateText(element.tenantId, 8) }}
               </td>
-            </ng-container>
+            </ng-container> -->
 
             <ng-container matColumnDef="rent">
               <th
@@ -76,7 +76,7 @@ import { MatTableDataSource } from '@angular/material/table';
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="isLate">
+            <!-- <ng-container matColumnDef="isLate">
               <th
                 mat-header-cell
                 *matHeaderCellDef
@@ -92,7 +92,7 @@ import { MatTableDataSource } from '@angular/material/table';
                   {{ element.isLate ? 'Late' : 'On Time' }}
                 </span>
               </td>
-            </ng-container>
+            </ng-container> -->
 
             <!-- Late Fee Column -->
             <ng-container matColumnDef="lateFee">
