@@ -72,6 +72,7 @@ export class AuthenticationService {
       email,
       otp,
     };
+    console.log('API CALLED');
     return this.http.post<any>(this.backendUrl + '/verifyEmail', data);
   }
 

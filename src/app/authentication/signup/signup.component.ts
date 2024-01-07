@@ -374,11 +374,8 @@ export class SignUpComponent {
   }
 
   onSubmitOtp(): void {
-    if (
-      this.otpFormGroup &&
-      this.otpFormGroup.get('email') &&
-      this.otpFormGroup.get('otp')
-    ) {
+    console.log(this.otpFormGroup.get('otp'));
+    if (this.otpFormGroup.get('otp')) {
       const emailControl = this.otpFormGroup.get('email');
       const otpControl = this.otpFormGroup.get('otp');
 
@@ -390,6 +387,8 @@ export class SignUpComponent {
       ) {
         const email: string = emailControl.value;
         const otp: string = otpControl.value;
+
+        console.log(email, otp);
 
         this.isAsyncCall = true;
         this.authService.verifyEmail(email, otp).subscribe(
