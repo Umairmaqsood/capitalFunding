@@ -26,7 +26,6 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
           >
             <div class="flex gap-10">
               <mat-icon class="color">home</mat-icon>
-
               <div class="color">Get Monthly Fair</div>
             </div>
           </a>
@@ -36,22 +35,20 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
             routerLinkActive="active"
           >
             <div class="flex gap-10">
-              <mat-icon class="color">report</mat-icon>
+              <mat-icon class="color">receipt</mat-icon>
               <div class="color">Get Payments History</div>
             </div>
           </a>
-
           <a
             mat-list-item
             routerLink="/create-complaint"
             routerLinkActive="active"
           >
             <div class="flex gap-10">
-              <mat-icon class="color">report</mat-icon>
+              <mat-icon class="color">create</mat-icon>
               <div class="color">Create Complaint</div>
             </div>
           </a>
-
           <a
             mat-list-item
             routerLink="/get-users-complaint"
@@ -62,37 +59,6 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
               <div class="color">Get Users Complaint</div>
             </div>
           </a>
-
-          <!-- <a
-            mat-list-item
-            routerLink="/tenant-residency-info"
-            routerLinkActive="active"
-          >
-            <div class="flex gap-10">
-              <mat-icon class="color">person</mat-icon>
-              <div class="color">Tenant Residency Info</div>
-            </div>
-          </a>
-          <a
-            mat-list-item
-            routerLink="/tenant-payment"
-            routerLinkActive="active"
-          >
-            <div class="flex gap-10">
-              <mat-icon class="color">payment</mat-icon>
-              <div class="color">Tenant Payments</div>
-            </div>
-          </a>
-          <a
-            mat-list-item
-            routerLink="/tenants-details"
-            routerLinkActive="active"
-          >
-            <div class="flex gap-10">
-              <mat-icon class="color">supervised_user_circle</mat-icon>
-              <div class="color">Tenants Details</div>
-            </div>
-          </a> -->
 
           <!-- Logout Button -->
           <div class="logout-button">

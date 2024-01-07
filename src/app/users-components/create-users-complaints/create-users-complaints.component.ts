@@ -21,67 +21,45 @@ import { AsyncSpinnerComponent } from '../../components';
         style=" padding: 20px 40px; 
          display:block; margin:20px auto;border-radius: 10px;width:600px"
       >
-        <h1 style="text-align:center; font-weight:bold">Create Complaint</h1>
+        <ng-container *ngIf="!isAsyncCall">
+          <h1 style="text-align:center; font-weight:bold">Create Complaint</h1>
 
-        <form [formGroup]="tenantsComplaintsForm">
-          <!-- <mat-form-field appearance="outline" class="full">
-      <mat-label>ID</mat-label>
-      <input matInput formControlName="id" placeholder="ID" />
-    </mat-form-field> -->
+          <form [formGroup]="tenantsComplaintsForm">
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Tenant ID</mat-label>
+              <input
+                matInput
+                formControlName="tenantId"
+                placeholder="Tenant ID"
+              />
+            </mat-form-field>
 
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Tenant ID</mat-label>
-            <input
-              matInput
-              formControlName="tenantId"
-              placeholder="Tenant ID"
-            />
-          </mat-form-field>
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Title</mat-label>
+              <input matInput formControlName="title" placeholder="Title" />
+            </mat-form-field>
 
-          <!-- <mat-form-field appearance="outline" class="full">
-            <mat-label>Tenant Name</mat-label>
-            <mat-select formControlName="tenantNames" placeholder="Tenant Name">
-              <mat-option
-                *ngFor="let tentName of tenantName"
-                [value]="tentName.id"
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Details</mat-label>
+              <textarea
+                matInput
+                formControlName="details"
+                placeholder="Details"
+              ></textarea>
+            </mat-form-field>
+
+            <div style="margin-top: 20px;">
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="createTenantDetails()"
               >
-                {{ tentName.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field> -->
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Title</mat-label>
-            <input matInput formControlName="title" placeholder="Title" />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Details</mat-label>
-            <textarea
-              matInput
-              formControlName="details"
-              placeholder="Details"
-            ></textarea>
-          </mat-form-field>
-
-          <!-- <mat-form-field appearance="outline" class="full">
-            <mat-label>Is Fixed</mat-label>
-            <mat-select formControlName="isFixed">
-              <mat-option [value]="true">true</mat-option>
-              <mat-option [value]="false">false</mat-option>
-            </mat-select>
-          </mat-form-field> -->
-
-          <div style="margin-top: 20px;">
-            <button
-              mat-raised-button
-              color="primary"
-              (click)="createTenantDetails()"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
+                Submit
+              </button>
+            </div>
+          </form>
+        </ng-container>
+        <app-async-spinner *ngIf="isAsyncCall"></app-async-spinner>
       </mat-card>
     </div>
   `,
@@ -95,10 +73,8 @@ export class CreateUsersComplaintsComponent {
 
   tenantsComplaintsForm = this.formBuilder.group({
     tenantId: ['', Validators.required],
-    // tenantNames: ['', Validators.required],
     title: ['', Validators.required],
     details: ['', Validators.required],
-    // isFixed: ['', Validators.required],
   });
   constructor(
     private formBuilder: FormBuilder,
@@ -109,8 +85,16 @@ export class CreateUsersComplaintsComponent {
   ngOnInit() {
     this.tenantsComplaintsForm.controls.tenantId.disable();
     this.userId = localStorage.getItem('Id');
-    // this.getTenantNameDropDown();
-    this.getTenantId();
+
+    if (this.userId) {
+      console.log(this.userId, 'getting UserId');
+      this.tenantsComplaintsForm.patchValue({
+        tenantId: this.userId,
+      });
+      this.getTenantId();
+    } else {
+      console.log('UserId is null or undefined.');
+    }
   }
 
   page = 1;
@@ -119,7 +103,6 @@ export class CreateUsersComplaintsComponent {
   get tenantId() {
     return this.tenantsComplaintsForm.controls.tenantId;
   }
-
   get title() {
     return this.tenantsComplaintsForm.controls.title;
   }
@@ -132,7 +115,7 @@ export class CreateUsersComplaintsComponent {
     this.authService.getTenantId(this.userId).subscribe((res) => {
       if (res) {
         console.log(res, 'respone of tenantid');
-        this.tenantIdData = res?.results;
+
         this.isAsyncCall = false;
       }
     });
@@ -144,14 +127,18 @@ export class CreateUsersComplaintsComponent {
       title: this.title.value,
       details: this.details.value,
     };
+
     this.isAsyncCall = true;
     this.authService
       .createTenantsComplaints(createdData)
       .subscribe((result) => {
         if (result) {
           this.createSnackabr();
-          // this.dialogRef.close(true);
           this.isAsyncCall = false;
+
+          this.tenantsComplaintsForm.reset({
+            tenantId: this.tenantId.value,
+          });
         } else {
           this.isAsyncCall = false;
         }
