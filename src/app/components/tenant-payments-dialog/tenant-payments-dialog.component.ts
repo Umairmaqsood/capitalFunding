@@ -88,6 +88,16 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
               />
             </mat-form-field>
 
+            <ng-container *ngIf="selectedRequestType === 'update'">
+              <mat-form-field appearance="outline" class="full">
+                <mat-label>Is Payable</mat-label>
+                <mat-select formControlName="isPayable">
+                  <mat-option [value]="true">Yes</mat-option>
+                  <mat-option [value]="false">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+
             <mat-form-field appearance="outline" class="full">
               <mat-label>Rent Payed At</mat-label>
               <input
@@ -133,6 +143,7 @@ export class TenantPaymentsDialogComponent {
     areaMaintainienceFee: ['', Validators.required],
     isLate: ['', Validators.required],
     lateFee: ['', Validators.required],
+    isPayable: ['', Validators.required],
     rentPayedAt: ['', Validators.required],
     month: ['', Validators.required],
   });
@@ -164,6 +175,9 @@ export class TenantPaymentsDialogComponent {
   }
   get lateFee() {
     return this.tenantPaymentsForm.controls.lateFee;
+  }
+  get isPayable() {
+    return this.tenantPaymentsForm.controls.isPayable;
   }
   get rentPayedAt() {
     return this.tenantPaymentsForm.controls.rentPayedAt;
@@ -206,6 +220,8 @@ export class TenantPaymentsDialogComponent {
         areaMaintainienceFee: data.item.areaMaintainienceFee,
         isLate: data.item.isLate,
         lateFee: data.item.lateFee,
+        isPayable: data.item.isPayable,
+
         rentPayedAt: data.item.rentPayedAt,
         month: data.item.month,
       });
@@ -252,6 +268,7 @@ export class TenantPaymentsDialogComponent {
       areaMaintainienceFee: this.areaMaintainienceFee.value,
       isLate: this.isLate.value,
       lateFee: this.lateFee.value,
+      isPayable: this.isPayable.value,
       rentPayedAt: this.rentPayedAt.value,
       month: this.month.value,
     };

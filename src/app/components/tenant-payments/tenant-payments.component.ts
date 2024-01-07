@@ -150,6 +150,19 @@ export interface TenantsPayment {
               <td mat-cell *matCellDef="let element">{{ element.lateFee }}</td>
             </ng-container>
 
+            <ng-container matColumnDef="isPayable">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="background-color:#2c3e50; color:white"
+              >
+                Is Payable
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.isPayable }}
+              </td>
+            </ng-container>
+
             <!-- Rent Payed At Column -->
             <ng-container matColumnDef="rentPayedAt">
               <th
@@ -282,6 +295,7 @@ export class TenantPaymentsComponent implements OnInit {
     'areaMaintainienceFee',
     'isLate',
     'lateFee',
+    'isPayable',
     'rentPayedAt',
     'month',
     'action',
