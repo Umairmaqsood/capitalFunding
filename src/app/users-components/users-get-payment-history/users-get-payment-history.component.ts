@@ -210,10 +210,10 @@ export class UsersGetPaymentHistoryComponent {
   userId: any;
   displayedColumns: string[] = [
     'id',
-    'tenantId',
+
     'rent',
     'areaMaintainienceFee',
-    'isLate',
+
     'lateFee',
     'isPayable',
     'rentPayedAt',
