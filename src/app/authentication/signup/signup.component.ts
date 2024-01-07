@@ -185,17 +185,25 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
           </div>
         </mat-card>
 
-        <mat-card *ngIf="resetPasswordStep === 2">
+        <mat-card class="reset" *ngIf="resetPasswordStep === 2">
           <mat-card-header>
             <mat-card-title>Enter OTP</mat-card-title>
           </mat-card-header>
-          <form class="example-container">
-            <mat-form-field appearance="outline">
+          <form
+            class="example-container"
+            [formGroup]="otpFormGroup"
+            (ngSubmit)="onSubmitOtp()"
+          >
+            <mat-form-field appearance="outline" class="full">
               <mat-label>Enter OTP</mat-label>
               <input matInput type="text" formControlName="otp" required />
             </mat-form-field>
             <mat-card-actions>
-              <button type="submit" mat-raised-button class="mat-btn">
+              <button
+                type="submit"
+                mat-raised-button
+                style="background-color:#2aaa8a"
+              >
                 Verify OTP
               </button>
             </mat-card-actions>
@@ -208,6 +216,15 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
     `
       .signup-card {
         padding: 5px 30px;
+        border-radius: 10px;
+        width: 100%;
+        max-width: 400px; /* Adjust as needed */
+        text-align: center;
+        margin: auto;
+      }
+
+      .reset {
+        padding: 30px 70px;
         border-radius: 10px;
         width: 100%;
         max-width: 400px; /* Adjust as needed */
@@ -300,7 +317,14 @@ export class SignUpComponent {
     );
   }
 
-  ngOnInit() {}
+  otpFormGroup!: FormGroup;
+
+  ngOnInit() {
+    this.otpFormGroup = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      otp: ['', Validators.required],
+    });
+  }
   patternValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       if (!control.value) {
@@ -336,7 +360,7 @@ export class SignUpComponent {
       (res: any) => {
         if (res) {
           this.successSnackbarRegistered();
-          this.resetPasswordStep === 2;
+          this.resetPasswordStep = 2;
           this.isAsyncCall = false;
         }
       },
@@ -355,13 +379,24 @@ export class SignUpComponent {
     );
   }
 
-  getOtp() {
-    this.isAsyncCall = false;
-    this.authService.verifyEmail('').subscribe((res) => {
-      if (res) {
-        console.log('verify email', res);
+  onSubmitOtp() {
+    if (this.otpFormGroup && this.otpFormGroup.get('otp')) {
+      // const emailControl = this.otpFormGroup.get('email');
+      const otpControl = this.otpFormGroup.get('otp');
+
+      if (otpControl && otpControl.valid) {
+        // const email: string = emailControl.value;
+        const otp: string = otpControl.value;
+        this.isAsyncCall = true;
+        this.isAsyncCall = false;
+
+        this.authService.verifyEmail(otp).subscribe((res) => {
+          if (res) {
+            console.log('verify email', res);
+          }
+        });
       }
-    });
+    }
   }
 
   get form() {
