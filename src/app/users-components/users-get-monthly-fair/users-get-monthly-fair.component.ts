@@ -16,18 +16,135 @@ import { MatPaginator } from '@angular/material/paginator';
         style=" padding: 20px 40px; 
          display:block; margin:20px auto;border-radius: 10px;width:600px"
       >
-        <h1 style="text-align:center; font-weight:bold">Get Monthly Fair</h1>
+        <div class="center-div">
+          <div class="card p-4 rounded">
+            <div style="display:flex; justify-content:space-between">
+              <span style="font-weight-bold">Your Current Balance</span>
+
+              <span
+                class="custom-badge"
+                [ngClass]="isLate ? 'late' : 'not-late'"
+              >
+                {{ isLate ? 'Late' : 'On Time' }}
+              </span>
+            </div>
+
+            <br />
+            <span style="color:blue; font-weight:bold; font-size:18px"
+              >$ {{ areaMaintainienceFee + lateFee + rent ?? 0 }}
+            </span>
+            <br />
+
+            <span class="font-italic">{{ getCurrentMonth() }}</span>
+
+            <table class="table table-bordered mt-4">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Description</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Rent</td>
+                  <td>$ {{ rent ?? 0 }}</td>
+                </tr>
+                <tr>
+                  <td>Common Area Maintenance</td>
+                  <td>$ {{ areaMaintainienceFee ?? 0 }}</td>
+                </tr>
+
+                <tr>
+                  <td>Late Fee</td>
+                  <td>$ {{ lateFee ?? 0 }}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>Total Balance</td>
+                  <td>$ {{ areaMaintainienceFee + lateFee + rent ?? 0 }}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
       </mat-card>
     </ng-container>
 
     <app-async-spinner *ngIf="isAsyncCall"></app-async-spinner>
   `,
-  styles: ``,
+  styles: [
+    `
+      .custom-badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+
+      .late {
+        background-color: red;
+        color: white;
+      }
+
+      .not-late {
+        background-color: green;
+        color: white;
+      }
+
+      .center-div {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 65%;
+        margin: 0 auto;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      .center-div .card {
+        background-color: transparent;
+        border: none;
+      }
+
+      .center-div .table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      .center-div .table th {
+        background-color: #007bff;
+        color: white;
+      }
+
+      .center-div .table th,
+      .center-div .table td {
+        border: none;
+      }
+
+      .center-div .table tbody tr {
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      @@media (max-width: 768px) {
+        .center-div {
+          max-width: 90%;
+        }
+      }
+    `,
+  ],
   imports: [CommonModule, MaterialModule, AsyncSpinnerComponent],
 })
 export class UsersGetMonthlyFairComponent {
   isAsyncCall = false;
   userId: any;
+  rent: any;
+  areaMaintainienceFee: any;
+  isLate: any;
+  lateFee: any;
+  sum: any;
 
   displayedColumns: string[] = [
     'id',
@@ -44,7 +161,9 @@ export class UsersGetMonthlyFairComponent {
   constructor(
     private authService: AuthenticationService,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+    this.sum = this.rent + this.areaMaintainienceFee + this.lateFee;
+  }
 
   ngOnInit() {
     this.userId = localStorage.getItem('Id');
@@ -53,6 +172,27 @@ export class UsersGetMonthlyFairComponent {
   }
   dataSource = new MatTableDataSource([]);
 
+  getCurrentMonth(): string {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+
+    return months[currentMonth];
+  }
   getMonthlyFair() {
     this.isAsyncCall = true;
     this.authService.getMontlyFair(this.userId).subscribe(
@@ -60,7 +200,12 @@ export class UsersGetMonthlyFairComponent {
         if (res) {
           console.log(res, 'monthlyfair');
           const data = res.results;
-          this.dataSource = new MatTableDataSource(data);
+          this.rent = res.results.rent;
+          this.areaMaintainienceFee = res.results.areaMaintainienceFee;
+          this.isLate = res.results.isLate;
+          this.lateFee = res.results.lateFee;
+
+          // this.dataSource = new MatTableDataSource(data);
           this.isAsyncCall = false;
         } else {
           this.error();
