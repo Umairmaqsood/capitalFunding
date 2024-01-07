@@ -122,11 +122,18 @@ export interface TenantsPayment {
               <th
                 mat-header-cell
                 *matHeaderCellDef
-                style="background-color:#2c3e50; color:white"
+                style="background-color: #2c3e50; color: white"
               >
                 Is Late
               </th>
-              <td mat-cell *matCellDef="let element">{{ element.isLate }}</td>
+              <td mat-cell *matCellDef="let element">
+                <span
+                  class="custom-badge"
+                  [ngClass]="element.isLate ? 'late' : 'not-late'"
+                >
+                  {{ element.isLate ? 'Late' : 'On Time' }}
+                </span>
+              </td>
             </ng-container>
 
             <!-- Late Fee Column -->
@@ -229,6 +236,23 @@ export interface TenantsPayment {
       .cellColor:hover {
         cursor: pointer;
         background-color: lightgreen !important;
+      }
+
+      .custom-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+
+      .late {
+        background-color: red;
+        color: white;
+      }
+
+      .not-late {
+        background-color: green;
+        color: white;
       }
     `,
   ],

@@ -96,14 +96,18 @@ import { HttpClient } from '@angular/common/http';
   `,
   styles: [
     `/* Adjusting drawer width for different screen sizes */
+    
 .mat-drawer {
   width: 250px;
-  background: linear-gradient(
-    to right,
-          #f44336,
-          #009688
-        ); /* Apply a gradient with blue and red */
-        display: flex;}
+  // background: linear-gradient(
+  //   to right,
+  //   #ff3f34,
+  //   #00d8d6
+  //       ); 
+  background: #3c40c6;
+        display: flex;
+      }    
+
 /* Media query for smaller screens */
 @media screen and (max-width: 768px) {
   .mat-drawer {
@@ -136,6 +140,7 @@ import { HttpClient } from '@angular/common/http';
           red,
           blue
         ); /* Apply a gradient with blue and red */
+        
         display: flex;
        
     }

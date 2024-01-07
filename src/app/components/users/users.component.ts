@@ -156,11 +156,18 @@ export interface UsersData {
               <th
                 mat-header-cell
                 *matHeaderCellDef
-                style="background-color:#2c3e50; color:white"
+                style="background-color: #2c3e50; color: white"
               >
                 Active
               </th>
-              <td mat-cell *matCellDef="let element">{{ element.isActive }}</td>
+              <td mat-cell *matCellDef="let element">
+                <span
+                  class="custom-badge"
+                  [ngClass]="element.isActive ? 'active' : 'inactive'"
+                >
+                  {{ element.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
             </ng-container>
 
             <!-- Email Verified Column -->
@@ -168,12 +175,17 @@ export interface UsersData {
               <th
                 mat-header-cell
                 *matHeaderCellDef
-                style="background-color:#2c3e50; color:white"
+                style="background-color: #2c3e50; color: white"
               >
                 Email Verified
               </th>
               <td mat-cell *matCellDef="let element">
-                {{ element.isEmailVerified }}
+                <span
+                  class="custom-badge"
+                  [ngClass]="element.isEmailVerified ? 'active' : 'inactive'"
+                >
+                  {{ element.isEmailVerified ? 'Verified' : 'Unverified' }}
+                </span>
               </td>
             </ng-container>
 
@@ -237,6 +249,23 @@ export interface UsersData {
       .cellColor:hover {
         cursor: pointer;
         background-color: lightgreen !important;
+      }
+
+      .custom-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+
+      .active {
+        background-color: green;
+        color: white;
+      }
+
+      .inactive {
+        background-color: red;
+        color: white;
       }
     `,
   ],
