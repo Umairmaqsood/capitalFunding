@@ -77,20 +77,22 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
             <mat-datepicker #movedInPicker></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Moved Out</mat-label>
-            <input
-              matInput
-              [matDatepicker]="movedOutPicker"
-              formControlName="movedOut"
-              placeholder="Moved Out"
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="movedOutPicker"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #movedOutPicker></mat-datepicker>
-          </mat-form-field>
+          <ng-container *ngIf="selectedRequestType === 'update'">
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Moved Out</mat-label>
+              <input
+                matInput
+                [matDatepicker]="movedOutPicker"
+                formControlName="movedOut"
+                placeholder="Moved Out"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="movedOutPicker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #movedOutPicker></mat-datepicker>
+            </mat-form-field>
+          </ng-container>
 
           <div style="margin-top: 20px;">
             <button mat-raised-button color="primary" (click)="saveData()">
