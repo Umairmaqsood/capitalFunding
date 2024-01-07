@@ -189,11 +189,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
           <mat-card-header>
             <mat-card-title>Enter OTP</mat-card-title>
           </mat-card-header>
-          <form
-            class="example-container"
-            [formGroup]="otpFormGroup"
-            (ngSubmit)="onSubmitOtp()"
-          >
+          <form class="example-container" [formGroup]="otpFormGroup">
             <mat-form-field appearance="outline" class="full">
               <mat-label>Enter OTP</mat-label>
               <input matInput type="text" formControlName="otp" required />
@@ -201,6 +197,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
             <mat-card-actions>
               <button
                 type="submit"
+                (click)="onSubmitOtp()"
                 mat-raised-button
                 style="background-color:#2aaa8a"
               >
@@ -365,10 +362,7 @@ export class SignUpComponent {
         }
       },
       (error: any) => {
-        if (error.status === 409) {
-          this.errorSnackbarRegistered();
-          this.isAsyncCall = false;
-        } else if (error.status === 400) {
+        if (error.status === 400) {
           this.errorSnackbar();
           this.isAsyncCall = false;
         } else {
@@ -379,26 +373,46 @@ export class SignUpComponent {
     );
   }
 
-  onSubmitOtp() {
-    if (this.otpFormGroup && this.otpFormGroup.get('otp')) {
-      // const emailControl = this.otpFormGroup.get('email');
+  onSubmitOtp(): void {
+    if (
+      this.otpFormGroup &&
+      this.otpFormGroup.get('email') &&
+      this.otpFormGroup.get('otp')
+    ) {
+      const emailControl = this.otpFormGroup.get('email');
       const otpControl = this.otpFormGroup.get('otp');
 
-      if (otpControl && otpControl.valid) {
-        // const email: string = emailControl.value;
+      if (
+        emailControl &&
+        otpControl &&
+        emailControl.valid &&
+        otpControl.valid
+      ) {
+        const email: string = emailControl.value;
         const otp: string = otpControl.value;
-        this.isAsyncCall = true;
-        this.isAsyncCall = false;
 
-        this.authService.verifyEmail(otp).subscribe((res) => {
-          if (res) {
-            console.log('verify email', res);
+        this.isAsyncCall = true;
+        this.authService.verifyEmail(email, otp).subscribe(
+          (res) => {
+            if (res) {
+              console.log('verify email', res);
+              this.isAsyncCall = false;
+              // Do something with the response if needed
+            }
+          },
+          (error) => {
+            console.error('Error while verifying OTP:', error);
+            this.isAsyncCall = false;
+            // Handle the error, show a message, etc.
           }
-        });
+        );
+      } else {
+        console.log('Invalid email or OTP'); // Log a message if email or OTP is invalid
       }
+    } else {
+      console.log('Form or form controls not properly defined'); // Log a message if form or controls are not properly defined
     }
   }
-
   get form() {
     return this.signupForm.controls;
   }
@@ -435,11 +449,7 @@ export class SignUpComponent {
   errorSnackbar(): void {
     const config = new MatSnackBarConfig();
     config.duration = 5000;
-    this.snackbar.open(
-      `PLEASE COMPLETE INFORMATION. FILL ALL THE FIELDS`,
-      'X',
-      config
-    );
+    this.snackbar.open(`USER IS ALREADY REGISTERED, ERROR`, 'X', config);
   }
   error(): void {
     const config = new MatSnackBarConfig();

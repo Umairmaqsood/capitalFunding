@@ -67,7 +67,11 @@ export class AuthenticationService {
     return this.http.post<any>(this.backendUrl + '/register', data);
   }
 
-  verifyEmail(data: any) {
+  verifyEmail(email: string, otp: string) {
+    const data = {
+      email,
+      otp,
+    };
     return this.http.post<any>(this.backendUrl + '/verifyEmail', data);
   }
 
