@@ -158,7 +158,12 @@ export interface PropertyDetails {
                 Is Available
               </th>
               <td mat-cell *matCellDef="let element">
-                {{ element.isAvailable }}
+                <span
+                  class="custom-badge"
+                  [ngClass]="element.isAvailable ? 'true' : 'false'"
+                >
+                  {{ element.isAvailable ? 'Availabale' : 'Unavailable' }}
+                </span>
               </td>
             </ng-container>
 
@@ -244,6 +249,36 @@ export interface PropertyDetails {
       .cellColor:hover {
         cursor: pointer;
         background-color: lightgreen !important;
+      }
+
+      .custom-badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        animation: blink 1.5s infinite;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .true {
+        background-color: green;
+        color: white;
+      }
+
+      .false {
+        background-color: red;
+        color: white;
       }
     `,
   ],

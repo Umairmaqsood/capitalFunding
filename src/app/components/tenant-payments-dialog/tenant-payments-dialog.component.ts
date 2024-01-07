@@ -42,7 +42,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
               <mat-label>Tenant Name</mat-label>
               <mat-select formControlName="tenantId" placeholder="Tenant Name">
                 <mat-option
-                  *ngFor="let tentName of tenantName"
+                  *ngFor="let tentName of tenantArrayData"
                   [value]="tentName.id"
                 >
                   {{ tentName.name }}
@@ -123,7 +123,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
 })
 export class TenantPaymentsDialogComponent {
   isAsyncCall = false;
-  tenantName: any[] = [];
+  tenantArrayData: any[] = [];
 
   selectedRequestType!: requestType;
   tenantPaymentsForm = this.formBuilder.group({
@@ -143,7 +143,9 @@ export class TenantPaymentsDialogComponent {
     private dialogRef: MatDialogRef<TenantPaymentsDialogComponent>,
     private snackbar: MatSnackBar,
     private authService: AuthenticationService
-  ) {}
+  ) {
+    console.log(data, 'dataaaaaaaa');
+  }
 
   get id() {
     return this.tenantPaymentsForm.controls.id;
@@ -185,7 +187,7 @@ export class TenantPaymentsDialogComponent {
     this.authService.getDropDownTenantName().subscribe((res) => {
       if (res) {
         console.log(res, 'respone of tenantnamedropdown');
-        this.tenantName = res?.results;
+        this.tenantArrayData = res?.results;
         this.isAsyncCall = false;
       }
     });
@@ -199,7 +201,7 @@ export class TenantPaymentsDialogComponent {
     ) {
       this.tenantPaymentsForm.patchValue({
         id: data.item.id,
-        tenantId: data.item.tenantId,
+        tenantId: data.item.tenantName,
         rent: data.item.rent,
         areaMaintainienceFee: data.item.areaMaintainienceFee,
         isLate: data.item.isLate,

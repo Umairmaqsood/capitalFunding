@@ -80,6 +80,19 @@ import { MatPaginator } from '@angular/material/paginator';
         padding: 2px 10px;
         border-radius: 5px;
         font-weight: bold;
+        animation: blink 1.5s infinite;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
       }
 
       .late {
