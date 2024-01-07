@@ -42,6 +42,7 @@ import { AsyncSpinnerComponent } from '../../components';
             <mat-form-field appearance="outline" class="full">
               <mat-label>Details</mat-label>
               <textarea
+                style="height: 100px;"
                 matInput
                 formControlName="details"
                 placeholder="Details"

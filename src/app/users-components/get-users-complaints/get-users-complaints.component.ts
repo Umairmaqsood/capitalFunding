@@ -68,7 +68,14 @@ import { MatPaginator } from '@angular/material/paginator';
               >
                 Status
               </th>
-              <td mat-cell *matCellDef="let element">{{ element.isFixed }}</td>
+              <td mat-cell *matCellDef="let element">
+                <span
+                  class="custom-badge"
+                  [ngClass]="element.isLate ? 'true' : 'false'"
+                >
+                  {{ element.isLate ? 'Fixed' : 'Pending' }}
+                </span>
+              </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -92,7 +99,43 @@ import { MatPaginator } from '@angular/material/paginator';
       <app-async-spinner *ngIf="isAsyncCall"></app-async-spinner>
     </div>
   `,
-  styles: ['.full{width:100%}'],
+  styles: [
+    `
+      .full {
+        width: 100%;
+      }
+
+      .custom-badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        animation: blink 1.5s infinite;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .false {
+        background-color: red;
+        color: white;
+      }
+
+      .true {
+        background-color: green;
+        color: white;
+      }
+    `,
+  ],
   imports: [
     AsyncSpinnerComponent,
     ReactiveFormsModule,
