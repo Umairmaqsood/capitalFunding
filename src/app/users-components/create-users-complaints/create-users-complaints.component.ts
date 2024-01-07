@@ -119,34 +119,19 @@ export class CreateUsersComplaintsComponent {
   get tenantId() {
     return this.tenantsComplaintsForm.controls.tenantId;
   }
-  // get tenantNames() {
-  //   return this.tenantsComplaintsForm.controls.tenantNames;
-  // }
+
   get title() {
     return this.tenantsComplaintsForm.controls.title;
   }
   get details() {
     return this.tenantsComplaintsForm.controls.details;
   }
-  // get isFixed() {
-  //   return this.tenantsComplaintsForm.controls.isFixed;
-  // }
 
-  // getTenantNameDropDown() {
-  //   this.isAsyncCall = true;
-  //   this.authService.getDropDownPropertyName().subscribe((res) => {
-  //     if (res) {
-  //       console.log(res, 'respone of tenantnamedropdown');
-  //       this.tenantName = res?.results;
-  //       this.isAsyncCall = false;
-  //     }
-  //   });
-  // }
   getTenantId() {
     this.isAsyncCall = true;
     this.authService.getTenantId(this.userId).subscribe((res) => {
       if (res) {
-        console.log(res, 'respone of tenantnamedropdown');
+        console.log(res, 'respone of tenantid');
         this.tenantIdData = res?.results;
         this.isAsyncCall = false;
       }
@@ -156,10 +141,8 @@ export class CreateUsersComplaintsComponent {
   createTenantDetails() {
     const createdData = {
       tenantId: this.tenantId.value,
-      // tenantNames: this.tenantNames.value,
       title: this.title.value,
       details: this.details.value,
-      // isFixed: this.isFixed.value,
     };
     this.isAsyncCall = true;
     this.authService
