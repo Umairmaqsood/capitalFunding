@@ -183,7 +183,6 @@ export class UsersGetMonthlyFairComponent {
     console.log(this.userId, 'UserId');
     this.getMonthlyFair();
   }
-  dataSource = new MatTableDataSource([]);
 
   getCurrentMonth(): string {
     const months = [
