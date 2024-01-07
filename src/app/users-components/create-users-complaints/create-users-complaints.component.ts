@@ -89,10 +89,6 @@ export class CreateUsersComplaintsComponent {
     this.userId = localStorage.getItem('Id');
 
     if (this.userId) {
-      console.log(this.userId, 'getting UserId');
-      this.tenantsComplaintsForm.patchValue({
-        tenantId: this.userId,
-      });
       this.getTenantId();
     } else {
       console.log('UserId is null or undefined.');
@@ -116,7 +112,10 @@ export class CreateUsersComplaintsComponent {
     this.isAsyncCall = true;
     this.authService.getTenantId(this.userId).subscribe((res) => {
       if (res) {
-        console.log(res, 'respone of tenantid');
+        const id = res.results;
+        this.tenantsComplaintsForm.patchValue({
+          tenantId: id,
+        });
 
         this.isAsyncCall = false;
       }
