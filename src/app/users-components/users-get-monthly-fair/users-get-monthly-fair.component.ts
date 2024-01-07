@@ -11,70 +11,83 @@ import { MatPaginator } from '@angular/material/paginator';
   selector: 'app-users-get-monthly-fair',
   standalone: true,
   template: `
-    <ng-container *ngIf="!isAsyncCall">
-      <mat-card
-        style=" padding: 20px 40px; 
-         display:block; margin:20px auto;border-radius: 10px;width:600px"
-      >
-        <div class="center-div">
-          <div class="card p-4 rounded">
-            <div style="display:flex; justify-content:space-between">
-              <span style="font-weight-bold">Your Current Balance</span>
+    <ng-container class="center-container" *ngIf="!isAsyncCall">
+      <div class="center-div custom-text">
+        <div class="card p-4 rounded">
+          <div style="display:flex; justify-content:space-between">
+            <span class="subheading">Your Current Balance</span>
 
-              <span
-                class="custom-badge"
-                [ngClass]="isLate ? 'late' : 'not-late'"
-              >
-                {{ isLate ? 'Late' : 'On Time' }}
-              </span>
-            </div>
-
-            <br />
-            <span style="color:blue; font-weight:bold; font-size:18px"
-              >$ {{ areaMaintainienceFee + lateFee + rent ?? 0 }}
+            <span class="custom-badge" [ngClass]="isLate ? 'late' : 'not-late'">
+              {{ isLate ? 'Late' : 'On Time' }}
             </span>
-            <br />
-
-            <span class="font-italic">{{ getCurrentMonth() }}</span>
-
-            <table class="table table-bordered mt-4">
-              <thead class="thead-dark">
-                <tr>
-                  <th>Description</th>
-                  <th>Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Rent</td>
-                  <td>$ {{ rent ?? 0 }}</td>
-                </tr>
-                <tr>
-                  <td>Common Area Maintenance</td>
-                  <td>$ {{ areaMaintainienceFee ?? 0 }}</td>
-                </tr>
-
-                <tr>
-                  <td>Late Fee</td>
-                  <td>$ {{ lateFee ?? 0 }}</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td>Total Balance</td>
-                  <td>$ {{ areaMaintainienceFee + lateFee + rent ?? 0 }}</td>
-                </tr>
-              </tfoot>
-            </table>
           </div>
+
+          <span style="color:blue; font-weight:bold; font-size:25px"
+            >$ {{ areaMaintainienceFee + lateFee + rent ?? 0 }}
+          </span>
+          <br />
+
+          <span class="font-italic" style="font-size:21px">{{
+            getCurrentMonth()
+          }}</span>
+          <br />
+          <table class="table table-bordered mt-4" style="margin-top: 10px;">
+            <thead class="thead-dark">
+              <tr>
+                <th>Description</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Rent</td>
+                <td>$ {{ rent ?? 0 }}</td>
+              </tr>
+              <tr>
+                <td>Common Area Maintenance</td>
+                <td>$ {{ areaMaintainienceFee ?? 0 }}</td>
+              </tr>
+
+              <tr>
+                <td>Late Fee</td>
+                <td>$ {{ lateFee ?? 0 }}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>Total Balance</td>
+                <td>$ {{ areaMaintainienceFee + lateFee + rent ?? 0 }}</td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
-      </mat-card>
+      </div>
     </ng-container>
 
     <app-async-spinner *ngIf="isAsyncCall"></app-async-spinner>
   `,
   styles: [
     `
+      .custom-text {
+        font-family: 'Roboto', sans-serif;
+        font-size: 21px;
+        color: #333;
+        font-weight: normal;
+        line-height: 1.5;
+      }
+
+      .subheading {
+        font-size: 25px;
+        font-weight: bold;
+        color: #2d3436;
+      }
+
+      #fixedButton {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+      }
       .custom-badge {
         display: inline-block;
         padding: 2px 10px;
@@ -130,6 +143,7 @@ import { MatPaginator } from '@angular/material/paginator';
       .center-div .table th {
         background-color: #007bff;
         color: white;
+        text-align: left;
       }
 
       .center-div .table th,

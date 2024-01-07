@@ -87,7 +87,7 @@ import { MatTableDataSource } from '@angular/material/table';
               <td mat-cell *matCellDef="let element">
                 <span
                   class="custom-badge"
-                  [ngClass]="element.isLate ? 'late' : 'not-late'"
+                  [ngClass]="element.isLate ? 'false' : 'true'"
                 >
                   {{ element.isLate ? 'Late' : 'On Time' }}
                 </span>
@@ -115,7 +115,12 @@ import { MatTableDataSource } from '@angular/material/table';
                 Status
               </th>
               <td mat-cell *matCellDef="let element">
-                {{ element.isPayable }}
+                <span
+                  class="custom-badge"
+                  [ngClass]="element.isPayable ? 'true' : 'false'"
+                >
+                  {{ element.isPayable ? 'Payed' : 'Unpayed' }}
+                </span>
               </td>
             </ng-container>
 
@@ -165,7 +170,39 @@ import { MatTableDataSource } from '@angular/material/table';
       </ng-container>
     </div>
   `,
-  styles: [``],
+  styles: [
+    `
+      .custom-badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        animation: blink 1.5s infinite;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .false {
+        background-color: red;
+        color: white;
+      }
+
+      .true {
+        background-color: green;
+        color: white;
+      }
+    `,
+  ],
   imports: [AsyncSpinnerComponent, CommonModule, MaterialModule],
 })
 export class UsersGetPaymentHistoryComponent {
