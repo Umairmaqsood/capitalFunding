@@ -215,14 +215,25 @@ export class LoginComponent implements OnInit {
         const role = decodedToken.Role;
 
         if (res && role === 'admin') {
-          this.router.navigate(['/admin', userId]); // Navigating to the route with an empty path ('')
+          this.router.navigate(['/admin', userId]);
           this.showSnackbar();
           this.isAsyncCall = false;
         }
-        if (res && role === 'user') {
-          this.router.navigate(['/user', userId]); // Navigating with the user ID as a parameter
-          this.showSnackbar();
-          this.isAsyncCall = false;
+
+        if (role === 'user') {
+          if (res && res.statusCode === 402) {
+            this.notVerifyEmail();
+            this.isAsyncCall = false;
+          }
+          if (res && res.statusCode === 401) {
+            this.notActive();
+            this.isAsyncCall = false;
+          }
+          if (res) {
+            this.router.navigate(['/user', userId]);
+            this.isAsyncCall = false;
+            this.showSnackbar();
+          }
         }
       },
       (error) => {
@@ -245,6 +256,20 @@ export class LoginComponent implements OnInit {
     const config = new MatSnackBarConfig();
     config.duration = 5000;
     this.snackbar.open(`LOGGED IN SUCCESSFULLY, SUCCESS!`, 'X', config);
+  }
+  notVerifyEmail(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackbar.open(`EMAIL NOT VERIFY, ACCOUNT IN ACTIVE`, 'X', config);
+  }
+  notActive(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackbar.open(
+      `YOUR ACCOUNT IS NOT ACTIVE, CONTACT ADMIN`,
+      'X',
+      config
+    );
   }
   errorSnackBar(): void {
     const config = new MatSnackBarConfig();
