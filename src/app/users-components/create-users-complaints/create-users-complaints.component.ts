@@ -87,7 +87,6 @@ export class CreateUsersComplaintsComponent {
   ngOnInit() {
     this.tenantsComplaintsForm.controls.tenantId.disable();
     this.userId = localStorage.getItem('Id');
-
     if (this.userId) {
       this.getTenantId();
     } else {
@@ -112,11 +111,11 @@ export class CreateUsersComplaintsComponent {
     this.isAsyncCall = true;
     this.authService.getTenantId(this.userId).subscribe((res) => {
       if (res) {
-        const id = res.results;
+        const id = res?.results;
+        console.log('patch', id);
         this.tenantsComplaintsForm.patchValue({
           tenantId: id,
         });
-
         this.isAsyncCall = false;
       }
     });
@@ -130,9 +129,8 @@ export class CreateUsersComplaintsComponent {
     };
 
     this.isAsyncCall = true;
-    this.authService
-      .createTenantsComplaints(createdData)
-      .subscribe((result) => {
+    this.authService.createTenantsComplaints(createdData).subscribe(
+      (result) => {
         if (result) {
           this.createSnackabr();
           this.isAsyncCall = false;
@@ -140,10 +138,12 @@ export class CreateUsersComplaintsComponent {
           this.tenantsComplaintsForm.reset({
             tenantId: this.tenantId.value,
           });
-        } else {
-          this.isAsyncCall = false;
         }
-      });
+      },
+      (error: any) => {
+        this.isAsyncCall = false;
+      }
+    );
   }
 
   createSnackabr(): void {

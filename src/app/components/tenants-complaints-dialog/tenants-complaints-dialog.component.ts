@@ -40,33 +40,34 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
             <mat-label>Tenant ID</mat-label>
             <input
               matInput
-              formControlName="tenantId"
+              formControlName="complaintId"
               placeholder="Tenant ID"
             />
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full">
             <mat-label>Tenant Name</mat-label>
-            <mat-select formControlName="tenantId" placeholder="Tenant Name">
-              <mat-option
-                *ngFor="let tentName of tenantName"
-                [value]="tentName.id"
-              >
-                {{ tentName.name }}
-              </mat-option>
-            </mat-select>
+            <input
+              matInput
+              formControlName="tenantName"
+              placeholder="Tenant Name"
+            />
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full">
             <mat-label>Title</mat-label>
-            <input matInput formControlName="title" placeholder="Title" />
+            <input
+              matInput
+              formControlName="complaintTitle"
+              placeholder="Title"
+            />
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full">
             <mat-label>Details</mat-label>
             <textarea
               matInput
-              formControlName="details"
+              formControlName="complaintDetails"
               placeholder="Details"
             ></textarea>
           </mat-form-field>
@@ -80,7 +81,12 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
           </mat-form-field>
 
           <div style="margin-top: 20px;">
-            <button mat-raised-button color="primary" (click)="saveData()">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="saveData()"
+              [disabled]="!tenantsComplaintsForm.valid"
+            >
               Submit
             </button>
           </div>
@@ -92,27 +98,27 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
 })
 export class TenantsComplaintsDialogComponent {
   isAsyncCall = false;
-  tenantName: any[] = [];
+
   selectedRequestType!: requestType;
   tenantsComplaintsForm = this.formBuilder.group({
-    id: ['', Validators.required],
-    tenantId: ['', Validators.required],
-    title: ['', Validators.required],
-    details: ['', Validators.required],
+    complaintId: ['', Validators.required],
+    tenantName: ['', Validators.required],
+    complaintTitle: ['', Validators.required],
+    complaintDetails: ['', Validators.required],
     isFixed: ['', Validators.required],
   });
 
-  get id() {
-    return this.tenantsComplaintsForm.controls.id;
+  get complaintId() {
+    return this.tenantsComplaintsForm.controls.complaintId;
   }
-  get tenantId() {
-    return this.tenantsComplaintsForm.controls.tenantId;
+  get tenantName() {
+    return this.tenantsComplaintsForm.controls.tenantName;
   }
-  get title() {
-    return this.tenantsComplaintsForm.controls.title;
+  get complaintTitle() {
+    return this.tenantsComplaintsForm.controls.complaintTitle;
   }
-  get details() {
-    return this.tenantsComplaintsForm.controls.details;
+  get complaintDetails() {
+    return this.tenantsComplaintsForm.controls.complaintDetails;
   }
   get isFixed() {
     return this.tenantsComplaintsForm.controls.isFixed;
@@ -128,23 +134,18 @@ export class TenantsComplaintsDialogComponent {
 
   ngOnInit(): void {
     this.selectedRequestType = this.data.requestType;
-    // Disable fields for viewing
+
     if (this.selectedRequestType === 'view') {
       this.tenantsComplaintsForm.disable();
     }
-    this.patchValue();
-    this.getTenantNameDropDown();
-  }
+    if (this.selectedRequestType === 'update') {
+      this.tenantsComplaintsForm.controls.complaintId.disable();
+      this.tenantsComplaintsForm.controls.tenantName.disable();
+      this.tenantsComplaintsForm.controls.complaintTitle.disable();
+      this.tenantsComplaintsForm.controls.complaintDetails.disable();
+    }
 
-  getTenantNameDropDown() {
-    this.isAsyncCall = true;
-    this.authService.getDropDownPropertyName().subscribe((res) => {
-      if (res) {
-        console.log(res, 'respone of tenantnamedropdown');
-        this.tenantName = res?.results;
-        this.isAsyncCall = false;
-      }
-    });
+    this.patchValue();
   }
 
   patchValue() {
@@ -154,59 +155,39 @@ export class TenantsComplaintsDialogComponent {
       this.selectedRequestType === 'view'
     ) {
       this.tenantsComplaintsForm.patchValue({
-        id: data.item.id,
-        tenantId: data.item.tenantId,
-        title: data.item.title,
-        details: data.item.details,
+        complaintId: data.item.complaintId,
+        tenantName: data.item.tenantName,
+        complaintTitle: data.item.complaintTitle,
+        complaintDetails: data.item.complaintDetails,
         isFixed: data.item.isFixed,
       });
     }
   }
 
   saveData() {
-    if (this.selectedRequestType === 'create') {
-      this.createTenantDetails();
-    } else if (this.selectedRequestType === 'update') {
+    if (this.selectedRequestType === 'update') {
       this.updateTenantDetails();
     }
   }
 
   updateTenantDetails() {
     const updatedData = {
-      id: this.id.value,
-      tenantId: this.tenantId.value,
-      title: this.title.value,
-      details: this.details.value,
+      complaintId: this.complaintId.value,
+      tenantName: this.tenantName.value,
+      complaintTitle: this.complaintTitle.value,
+      complaintDetails: this.complaintDetails.value,
       isFixed: this.isFixed.value,
     };
+
+    const actualComplaintId: string = this.complaintId.value || ''; // Use empty string as default value
+
     console.log('updatedData', updatedData);
-    // this.isAsyncCall = true;
-    // this.authService
-    //   .updateTenantsComplaints(updatedData)
-    //   .subscribe((result) => {
-    //     if (result) {
-    //       this.updateSnackabr();
-    //       this.dialogRef.close(true);
-    //       this.isAsyncCall = false;
-    //     } else {
-    //       this.isAsyncCall = false;
-    //     }
-    //   });
-  }
-  createTenantDetails() {
-    const createdData = {
-      id: this.id.value,
-      tenantId: this.tenantId.value,
-      title: this.title.value,
-      details: this.details.value,
-      isFixed: this.isFixed.value,
-    };
     this.isAsyncCall = true;
     this.authService
-      .createTenantsComplaints(createdData)
+      .updateTenantsComplaints(actualComplaintId)
       .subscribe((result) => {
         if (result) {
-          this.createSnackabr();
+          this.updateSnackabr();
           this.dialogRef.close(true);
           this.isAsyncCall = false;
         } else {
@@ -214,16 +195,11 @@ export class TenantsComplaintsDialogComponent {
         }
       });
   }
+
   updateSnackabr(): void {
     const config = new MatSnackBarConfig();
     config.duration = 5000;
     this.snackBar.open(`DATA UPDATED SUCCESSFULLY`, 'X', config);
-  }
-
-  createSnackabr(): void {
-    const config = new MatSnackBarConfig();
-    config.duration = 5000;
-    this.snackBar.open(`DATA CREATED SUCCESSFULLY`, 'X', config);
   }
 }
 
