@@ -189,11 +189,9 @@ export class AuthenticationService {
       return of(null); // You can return an observable with a null value
     }
   }
-  updateTenantsComplaints(complainId: string) {
+  updateTenantsComplaints(complainId: string, CompStatus: boolean) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
-
-    console.log(results, 'tokenresult');
 
     if (results && results.results) {
       const headers = new HttpHeaders({
@@ -201,9 +199,9 @@ export class AuthenticationService {
       });
 
       return this.http.post<any>(
-        this.backendUrl + `/updateComplain?complainId=${complainId}`,
-
-        { headers } // Pass the headers in the request options
+        this.backendUrl +
+          `/updateComplain?complainId=${complainId}&CompStatus=${CompStatus}`,
+        { headers }
       );
     } else {
       console.error('Token not available');

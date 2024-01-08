@@ -171,20 +171,12 @@ export class TenantsComplaintsDialogComponent {
   }
 
   updateTenantDetails() {
-    const updatedData = {
-      complaintId: this.complaintId.value,
-      tenantName: this.tenantName.value,
-      complaintTitle: this.complaintTitle.value,
-      complaintDetails: this.complaintDetails.value,
-      isFixed: this.isFixed.value,
-    };
+    const actualComplaintId: string = this.complaintId.value || '';
+    const actualisFixed: boolean = this.isFixed.value === 'true';
 
-    const actualComplaintId: string = this.complaintId.value || ''; // Use empty string as default value
-
-    console.log('updatedData', updatedData);
     this.isAsyncCall = true;
     this.authService
-      .updateTenantsComplaints(actualComplaintId)
+      .updateTenantsComplaints(actualComplaintId, actualisFixed)
       .subscribe((result) => {
         if (result) {
           this.updateSnackabr();
