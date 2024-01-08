@@ -266,6 +266,9 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
       .jc-center {
         justify-content: center;
       }
+      .full {
+        width: 100%;
+      }
     `,
   ],
   imports: [
