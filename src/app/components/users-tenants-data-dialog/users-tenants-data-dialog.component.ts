@@ -116,7 +116,7 @@ export class UsersTenantsDataDialogComponent {
 
   selectedRequestType!: requestType;
   usersDetailsForm = this.formBuilder.group({
-    id: ['', Validators.required],
+    id: [''],
     name: ['', Validators.required],
     email: ['', Validators.required],
     password: ['', Validators.required],
