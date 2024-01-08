@@ -158,12 +158,7 @@ export interface PropertyDetails {
                 Is Available
               </th>
               <td mat-cell *matCellDef="let element">
-                <span
-                  class="custom-badge"
-                  [ngClass]="element.isAvailable ? 'true' : 'false'"
-                >
-                  {{ element.isAvailable ? 'Availabale' : 'Unavailable' }}
-                </span>
+                {{ element.isAvailable }}
               </td>
             </ng-container>
 
@@ -250,36 +245,6 @@ export interface PropertyDetails {
         cursor: pointer;
         background-color: lightgreen !important;
       }
-
-      .custom-badge {
-        display: inline-block;
-        padding: 2px 10px;
-        border-radius: 5px;
-        font-weight: bold;
-        animation: blink 1.5s infinite;
-      }
-
-      @keyframes blink {
-        0% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0;
-        }
-        100% {
-          opacity: 1;
-        }
-      }
-
-      .true {
-        background-color: green;
-        color: white;
-      }
-
-      .false {
-        background-color: red;
-        color: white;
-      }
     `,
   ],
 })
@@ -330,7 +295,7 @@ export class PropertyDetailsComponent implements OnInit {
   }
 
   page = 1;
-  pageSize = 10;
+  pageSize = 100;
   getPropertyDetails() {
     this.isAsyncCall = true;
     this.authService.getPropertyDetails(this.page, this.pageSize).subscribe(

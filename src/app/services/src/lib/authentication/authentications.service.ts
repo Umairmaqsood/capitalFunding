@@ -72,7 +72,7 @@ export class AuthenticationService {
       email,
       otp,
     };
-    console.log('API CALLED');
+
     return this.http.post<any>(this.backendUrl + '/verifyEmail', data);
   }
 
@@ -694,6 +694,6 @@ export class AuthenticationService {
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
-    this.router.navigateByUrl('/auth');
+    this.router.navigateByUrl('');
   }
 }

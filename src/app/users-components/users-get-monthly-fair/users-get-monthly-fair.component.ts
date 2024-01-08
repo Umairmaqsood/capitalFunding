@@ -120,7 +120,6 @@ import { MatPaginator } from '@angular/material/paginator';
 
       .center-div {
         background-color: white;
-        padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         width: 100%;
@@ -128,6 +127,7 @@ import { MatPaginator } from '@angular/material/paginator';
         margin: 0 auto;
         padding: 20px;
         box-sizing: border-box;
+        margin-top: 5%;
       }
 
       .center-div .card {
@@ -225,16 +225,12 @@ export class UsersGetMonthlyFairComponent {
       (res) => {
         if (res) {
           console.log(res, 'monthlyfair');
-          const data = res.results;
-          this.rent = res.results.rent;
-          this.areaMaintainienceFee = res.results.areaMaintainienceFee;
-          this.isLate = res.results.isLate;
-          this.lateFee = res.results.lateFee;
+          this.rent = res?.results?.rent;
+          this.areaMaintainienceFee = res?.results?.areaMaintainienceFee;
+          this.isLate = res?.results?.isLate;
+          this.lateFee = res?.results?.lateFee;
 
           // this.dataSource = new MatTableDataSource(data);
-          this.isAsyncCall = false;
-        } else {
-          this.error();
           this.isAsyncCall = false;
         }
       },

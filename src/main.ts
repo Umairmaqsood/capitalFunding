@@ -30,11 +30,11 @@ const routes: Routes = [
     children: AUTH_ROUTE,
   },
   {
-    path: '',
+    path: 'admin/:userId',
     children: COMP_ROUTE,
   },
   {
-    path: '',
+    path: 'user/:userId',
     children: USER_COMP,
   },
 ];

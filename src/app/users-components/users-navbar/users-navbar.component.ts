@@ -22,7 +22,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
         <mat-nav-list class="sidebar-list">
           <a
             mat-list-item
-            routerLink="/get-monthly-fair"
+            [routerLink]="['/user', userId, 'get-monthly-fair']"
             routerLinkActive="active"
           >
             <div class="flex gap-10">
@@ -32,7 +32,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
           </a>
           <a
             mat-list-item
-            routerLink="/get-payment-history"
+            [routerLink]="['/user', userId, 'get-payment-history']"
             routerLinkActive="active"
           >
             <div class="flex gap-10">
@@ -42,7 +42,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
           </a>
           <a
             mat-list-item
-            routerLink="/create-complaint"
+            [routerLink]="['/user', userId, 'create-complaint']"
             routerLinkActive="active"
           >
             <div class="flex gap-10">
@@ -52,7 +52,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
           </a>
           <a
             mat-list-item
-            routerLink="/get-users-complaint"
+            [routerLink]="['/user', userId, 'get-users-complaint']"
             routerLinkActive="active"
           >
             <div class="flex gap-10">
@@ -81,12 +81,15 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
     `/* Adjusting drawer width for different screen sizes */
 .mat-drawer {
   width: 250px;
-  background: linear-gradient(
-    to right,
-          #f44336,
-          #009688
-        ); /* Apply a gradient with blue and red */
-        display: flex;}
+  // background: linear-gradient(
+  //   to right,
+  //         #f44336,
+  //         #009688
+  //       ); /* Apply a gradient with blue and red */
+      
+        background: blue;
+        display: flex;
+      }
 /* Media query for smaller screens */
 @media screen and (max-width: 768px) {
   .mat-drawer {
@@ -138,9 +141,17 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
   imports: [CommonModule, MaterialModule, RouterModule],
 })
 export class UsersNavbarComponent {
-  constructor(private snackbar: MatSnackBar) {}
+  userId: any;
+  constructor(
+    private authService: AuthenticationService,
+    private snackbar: MatSnackBar
+  ) {}
+
+  ngOnInit() {
+    this.userId = localStorage.getItem('Id');
+  }
   logout() {
-    // this.authService.logout();
+    this.authService.logout();
     this.logoutSnackbar();
   }
   logoutSnackbar(): void {

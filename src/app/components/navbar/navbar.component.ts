@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
+import { SidebarService } from '../../services/src/lib/authentication/sidebar.service';
 
 @Component({
   selector: 'app-navbar',
@@ -28,18 +29,17 @@ import { HttpClient } from '@angular/common/http';
         <mat-nav-list class="sidebar-list">
           <a
             mat-list-item
-            routerLink="/property-details"
-            routerLinkActive="active"
+            [routerLink]="['/admin', userId, 'property-details']"
+            (click)="toggleSidebar()"
           >
             <div class="flex gap-10">
               <mat-icon class="color">home</mat-icon>
-
               <div class="color">Property Details</div>
             </div>
           </a>
           <a
             mat-list-item
-            routerLink="/tenant-complaints"
+            [routerLink]="['/admin', userId, 'tenant-complaints']"
             routerLinkActive="active"
           >
             <div class="flex gap-10">
@@ -49,7 +49,7 @@ import { HttpClient } from '@angular/common/http';
           </a>
           <a
             mat-list-item
-            routerLink="/tenant-residency-info"
+            [routerLink]="['/admin', userId, 'tenant-residency-info']"
             routerLinkActive="active"
           >
             <div class="flex gap-10">
@@ -59,7 +59,7 @@ import { HttpClient } from '@angular/common/http';
           </a>
           <a
             mat-list-item
-            routerLink="/tenant-payment"
+            [routerLink]="['/admin', userId, 'tenant-payment']"
             routerLinkActive="active"
           >
             <div class="flex gap-10">
@@ -69,7 +69,7 @@ import { HttpClient } from '@angular/common/http';
           </a>
           <a
             mat-list-item
-            routerLink="/tenants-details"
+            [routerLink]="['/admin', userId, 'tenants-details']"
             routerLinkActive="active"
           >
             <div class="flex gap-10">
@@ -99,12 +99,12 @@ import { HttpClient } from '@angular/common/http';
     
 .mat-drawer {
   width: 250px;
-  // background: linear-gradient(
-  //   to right,
-  //   #ff3f34,
-  //   #00d8d6
-  //       ); 
-  background: #3c40c6;
+  background: linear-gradient(
+    // to right,
+    // #ff3f34,
+    // #00d8d6
+    //     ); 
+  background: blue;
         display: flex;
       }    
 
@@ -169,13 +169,22 @@ import { HttpClient } from '@angular/common/http';
   ],
 })
 export class NavbarComponent {
+  userId: any;
+
   constructor(
-    // private authService: AuthenticationService,
-    private snackbar: MatSnackBar
+    private authService: AuthenticationService,
+    private snackbar: MatSnackBar,
+    private sidebar: SidebarService
   ) {}
+  ngOnInit() {
+    this.userId = localStorage.getItem('Id');
+  }
   logout() {
-    // this.authService.logout();
+    this.authService.logout();
     this.logoutSnackbar();
+  }
+  toggleSidebar() {
+    this.sidebar.toggleSidebar(true); // Always open sidebar when a link is clicked
   }
   logoutSnackbar(): void {
     const config = new MatSnackBarConfig();

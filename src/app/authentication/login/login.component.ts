@@ -27,9 +27,9 @@ export interface LoginRequestData {
       <div class="content"></div>
     </div>
 
-    <div class="login" style="position: fixed;top:70px;width:100%;">
+    <div class="login" style="position: fixed;top:20%;width:100%;">
       <mat-card
-        style=" padding: 1px 30px;;
+        style=" padding: 20px 30px;;
         color: black !important; display:block; margin:0px auto;border-radius: 10px;width:380px"
       >
         <div style="justify-content: center;display:flex;">
@@ -214,12 +214,12 @@ export class LoginComponent implements OnInit {
         const userId = decodedToken.Id;
         const role = decodedToken.Role;
 
-        if (res.status === 200 && role === 'admin') {
+        if (res && role === 'admin') {
           this.router.navigate(['/admin', userId]); // Navigating to the route with an empty path ('')
           this.showSnackbar();
           this.isAsyncCall = false;
         }
-        if (res.status === 200 && role === 'user') {
+        if (res && role === 'user') {
           this.router.navigate(['/user', userId]); // Navigating with the user ID as a parameter
           this.showSnackbar();
           this.isAsyncCall = false;

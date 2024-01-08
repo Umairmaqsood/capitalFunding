@@ -285,6 +285,7 @@ export class SignUpComponent {
   userTypeId: any = '';
   signupForm!: FormGroup;
   isAsyncCall = false;
+  storedEmail: string = ''; // Store email value here
 
   constructor(
     private formBuilder: FormBuilder,
@@ -322,6 +323,14 @@ export class SignUpComponent {
       otp: ['', Validators.required],
     });
   }
+
+  get otp() {
+    return this.otpFormGroup.controls['otp'];
+  }
+  get email() {
+    return this.otpFormGroup.controls['email'];
+  }
+
   patternValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       if (!control.value) {
@@ -352,6 +361,8 @@ export class SignUpComponent {
 
     console.log(userObj, 'userobj');
 
+    this.storedEmail = this.signupForm.value.email;
+
     this.isAsyncCall = true;
     this.authService.signup(userObj).subscribe(
       (res: any) => {
@@ -374,44 +385,29 @@ export class SignUpComponent {
   }
 
   onSubmitOtp(): void {
-    console.log(this.otpFormGroup.get('otp'));
-    if (this.otpFormGroup.get('otp')) {
-      const emailControl = this.otpFormGroup.get('email');
-      const otpControl = this.otpFormGroup.get('otp');
+    const otp = this.otpFormGroup.get('otp')?.value;
 
-      if (
-        emailControl &&
-        otpControl &&
-        emailControl.valid &&
-        otpControl.valid
-      ) {
-        const email: string = emailControl.value;
-        const otp: string = otpControl.value;
-
-        console.log(email, otp);
-
-        this.isAsyncCall = true;
-        this.authService.verifyEmail(email, otp).subscribe(
-          (res) => {
-            if (res) {
-              console.log('verify email', res);
-              this.isAsyncCall = false;
-              // Do something with the response if needed
-            }
-          },
-          (error) => {
-            console.error('Error while verifying OTP:', error);
+    if (this.storedEmail && otp) {
+      this.isAsyncCall = true;
+      this.authService.verifyEmail(this.storedEmail, otp).subscribe(
+        (res) => {
+          if (res) {
+            console.log('verify email', res);
             this.isAsyncCall = false;
-            // Handle the error, show a message, etc.
+            // Do something with the response if needed
           }
-        );
-      } else {
-        console.log('Invalid email or OTP'); // Log a message if email or OTP is invalid
-      }
+        },
+        (error) => {
+          console.error('Error while verifying OTP:', error);
+          this.isAsyncCall = false;
+          // Handle the error, show a message, etc.
+        }
+      );
     } else {
-      console.log('Form or form controls not properly defined'); // Log a message if form or controls are not properly defined
+      console.error('OTP or Email is not valid');
     }
   }
+
   get form() {
     return this.signupForm.controls;
   }
