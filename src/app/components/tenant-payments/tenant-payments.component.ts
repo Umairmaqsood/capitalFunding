@@ -159,7 +159,12 @@ export interface TenantsPayment {
                 Is Payable
               </th>
               <td mat-cell *matCellDef="let element">
-                {{ element.isPayable }}
+                <span
+                  class="custom-badge"
+                  [ngClass]="element.isPayable ? 'true' : 'false'"
+                >
+                  {{ element.isPayable ? 'Payed' : 'Payable' }}
+                </span>
               </td>
             </ng-container>
 
@@ -279,6 +284,16 @@ export interface TenantsPayment {
       }
 
       .not-late {
+        background-color: green;
+        color: white;
+      }
+
+      .false {
+        background-color: red;
+        color: red;
+      }
+
+      .true {
         background-color: green;
         color: white;
       }
