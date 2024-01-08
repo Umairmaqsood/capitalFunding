@@ -119,7 +119,12 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
             </mat-form-field>
 
             <div style="margin-top: 20px;">
-              <button mat-raised-button color="primary" (click)="saveData()">
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="saveData()"
+                [disabled]="!tenantPaymentsForm.valid"
+              >
                 Submit
               </button>
             </div>

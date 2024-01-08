@@ -106,7 +106,12 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
             </mat-form-field>
 
             <div style="margin-top: 20px;">
-              <button mat-raised-button color="primary" (click)="saveData()">
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="saveData()"
+                [disabled]="!propertyDetailsForm.valid"
+              >
                 Submit
               </button>
             </div>

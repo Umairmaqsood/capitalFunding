@@ -95,7 +95,12 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
           </ng-container>
 
           <div style="margin-top: 20px;">
-            <button mat-raised-button color="primary" (click)="saveData()">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="saveData()"
+              [disabled]="!tenantsDetailsForm.valid"
+            >
               Submit
             </button>
           </div>
