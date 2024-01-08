@@ -484,7 +484,7 @@ export class AuthenticationService {
       return of(null); // You can return an observable with a null value
     }
   }
-  deleteUsersInfo(recordId: string) {
+  deleteUsersInfo(Id: string) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
@@ -496,7 +496,7 @@ export class AuthenticationService {
       });
 
       return this.http.get<any>(
-        this.backendUrl + `/deleteTenants?recordId=${recordId}`,
+        this.backendUrl + `/deleteTenantInfo?Id=${Id}`,
 
         { headers } // Pass the headers in the request options
       );

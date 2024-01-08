@@ -221,7 +221,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
       }
 
       .reset {
-        padding: 30px 70px;
+        padding: 50px 70px;
         border-radius: 10px;
         width: 100%;
         max-width: 400px; /* Adjust as needed */
@@ -392,13 +392,15 @@ export class SignUpComponent {
       this.authService.verifyEmail(this.storedEmail, otp).subscribe(
         (res) => {
           if (res) {
-            console.log('verify email', res);
+            this.router.navigate(['']);
+            this.otpVerify();
             this.isAsyncCall = false;
             // Do something with the response if needed
           }
         },
         (error) => {
           console.error('Error while verifying OTP:', error);
+          this.invalidotp();
           this.isAsyncCall = false;
           // Handle the error, show a message, etc.
         }
@@ -450,5 +452,15 @@ export class SignUpComponent {
     const config = new MatSnackBarConfig();
     config.duration = 5000;
     this.snackbar.open(`AN ERROR OCCURED. PLEASE TRY AGAIN LATER`, 'X', config);
+  }
+  invalidotp(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackbar.open(`INVALID OTP`, 'X', config);
+  }
+  otpVerify(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackbar.open(`OTP VERIFIED SUCCESSFULLY`, 'X', config);
   }
 }

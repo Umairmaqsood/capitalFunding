@@ -208,7 +208,7 @@ export interface UsersData {
                   <mat-option (click)="updateUsersDataDialog(row)">
                     Update<mat-icon style="color:#2E7D32">update</mat-icon>
                   </mat-option>
-                  <mat-option>
+                  <mat-option (click)="deleteUsers(row)">
                     Delete<mat-icon style="color:#E53935">delete</mat-icon>
                   </mat-option>
                   <mat-option (click)="viewUsersDataDialog(row)">
@@ -400,7 +400,7 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  deleteTenantPaymentDialog(item: UsersData) {
+  deleteUsers(item: UsersData) {
     this.isAsyncCall = true;
     this.authService.deleteUsersInfo(item.id ?? '').subscribe(
       (res) => {
