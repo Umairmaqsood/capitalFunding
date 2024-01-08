@@ -142,13 +142,13 @@ export class TenantPaymentsDialogComponent {
 
   selectedRequestType!: requestType;
   tenantPaymentsForm = this.formBuilder.group({
-    id: ['', Validators.required],
+    id: [''],
     tenantId: ['', Validators.required],
     rent: ['', Validators.required],
     areaMaintainienceFee: ['', Validators.required],
     isLate: ['', Validators.required],
     lateFee: ['', Validators.required],
-    isPayable: ['', Validators.required],
+    isPayable: [''],
     rentPayedAt: ['', Validators.required],
     month: ['', Validators.required],
   });

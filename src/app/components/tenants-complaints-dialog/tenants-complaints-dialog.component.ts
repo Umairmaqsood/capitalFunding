@@ -172,11 +172,11 @@ export class TenantsComplaintsDialogComponent {
 
   updateTenantDetails() {
     const actualComplaintId: string = this.complaintId.value || '';
-    const actualisFixed: boolean = this.isFixed.value === 'true';
+    const actualIsFixed = this.isFixed.value;
 
     this.isAsyncCall = true;
     this.authService
-      .updateTenantsComplaints(actualComplaintId, actualisFixed)
+      .updateTenantsComplaints(actualComplaintId, actualIsFixed)
       .subscribe((result) => {
         if (result) {
           this.updateSnackabr();

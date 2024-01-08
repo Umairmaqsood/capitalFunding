@@ -119,7 +119,7 @@ import { MatTableDataSource } from '@angular/material/table';
                   class="custom-badge"
                   [ngClass]="element.isPayable ? 'true' : 'false'"
                 >
-                  {{ element.isPayable ? 'Payed' : 'Unpayed' }}
+                  {{ element.isPayable ? 'Unpayed' : 'Payed' }}
                 </span>
               </td>
             </ng-container>
@@ -192,12 +192,12 @@ import { MatTableDataSource } from '@angular/material/table';
         }
       }
 
-      .false {
+      .true {
         background-color: red;
         color: white;
       }
 
-      .true {
+      .false {
         background-color: green;
         color: white;
       }

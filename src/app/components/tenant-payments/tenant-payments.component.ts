@@ -163,7 +163,7 @@ export interface TenantsPayment {
                   class="custom-badge"
                   [ngClass]="element.isPayable ? 'true' : 'false'"
                 >
-                  {{ element.isPayable ? 'Payed' : 'Payable' }}
+                  {{ element.isPayable ? 'Payable' : 'Payed' }}
                 </span>
               </td>
             </ng-container>
@@ -288,12 +288,12 @@ export interface TenantsPayment {
         color: white;
       }
 
-      .false {
+      .true {
         background-color: red;
-        color: red;
+        color: white;
       }
 
-      .true {
+      .false {
         background-color: green;
         color: white;
       }

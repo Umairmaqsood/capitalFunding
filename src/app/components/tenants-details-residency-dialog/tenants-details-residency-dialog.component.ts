@@ -117,11 +117,11 @@ export class TenantsDetailsResidencyDialogComponent {
 
   selectedRequestType!: requestType;
   tenantsDetailsForm = this.formBuilder.group({
-    id: ['', Validators.required],
+    id: [''],
     userId: ['', Validators.required],
     propertyId: ['', Validators.required],
     movedIn: ['', Validators.required],
-    movedOut: ['', Validators.required],
+    movedOut: [''],
   });
 
   get id() {
