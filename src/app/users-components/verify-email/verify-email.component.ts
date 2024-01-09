@@ -187,7 +187,7 @@ export class VerifyEmailComponent {
           },
 
           (error: any) => {
-            if (error.status === 404) {
+            if (error.status === 400) {
               this.emailNotFound400();
               this.isAsyncCall = false;
             } else {
@@ -227,11 +227,8 @@ export class VerifyEmailComponent {
             }
           },
           (error) => {
-            if (error.status === 403) {
+            if (error.status === 400) {
               this.otpSnackBarError();
-              this.isAsyncCall = false;
-            } else if (error.status === 401) {
-              this.otpErrorSnackBar();
               this.isAsyncCall = false;
             } else {
               this.error();
@@ -253,11 +250,7 @@ export class VerifyEmailComponent {
     config.duration = 5000;
     this.snackbar.open(`OTP VERIFIED SUCCESSFULLY`, 'X', config);
   }
-  otpErrorSnackBar() {
-    const config = new MatSnackBarConfig();
-    config.duration = 5000;
-    this.snackbar.open(`OTP EXPIRED`, 'X', config);
-  }
+
   error() {
     const config = new MatSnackBarConfig();
     config.duration = 5000;
