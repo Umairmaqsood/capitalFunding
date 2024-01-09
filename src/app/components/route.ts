@@ -8,6 +8,11 @@ import { NavbarComponent } from './navbar/navbar.component';
 
 export const COMP_ROUTE: Route[] = [
   {
+    path: '',
+    redirectTo: 'property-details',
+    pathMatch: 'full',
+  },
+  {
     path: 'property-details',
     component: PropertyDetailsComponent,
   },
