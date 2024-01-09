@@ -45,8 +45,8 @@ export class AuthenticationService {
           // Extract and store specific data from the token in localStorage
           localStorage.setItem('userEmail', decodedToken.email || '');
           localStorage.setItem('Id', decodedToken.Id || '');
+          localStorage.setItem('Name', decodedToken.Name || '');
 
-          // Store the entire response in 'currentUser' (if required)
           localStorage.setItem('currentUser', JSON.stringify(loginResponse));
 
           // Update the currentUserSubject (if needed)

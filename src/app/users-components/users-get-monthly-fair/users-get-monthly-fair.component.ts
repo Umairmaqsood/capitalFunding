@@ -22,8 +22,8 @@ import { MatPaginator } from '@angular/material/paginator';
             </span>
           </div>
 
-          <span style="color:blue; font-weight:bold; font-size:25px"
-            >$ {{ areaMaintainienceFee + lateFee + rent ?? 0 }}
+          <span style="color:#4848e3; font-weight:bold; font-size:25px"
+            >$ {{ (areaMaintainienceFee ?? 0) + (lateFee ?? 0) + (rent ?? 0) }}
           </span>
           <br />
 
@@ -56,7 +56,12 @@ import { MatPaginator } from '@angular/material/paginator';
             <tfoot>
               <tr>
                 <td>Total Balance</td>
-                <td>$ {{ areaMaintainienceFee + lateFee + rent ?? 0 }}</td>
+                <td>
+                  $
+                  {{
+                    (areaMaintainienceFee ?? 0) + (lateFee ?? 0) + (rent ?? 0)
+                  }}
+                </td>
               </tr>
             </tfoot>
           </table>
@@ -119,7 +124,7 @@ import { MatPaginator } from '@angular/material/paginator';
       }
 
       .center-div {
-        background-color: white;
+        background-color: #eaf3ff;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         width: 100%;
@@ -141,7 +146,7 @@ import { MatPaginator } from '@angular/material/paginator';
       }
 
       .center-div .table th {
-        background-color: #007bff;
+        background: #005377;
         color: white;
         text-align: left;
       }
@@ -155,7 +160,7 @@ import { MatPaginator } from '@angular/material/paginator';
         border-bottom: 1px solid #dee2e6;
       }
 
-      @@media (max-width: 768px) {
+      @media (max-width: 768px) {
         .center-div {
           max-width: 90%;
         }

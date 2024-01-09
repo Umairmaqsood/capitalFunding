@@ -138,9 +138,9 @@ export interface TenantComplaints {
               <td mat-cell *matCellDef="let element">
                 <span
                   class="custom-badge"
-                  [ngClass]="input.value ? 'true' : 'false'"
+                  [ngClass]="element.isFixed ? 'true' : 'false'"
                 >
-                  {{ input.value ? 'Fixed' : 'Pending' }}
+                  {{ element.isFixed ? 'Pending' : 'Fixed' }}
                 </span>
               </td>
             </ng-container>
@@ -245,12 +245,12 @@ export interface TenantComplaints {
         }
       }
 
-      .false {
+      .true {
         background-color: red;
         color: white;
       }
 
-      .true {
+      .false {
         background-color: green;
         color: white;
       }

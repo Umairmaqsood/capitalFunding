@@ -8,7 +8,7 @@ body {
 
 body,
 app-root {
-  font-family: "K2D", sans-serif;
+  font-family: "San Francisco", "Helvetica Neue", sans-serif;
 }
 
 .m-b-10 {
@@ -63,8 +63,10 @@ app-root {
 html,
 body {
   height: 100%;
+  background-color: #e1effd;
+  margin: 0;
+  font-family: "San Francisco", "Helvetica Neue", sans-serif;
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

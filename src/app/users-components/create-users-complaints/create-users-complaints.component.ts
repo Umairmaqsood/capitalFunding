@@ -19,7 +19,7 @@ import { AsyncSpinnerComponent } from '../../components';
     <div>
       <mat-card
         style=" padding: 20px 40px; 
-         display:block; margin:20px auto;border-radius: 10px;width:600px"
+         display:block; margin:20px auto;border-radius: 10px;width:600px;background-color:#eaf3ff"
       >
         <ng-container *ngIf="!isAsyncCall">
           <h1 style="text-align:center; font-weight:bold">Create Complaint</h1>
