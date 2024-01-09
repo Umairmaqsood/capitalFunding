@@ -8,10 +8,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 
 export const COMP_ROUTE: Route[] = [
   {
-    path: '',
-    component: NavbarComponent,
-  },
-  {
     path: 'property-details',
     component: PropertyDetailsComponent,
   },

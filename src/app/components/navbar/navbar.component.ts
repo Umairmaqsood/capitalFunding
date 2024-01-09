@@ -6,7 +6,7 @@ import { TenantDetailsComponent } from '../tenant-details/tenant-details.compone
 import { TenantPaymentsComponent } from '../tenant-payments/tenant-payments.component';
 import { UsersComponent } from '../users/users.component';
 import { TenantComplaintsComponent } from '../tenant-complaints/tenant-complaints.component';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
@@ -30,23 +30,24 @@ import { SidebarService } from '../../services/src/lib/authentication/sidebar.se
           <a
             mat-list-item
             [routerLink]="['/admin', userId, 'property-details']"
-            (click)="toggleSidebar()"
           >
             <div class="flex gap-10">
               <mat-icon class="color">home</mat-icon>
               <div class="color">Property Details</div>
             </div>
           </a>
+
           <a
             mat-list-item
-            [routerLink]="['/admin', userId, 'tenant-complaints']"
+            [routerLink]="['/admin', userId, 'tenants-details']"
             routerLinkActive="active"
           >
             <div class="flex gap-10">
-              <mat-icon class="color">report</mat-icon>
-              <div class="color">Tenant Complaints</div>
+              <mat-icon class="color">supervised_user_circle</mat-icon>
+              <div class="color">Tenants Details</div>
             </div>
           </a>
+
           <a
             mat-list-item
             [routerLink]="['/admin', userId, 'tenant-residency-info']"
@@ -57,6 +58,7 @@ import { SidebarService } from '../../services/src/lib/authentication/sidebar.se
               <div class="color">Tenant Residency Info</div>
             </div>
           </a>
+
           <a
             mat-list-item
             [routerLink]="['/admin', userId, 'tenant-payment']"
@@ -67,14 +69,15 @@ import { SidebarService } from '../../services/src/lib/authentication/sidebar.se
               <div class="color">Tenant Payments</div>
             </div>
           </a>
+
           <a
             mat-list-item
-            [routerLink]="['/admin', userId, 'tenants-details']"
+            [routerLink]="['/admin', userId, 'tenant-complaints']"
             routerLinkActive="active"
           >
             <div class="flex gap-10">
-              <mat-icon class="color">supervised_user_circle</mat-icon>
-              <div class="color">Tenants Details</div>
+              <mat-icon class="color">report</mat-icon>
+              <div class="color">Tenant Complaints</div>
             </div>
           </a>
 
@@ -171,21 +174,23 @@ import { SidebarService } from '../../services/src/lib/authentication/sidebar.se
 export class NavbarComponent {
   userId: any;
 
+  sidebarOpen = false;
+
   constructor(
     private authService: AuthenticationService,
     private snackbar: MatSnackBar,
-    private sidebar: SidebarService
+    private sidebarService: SidebarService,
+    private router: Router
   ) {}
   ngOnInit() {
     this.userId = localStorage.getItem('Id');
   }
+
   logout() {
     this.authService.logout();
     this.logoutSnackbar();
   }
-  toggleSidebar() {
-    this.sidebar.toggleSidebar(true); // Always open sidebar when a link is clicked
-  }
+
   logoutSnackbar(): void {
     const config = new MatSnackBarConfig();
     config.duration = 5000;

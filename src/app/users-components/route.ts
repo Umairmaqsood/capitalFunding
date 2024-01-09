@@ -7,10 +7,6 @@ import { CreateUsersComplaintsComponent } from './create-users-complaints/create
 
 export const USER_COMP: Route[] = [
   {
-    path: '',
-    component: UsersNavbarComponent,
-  },
-  {
     path: 'get-monthly-fair',
     component: UsersGetMonthlyFairComponent,
   },

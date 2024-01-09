@@ -15,8 +15,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AppComponent } from './app/app.component';
 import { AUTH_ROUTE } from './app/authentication/route';
 import { BehaviorSubject } from 'rxjs';
-import { COMP_ROUTE } from './app/components';
+import { COMP_ROUTE, NavbarComponent } from './app/components';
 import { USER_COMP } from './app/users-components';
+import { UsersNavbarComponent } from './app/users-components/users-navbar/users-navbar.component';
 
 // platformBrowserDynamic().bootstrapModule(AppModule)
 //   .catch(err => console.error(err));
@@ -31,10 +32,12 @@ const routes: Routes = [
   },
   {
     path: 'admin/:userId',
+    component: NavbarComponent,
     children: COMP_ROUTE,
   },
   {
     path: 'user/:userId',
+    component: UsersNavbarComponent,
     children: USER_COMP,
   },
 ];

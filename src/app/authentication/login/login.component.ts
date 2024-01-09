@@ -219,27 +219,26 @@ export class LoginComponent implements OnInit {
           this.showSnackbar();
           this.isAsyncCall = false;
         }
-
-        if (role === 'user') {
-          if (res && res.statusCode === 402) {
-            this.notVerifyEmail();
-            this.isAsyncCall = false;
-          }
-          if (res && res.statusCode === 401) {
-            this.notActive();
-            this.isAsyncCall = false;
-          }
-          if (res) {
-            this.router.navigate(['/user', userId]);
-            this.isAsyncCall = false;
-            this.showSnackbar();
-          }
+        if (res && role === 'user') {
+          this.router.navigate(['/user', userId]);
+          this.isAsyncCall = false;
+          this.showSnackbar();
         }
       },
       (error) => {
-        // Handle error scenarios if needed
-        console.error(error);
-        this.errorSnackBar();
+        if (error.error.statusCode === 401) {
+          this.notActive();
+          this.router.navigateByUrl('/account-inactive');
+          this.isAsyncCall = false;
+        } else if (error.error.statusCode === 402) {
+          this.notVerifyEmail();
+          this.router.navigateByUrl('/account-inactive');
+
+          this.isAsyncCall = false;
+        } else {
+          console.error(error);
+          this.errorSnackBar();
+        }
         this.isAsyncCall = false;
       }
     );
@@ -260,7 +259,7 @@ export class LoginComponent implements OnInit {
   notVerifyEmail(): void {
     const config = new MatSnackBarConfig();
     config.duration = 5000;
-    this.snackbar.open(`EMAIL NOT VERIFY, ACCOUNT IN ACTIVE`, 'X', config);
+    this.snackbar.open(`EMAIL NOT VERIFY, PLEASE VERIFY FIRST`, 'X', config);
   }
   notActive(): void {
     const config = new MatSnackBarConfig();

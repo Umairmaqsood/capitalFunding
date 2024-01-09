@@ -177,21 +177,29 @@ export class TenantsComplaintsDialogComponent {
     this.isAsyncCall = true;
     this.authService
       .updateTenantsComplaints(actualComplaintId, actualIsFixed)
-      .subscribe((result) => {
-        if (result) {
-          this.updateSnackabr();
-          this.dialogRef.close(true);
-          this.isAsyncCall = false;
-        } else {
+      .subscribe(
+        (result) => {
+          if (result) {
+            this.updateSnackabr();
+            this.dialogRef.close(true);
+            this.isAsyncCall = false;
+          }
+        },
+        (error: any) => {
           this.isAsyncCall = false;
         }
-      });
+      );
   }
 
   updateSnackabr(): void {
     const config = new MatSnackBarConfig();
     config.duration = 5000;
     this.snackBar.open(`DATA UPDATED SUCCESSFULLY`, 'X', config);
+  }
+  error(): void {
+    const config = new MatSnackBarConfig();
+    config.duration = 5000;
+    this.snackBar.open(`AN UNEXPECTED ERROR OCCURED`, 'X', config);
   }
 }
 

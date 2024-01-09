@@ -9,6 +9,7 @@ import {
 import { PropertyDetailsComponent } from './components/property-details/property-details.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { UsersNavbarComponent } from './users-components/users-navbar/users-navbar.component';
+import { AccountInactiveComponent } from './users-components/account-inactive/account-inactive.component';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,7 @@ import { UsersNavbarComponent } from './users-components/users-navbar/users-navb
     PropertyDetailsComponent,
     NavbarComponent,
     UsersNavbarComponent,
+    AccountInactiveComponent,
   ],
 })
 export class AppComponent {
