@@ -65,6 +65,10 @@ export class AuthenticationService {
     return this.http.post<any>(this.backendUrl + '/register', data);
   }
 
+  mailVerify(email: string) {
+    return this.http.get<any>(this.backendUrl + `/resendEmail?email=${email}`);
+  }
+
   verifyEmail(email: string, otp: string) {
     const data = {
       email,

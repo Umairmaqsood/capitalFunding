@@ -229,10 +229,10 @@ export class LoginComponent implements OnInit {
           this.notActive();
           this.router.navigateByUrl('/account-inactive');
           this.isAsyncCall = false;
-        } else if (error.error.statusCode === 402) {
+        }
+        if (error.error.statusCode === 402) {
+          this.router.navigateByUrl('/verify-email');
           this.notVerifyEmail();
-          this.router.navigateByUrl('/account-inactive');
-
           this.isAsyncCall = false;
         } else {
           console.error(error);
