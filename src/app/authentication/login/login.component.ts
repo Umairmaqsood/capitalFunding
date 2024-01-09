@@ -209,7 +209,6 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(data).subscribe(
       (res: any) => {
-        console.log(res, 'response');
         const decodedToken: any = jwtDecode(res.results);
         const userId = decodedToken.Id;
         const role = decodedToken.Role;

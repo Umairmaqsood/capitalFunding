@@ -42,8 +42,6 @@ export class AuthenticationService {
           // Decode the received token
           const decodedToken: any = jwtDecode(loginResponse.results);
 
-          console.log('decodedtoken', decodedToken);
-
           // Extract and store specific data from the token in localStorage
           localStorage.setItem('userEmail', decodedToken.email || '');
           localStorage.setItem('Id', decodedToken.Id || '');
@@ -80,8 +78,6 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
-    console.log(results, 'tokenresult');
-
     if (results && results.results) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${results.results}`,
@@ -102,8 +98,6 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
-    console.log(results, 'tokenresult');
-
     if (results && results.results) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${results.results}`,
@@ -123,8 +117,6 @@ export class AuthenticationService {
   deletepropertyDetails(propertyId: string) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
-
-    console.log(results, 'tokenresult');
 
     if (results && results.results) {
       const headers = new HttpHeaders({
@@ -147,8 +139,6 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
-    console.log(results, 'tokenresult');
-
     if (results && results.results) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${results.results}`,
@@ -170,8 +160,6 @@ export class AuthenticationService {
   createTenantsComplaints(data: any) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
-
-    console.log(results, 'tokenresult');
 
     if (results && results.results) {
       const headers = new HttpHeaders({
@@ -213,8 +201,6 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
-    console.log(results, 'tokenresult');
-
     if (results && results.results) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${results.results}`,
@@ -235,8 +221,6 @@ export class AuthenticationService {
   getTenantsComplaints(page: number, pageSize: number) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
-
-    console.log(results, 'tokenresult');
 
     if (results && results.results) {
       const headers = new HttpHeaders({
@@ -260,8 +244,6 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
-    console.log(results, 'tokenresult');
-
     if (results && results.results) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${results.results}`,
@@ -281,8 +263,6 @@ export class AuthenticationService {
   updateTenantsResidency(data: any) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
-
-    console.log(results, 'tokenresult');
 
     if (results && results.results) {
       const headers = new HttpHeaders({
@@ -304,8 +284,6 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
-    console.log(results, 'tokenresult');
-
     if (results && results.results) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${results.results}`,
@@ -326,8 +304,6 @@ export class AuthenticationService {
   getTenantsResidency(page: number, pageSize: number) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
-
-    console.log(results, 'tokenresult');
 
     if (results && results.results) {
       const headers = new HttpHeaders({
@@ -351,8 +327,6 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
-    console.log(results, 'tokenresult');
-
     if (results && results.results) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${results.results}`,
@@ -372,8 +346,6 @@ export class AuthenticationService {
   updateTenantsPaymentsInfo(data: any) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
-
-    console.log(results, 'tokenresult');
 
     if (results && results.results) {
       const headers = new HttpHeaders({
@@ -395,8 +367,6 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
-    console.log(results, 'tokenresult');
-
     if (results && results.results) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${results.results}`,
@@ -417,8 +387,6 @@ export class AuthenticationService {
   getTenantsPaymentsInfo(page: number, pageSize: number) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
-
-    console.log(results, 'tokenresult');
 
     if (results && results.results) {
       const headers = new HttpHeaders({
@@ -442,8 +410,6 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
-    console.log(results, 'tokenresult');
-
     if (results && results.results) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${results.results}`,
@@ -463,8 +429,6 @@ export class AuthenticationService {
   updateUsersInfo(data: any) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
-
-    console.log(results, 'tokenresult');
 
     if (results && results.results) {
       const headers = new HttpHeaders({
@@ -486,8 +450,6 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
-    console.log(results, 'tokenresult');
-
     if (results && results.results) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${results.results}`,
@@ -508,8 +470,6 @@ export class AuthenticationService {
   getUsersInfo(page: number, pageSize: number) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
-
-    console.log(results, 'tokenresult');
 
     if (results && results.results) {
       const headers = new HttpHeaders({
@@ -551,8 +511,6 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
-    console.log(results, 'tokenresult');
-
     if (results && results.results) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${results.results}`,
@@ -572,8 +530,6 @@ export class AuthenticationService {
   getDropDownPropertyName() {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
-
-    console.log(results, 'tokenresult');
 
     if (results && results.results) {
       const headers = new HttpHeaders({
@@ -596,8 +552,6 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
-    console.log(results, 'tokenresult');
-
     if (results && results.results) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${results.results}`,
@@ -618,8 +572,6 @@ export class AuthenticationService {
   getPaymentHistory(userId: string, page: number, pageSize: number) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
-
-    console.log(results, 'tokenresult');
 
     if (results && results.results) {
       const headers = new HttpHeaders({
@@ -643,8 +595,6 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
-    console.log(results, 'tokenresult');
-
     if (results && results.results) {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${results.results}`,
@@ -665,8 +615,6 @@ export class AuthenticationService {
   getTenantId(userId: string) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
-
-    console.log(results, 'tokenresult');
 
     if (results && results.results) {
       const headers = new HttpHeaders({
