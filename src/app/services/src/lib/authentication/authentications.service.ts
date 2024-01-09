@@ -181,7 +181,7 @@ export class AuthenticationService {
       return of(null); // You can return an observable with a null value
     }
   }
-  updateTenantsComplaints(complainId: string, CompStatus: any) {
+  updateTenantsComplaints(data: any) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
@@ -190,11 +190,9 @@ export class AuthenticationService {
         Authorization: `Bearer ${results.results}`,
       });
 
-      return this.http.post<any>(
-        this.backendUrl +
-          `/updateComplain?complainId=${complainId}&CompStatus=${CompStatus}`,
-        { headers }
-      );
+      return this.http.post<any>(this.backendUrl + `/updateComplain`, data, {
+        headers,
+      });
     } else {
       console.error('Token not available');
       return of(null);

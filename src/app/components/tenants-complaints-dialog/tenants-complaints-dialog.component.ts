@@ -171,24 +171,24 @@ export class TenantsComplaintsDialogComponent {
   }
 
   updateTenantDetails() {
-    const actualComplaintId: string = this.complaintId.value || '';
-    const actualIsFixed = this.isFixed.value;
+    const data = {
+      id: this.complaintId.value,
+      status: this.isFixed.value,
+    };
 
     this.isAsyncCall = true;
-    this.authService
-      .updateTenantsComplaints(actualComplaintId, actualIsFixed)
-      .subscribe(
-        (result) => {
-          if (result) {
-            this.updateSnackabr();
-            this.dialogRef.close(true);
-            this.isAsyncCall = false;
-          }
-        },
-        (error: any) => {
+    this.authService.updateTenantsComplaints(data).subscribe(
+      (result) => {
+        if (result) {
+          this.updateSnackabr();
+          this.dialogRef.close(true);
           this.isAsyncCall = false;
         }
-      );
+      },
+      (error: any) => {
+        this.isAsyncCall = false;
+      }
+    );
   }
 
   updateSnackabr(): void {

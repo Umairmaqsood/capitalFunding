@@ -178,7 +178,11 @@ export interface TenantComplaints {
                     Update<mat-icon style="color:#2E7D32">update</mat-icon>
                   </mat-option>
                   <mat-option>
-                    Delete<mat-icon style="color:#E53935">delete</mat-icon>
+                    Delete<mat-icon
+                      style="color:#E53935"
+                      (click)="deleteTenantsComplaints(row)"
+                      >delete</mat-icon
+                    >
                   </mat-option>
                   <mat-option (click)="viewTenantComplaintsDialog(row)">
                     Details<mat-icon style="color:#FFA726">details</mat-icon>
