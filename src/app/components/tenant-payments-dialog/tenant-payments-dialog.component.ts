@@ -159,9 +159,7 @@ export class TenantPaymentsDialogComponent {
     private dialogRef: MatDialogRef<TenantPaymentsDialogComponent>,
     private snackbar: MatSnackBar,
     private authService: AuthenticationService
-  ) {
-    console.log(data, 'dataaaaaaaa');
-  }
+  ) {}
 
   get id() {
     return this.tenantPaymentsForm.controls.id;
@@ -205,10 +203,21 @@ export class TenantPaymentsDialogComponent {
     this.isAsyncCall = true;
     this.authService.getDropDownTenantName().subscribe((res) => {
       if (res) {
-        console.log(res, 'respone of tenantnamedropdown');
         this.tenantArrayData = res?.results;
         this.isAsyncCall = false;
+        this.patchUserValue();
       }
+    });
+  }
+
+  patchUserValue() {
+    const data = this.data;
+    const selectedUser = this.tenantArrayData.find(
+      (user) => user.name === data.item.tenantName
+    );
+
+    this.tenantPaymentsForm.patchValue({
+      tenantId: selectedUser ? selectedUser.id : null,
     });
   }
 
@@ -220,7 +229,6 @@ export class TenantPaymentsDialogComponent {
     ) {
       this.tenantPaymentsForm.patchValue({
         id: data.item.id,
-        tenantId: data.item.tenantName,
         rent: data.item.rent,
         areaMaintainienceFee: data.item.areaMaintainienceFee,
         isLate: data.item.isLate,
@@ -277,7 +285,6 @@ export class TenantPaymentsDialogComponent {
       rentPayedAt: this.rentPayedAt.value,
       month: this.month.value,
     };
-    console.log(updateData, 'updateData');
 
     this.isAsyncCall = true;
     this.authService

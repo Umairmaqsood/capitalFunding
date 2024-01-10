@@ -247,14 +247,12 @@ export class TenantDetailsComponent implements OnInit {
     this.authService.getTenantsResidency(this.page, this.pageSize).subscribe(
       (res) => {
         if (res) {
-          console.log(res, 'responseoftenantsresidency');
           const data = res?.results?.items;
           this.dataSource = new MatTableDataSource(data);
           this.isAsyncCall = false;
         }
       },
       (error: any) => {
-        console.error('Error Occurred:', error);
         this.error();
         this.isAsyncCall = false;
       }
@@ -289,7 +287,6 @@ export class TenantDetailsComponent implements OnInit {
 
     dialog.afterClosed().subscribe((res) => {
       if (res) {
-        console.log(res, 'response');
         this.getTenantsDetailsResidency();
       }
     });

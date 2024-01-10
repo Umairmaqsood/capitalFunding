@@ -150,7 +150,7 @@ export class TenantsDetailsResidencyDialogComponent {
 
   ngOnInit(): void {
     this.selectedRequestType = this.data.requestType;
-    // Disable fields for viewing
+
     if (this.selectedRequestType === 'view') {
       this.tenantsDetailsForm.disable();
     }
@@ -163,33 +163,59 @@ export class TenantsDetailsResidencyDialogComponent {
     this.isAsyncCall = true;
     this.authService.getDropDownUserName().subscribe((res) => {
       if (res) {
-        console.log(res, 'respone ofuser dropdown');
         this.userIds = res?.results;
         this.isAsyncCall = false;
+
+        this.patchUserValue();
       }
     });
   }
+
   getPropertyNameDropDown() {
     this.isAsyncCall = true;
     this.authService.getDropDownPropertyName().subscribe((res) => {
       if (res) {
-        console.log(res, 'respone of propertyName');
         this.propertyIds = res?.results;
         this.isAsyncCall = false;
+
+        this.patchPropertyValue();
       }
+    });
+  }
+
+  patchUserValue() {
+    const data = this.data;
+
+    const selectedUser = this.userIds.find(
+      (user) => user.name === data.item.userName
+    );
+
+    this.tenantsDetailsForm.patchValue({
+      userId: selectedUser ? selectedUser.id : null,
+    });
+  }
+
+  patchPropertyValue() {
+    const data = this.data;
+
+    const selectedProperty = this.propertyIds.find(
+      (property) => property.name === data.item.propertyName
+    );
+
+    this.tenantsDetailsForm.patchValue({
+      propertyId: selectedProperty ? selectedProperty.id : null,
     });
   }
 
   patchValue() {
     const data = this.data;
+    console.log(data, 'Selected Data');
     if (
       this.selectedRequestType === 'update' ||
       this.selectedRequestType === 'view'
     ) {
       this.tenantsDetailsForm.patchValue({
         id: data.item.id,
-        userId: data.item.userId,
-        propertyId: data.item.propertyId,
         movedIn: data.item.movedIn,
         movedOut: data.item.movedOut,
       });
@@ -212,7 +238,7 @@ export class TenantsDetailsResidencyDialogComponent {
       movedIn: this.movedIn.value,
       movedOut: this.movedOut.value,
     };
-    console.log(createData, 'createData');
+
     this.isAsyncCall = true;
     this.authService.createTenantsResidency(createData).subscribe((result) => {
       if (result) {
@@ -232,7 +258,7 @@ export class TenantsDetailsResidencyDialogComponent {
       movedIn: this.movedIn.value,
       movedOut: this.movedOut.value,
     };
-    console.log(updateData, 'updateData');
+
     this.isAsyncCall = true;
     this.authService.updateTenantsResidency(updateData).subscribe((result) => {
       if (result) {
