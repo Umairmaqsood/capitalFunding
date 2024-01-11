@@ -339,9 +339,9 @@ export class UsersComponent implements OnInit {
       (res) => {
         if (res) {
           console.log(res, 'responseoftenantspayments');
-          const data = res.results.items;
+          const data = res?.results?.items;
           this.dataSource = new MatTableDataSource(data);
-          this.resultsLength = res?.results.totalCount;
+          this.resultsLength = res?.results?.totalCount;
           this.isAsyncCall = false;
 
           // Reset paginator after filtering

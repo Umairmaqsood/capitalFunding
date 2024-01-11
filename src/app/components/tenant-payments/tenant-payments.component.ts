@@ -363,9 +363,9 @@ export class TenantPaymentsComponent implements OnInit {
       .subscribe(
         (res: any) => {
           if (res && res.isSuccess && res.results.totalCount) {
-            const data = res.results.items;
+            const data = res?.results?.items;
             this.dataSource = new MatTableDataSource(data);
-            this.resultsLength = res.results.totalCount;
+            this.resultsLength = res?.results?.totalCount;
             this.isAsyncCall = false;
 
             // Reset paginator after filtering
