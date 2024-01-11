@@ -4,10 +4,11 @@ import { MaterialModule } from '../../material/src/public-api';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { PropertyDetailsDialogComponent } from '../property-details-dialog/property-details-dialog.component';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
 import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
 
 export interface PropertyDetails {
   id: string;
@@ -60,7 +61,12 @@ export interface PropertyDetails {
         </div>
 
         <div>
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="mat-elevation-z8"
+          >
             <!-- ID Column -->
             <ng-container matColumnDef="id">
               <th
@@ -234,10 +240,11 @@ export interface PropertyDetails {
           </table>
 
           <mat-paginator
-            #paginator
-            [pageSize]="10"
-            [pageSizeOptions]="[5, 10, 20, 100]"
-            showFirstLastButtons
+            [length]="resultsLength"
+            [pageIndex]="pageIndex"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="onPageChange($event)"
           ></mat-paginator>
         </div>
       </ng-container>
@@ -285,6 +292,15 @@ export interface PropertyDetails {
 })
 export class PropertyDetailsComponent implements OnInit {
   isAsyncCall = false;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  resultsLength = 0;
+  pageIndex = 0;
+  pageSize = 10;
+  pageSizeOptions: number[] = [2, 5, 10, 20, 100];
+
   displayedColumns: string[] = [
     'id',
     'propertyName',
@@ -307,13 +323,6 @@ export class PropertyDetailsComponent implements OnInit {
     this.getPropertyDetails();
   }
 
-  @ViewChild(MatPaginator, { static: false })
-  set paginator(value: MatPaginator) {
-    if (this.dataSource) {
-      this.dataSource.paginator = value;
-    }
-  }
-
   dataSource = new MatTableDataSource([]);
 
   applyFilter(event: Event) {
@@ -329,24 +338,37 @@ export class PropertyDetailsComponent implements OnInit {
     }
   }
 
-  page = 1;
-  pageSize = 100;
   getPropertyDetails() {
     this.isAsyncCall = true;
-    this.authService.getPropertyDetails(this.page, this.pageSize).subscribe(
-      (res) => {
-        if (res) {
-          const data = res.results.items;
-          this.dataSource = new MatTableDataSource(data);
+    this.authService
+      .getPropertyDetails(this.pageIndex + 1, this.pageSize)
+      .subscribe(
+        (res) => {
+          if (res) {
+            const data = res.results.items;
+            this.dataSource = new MatTableDataSource(data);
+            this.resultsLength = res.results.totalCount;
+            this.isAsyncCall = false;
+
+            // Reset paginator after filtering
+            if (this.paginator) {
+              this.paginator.firstPage();
+            }
+          }
+        },
+        (error: any) => {
+          console.error('Error Occurred:', error);
+          this.error();
+          this.isAsyncCall = false;
         }
-        this.isAsyncCall = false;
-      },
-      (error: any) => {
-        console.error('Error Occurred:', error);
-        this.error();
-        this.isAsyncCall = false;
-      }
-    );
+      );
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.sort.sortChange.emit(this.sort);
+    this.getPropertyDetails();
   }
 
   createPropertyDetailsDialog(item: any) {

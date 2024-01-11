@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MaterialModule } from '../../material/src/public-api';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,6 +8,7 @@ import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component'
 import { TenantsComplaintsDialogComponent } from '../tenants-complaints-dialog/tenants-complaints-dialog.component';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
+import { MatSort } from '@angular/material/sort';
 
 export interface TenantComplaints {
   complaintId: string;
@@ -58,7 +59,12 @@ export interface TenantComplaints {
         </div>
 
         <div>
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="mat-elevation-z8"
+          >
             <!-- Define columns based on the TenantComplaints interface -->
             <!-- ID Column -->
             <ng-container matColumnDef="complaintId">
@@ -208,10 +214,11 @@ export interface TenantComplaints {
           </table>
 
           <mat-paginator
-            #paginator
-            [pageSize]="10"
-            [pageSizeOptions]="[5, 10, 20, 100]"
-            showFirstLastButtons
+            [length]="resultsLength"
+            [pageIndex]="pageIndex"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="onPageChange($event)"
           ></mat-paginator>
         </div>
       </ng-container>
@@ -260,6 +267,14 @@ export interface TenantComplaints {
 export class TenantComplaintsComponent implements OnInit {
   isAsyncCall = false;
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  resultsLength = 0;
+  pageIndex = 0;
+  pageSize = 10;
+  pageSizeOptions: number[] = [2, 5, 10, 20, 100];
+
   displayedColumns: string[] = [
     'complaintId',
     'tenantName',
@@ -281,13 +296,6 @@ export class TenantComplaintsComponent implements OnInit {
   }
 
   dataSource = new MatTableDataSource([]);
-
-  @ViewChild(MatPaginator, { static: false })
-  set paginator(value: MatPaginator) {
-    if (this.dataSource) {
-      this.dataSource.paginator = value;
-    }
-  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -350,23 +358,36 @@ export class TenantComplaintsComponent implements OnInit {
     });
   }
 
-  page = 1;
-  pageSize = 10;
   getTenantsComplaints() {
     this.isAsyncCall = true;
-    this.authService.getTenantsComplaints(this.page, this.pageSize).subscribe(
-      (res) => {
-        if (res) {
-          const data = res?.results?.items;
-          this.dataSource = new MatTableDataSource(data);
+    this.authService
+      .getTenantsComplaints(this.pageIndex + 1, this.pageSize)
+      .subscribe(
+        (res) => {
+          if (res) {
+            const data = res?.results?.items;
+            this.dataSource = new MatTableDataSource(data);
+            this.resultsLength = res?.results.totalCount;
+            this.isAsyncCall = false;
+
+            // Reset paginator after filtering
+            if (this.paginator) {
+              this.paginator.firstPage();
+            }
+          }
+        },
+        (error: any) => {
+          this.error();
           this.isAsyncCall = false;
         }
-      },
-      (error: any) => {
-        this.error();
-        this.isAsyncCall = false;
-      }
-    );
+      );
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.sort.sortChange.emit(this.sort);
+    this.getTenantsComplaints();
   }
 
   deleteTenantsComplaints(item: TenantComplaints) {

@@ -3,11 +3,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MaterialModule } from '../../material/src/public-api';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { UsersTenantsDataDialogComponent } from '../users-tenants-data-dialog/users-tenants-data-dialog.component';
 import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
 import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
 
 export interface UsersData {
   id: string;
@@ -60,7 +61,7 @@ export interface UsersData {
 
       <div>
         <div class="mat-elevation-z8">
-          <table mat-table [dataSource]="dataSource">
+          <table mat-table [dataSource]="dataSource" matSort>
             <!-- ID Column -->
             <ng-container matColumnDef="id">
               <th
@@ -234,10 +235,12 @@ export interface UsersData {
             </tr>
           </table>
 
-          <!-- Pagination -->
           <mat-paginator
-            [pageSizeOptions]="[5, 10, 25, 100]"
-            showFirstLastButtons
+            [length]="resultsLength"
+            [pageIndex]="pageIndex"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="onPageChange($event)"
           ></mat-paginator>
         </div>
       </div>
@@ -286,6 +289,14 @@ export interface UsersData {
 export class UsersComponent implements OnInit {
   isAsyncCall = false;
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  resultsLength = 0;
+  pageIndex = 0;
+  pageSize = 10;
+  pageSizeOptions: number[] = [2, 5, 10, 20, 100];
+
   displayedColumns: string[] = [
     'id',
     'name',
@@ -307,13 +318,6 @@ export class UsersComponent implements OnInit {
     this.getUserInformation();
   }
 
-  @ViewChild(MatPaginator, { static: false })
-  set paginator(value: MatPaginator) {
-    if (this.dataSource) {
-      this.dataSource.paginator = value;
-    }
-  }
-
   truncateText(text: string, maxLength: number): string {
     if (text?.length > maxLength) {
       return text.substring(0, maxLength) + '...';
@@ -329,18 +333,22 @@ export class UsersComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  page = 1;
-  pageSize = 10;
   getUserInformation() {
     this.isAsyncCall = true;
-    this.authService.getUsersInfo(this.page, this.pageSize).subscribe(
+    this.authService.getUsersInfo(this.pageIndex + 1, this.pageSize).subscribe(
       (res) => {
         if (res) {
           console.log(res, 'responseoftenantspayments');
           const data = res.results.items;
           this.dataSource = new MatTableDataSource(data);
+          this.resultsLength = res?.results.totalCount;
+          this.isAsyncCall = false;
+
+          // Reset paginator after filtering
+          if (this.paginator) {
+            this.paginator.firstPage();
+          }
         }
-        this.isAsyncCall = false;
       },
       (error: any) => {
         console.error('Error Occurred:', error);
@@ -348,6 +356,13 @@ export class UsersComponent implements OnInit {
         this.isAsyncCall = false;
       }
     );
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.sort.sortChange.emit(this.sort);
+    this.getUserInformation();
   }
 
   createUsersDataDialog(item: any) {
