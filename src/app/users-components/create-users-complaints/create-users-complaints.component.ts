@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
@@ -19,10 +19,37 @@ import { AsyncSpinnerComponent } from '../../components';
     <div>
       <mat-card
         style=" padding: 20px 40px; 
-         display:block; margin:20px auto;border-radius: 10px;width:600px;background-color:#eaf3ff"
+         display:block; margin:20px auto;border-radius: 10px;width:500px;background-color:#eaf3ff"
       >
         <ng-container *ngIf="!isAsyncCall">
           <h1 style="text-align:center; font-weight:bold">Create Complaint</h1>
+
+          <!-- Your component template -->
+          <div class="centered-container">
+            <div style="margin-left: 50px;margin-bottom:5%;">
+              <h2 class="preview-header">Preview</h2>
+              <div class="icon-preview-container">
+                <img
+                  [src]="selectedImage || 'assets/samplepic.jpg'"
+                  alt="Selected Image Preview"
+                  class="icon-preview"
+                />
+              </div>
+            </div>
+            <div>
+              <button mat-raised-button (click)="fileInput.click()">
+                Upload Picture
+              </button>
+              <input
+                #fileInput
+                style="display: none"
+                type="file"
+                name="icon"
+                (change)="onFileSelected($event)"
+                accept="image/*"
+              />
+            </div>
+          </div>
 
           <form [formGroup]="tenantsComplaintsForm">
             <mat-form-field appearance="outline" class="full">
@@ -65,13 +92,58 @@ import { AsyncSpinnerComponent } from '../../components';
       </mat-card>
     </div>
   `,
-  styles: ['.full{width:100%}'],
+  styles: [
+    `
+      .centered-container {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+
+        border-radius: 8px;
+
+        height: 180px;
+        justify-content: center;
+      }
+
+      .full {
+        width: 100%;
+      }
+      .icon-preview-container {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-top: 20px;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0px auto;
+        background-color: #fff;
+      }
+      .icon-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+      .preview-header {
+        font-size: 20px;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+    `,
+  ],
 })
 export class CreateUsersComplaintsComponent {
   isAsyncCall = false;
   // tenantName: any[] = [];
   tenantIdData: any[] = [];
   userId: any;
+  selectedImage!: string;
+  @ViewChild('fileInput') fileInputRef!: ElementRef;
 
   tenantsComplaintsForm = this.formBuilder.group({
     tenantId: ['', Validators.required],
@@ -94,9 +166,6 @@ export class CreateUsersComplaintsComponent {
     }
   }
 
-  page = 1;
-  pageSize = 10;
-
   get tenantId() {
     return this.tenantsComplaintsForm.controls.tenantId;
   }
@@ -105,6 +174,21 @@ export class CreateUsersComplaintsComponent {
   }
   get details() {
     return this.tenantsComplaintsForm.controls.details;
+  }
+
+  onFileSelected(event: any): void {
+    const inputElement = event.target as HTMLInputElement;
+    const file = inputElement.files ? inputElement.files[0] : null;
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target) {
+          this.selectedImage = e.target.result as string;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   getTenantId() {

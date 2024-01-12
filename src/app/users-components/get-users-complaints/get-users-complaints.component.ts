@@ -24,6 +24,20 @@ import { MatSort } from '@angular/material/sort';
             matSort
             class="mat-elevation-z8"
           >
+            <ng-container matColumnDef="icon">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="background-color:#2c3e50; color:white"
+              >
+                Icon
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <mat-icon *ngIf="element.icon">visibility</mat-icon>
+                <mat-icon *ngIf="!element.icon">visibility_off</mat-icon>
+              </td>
+            </ng-container>
+
             <ng-container matColumnDef="createdAt">
               <th
                 mat-header-cell
@@ -161,7 +175,13 @@ export class GetUsersComplaintsComponent {
   pageSize = 10;
   pageSizeOptions: number[] = [2, 5, 10, 20, 100];
 
-  displayedColumns: string[] = ['createdAt', 'title', 'details', 'isFixed'];
+  displayedColumns: string[] = [
+    'icon',
+    'createdAt',
+    'title',
+    'details',
+    'isFixed',
+  ];
 
   dataSource = new MatTableDataSource([]);
 
