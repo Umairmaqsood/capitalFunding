@@ -91,9 +91,9 @@ import { MatSort } from '@angular/material/sort';
               <td mat-cell *matCellDef="let element">
                 <span
                   class="custom-badge"
-                  [ngClass]="element.isLate ? 'true' : 'false'"
+                  [ngClass]="element.isFixed ? 'true' : 'false'"
                 >
-                  {{ element.isLate ? 'Fixed' : 'Pending' }}
+                  {{ element.isFixed ? 'Fixed' : 'Pending' }}
                 </span>
               </td>
             </ng-container>
