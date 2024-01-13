@@ -161,7 +161,7 @@ export class AuthenticationService {
     }
   }
 
-  createTenantsComplaints(data: any) {
+  createTenantsComplaints(complaintData: any, file: File) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
@@ -170,17 +170,20 @@ export class AuthenticationService {
         Authorization: `Bearer ${results.results}`,
       });
 
-      return this.http.post<any>(
-        this.backendUrl + '/newComplaint',
-        data,
-        { headers } // Pass the headers in the request options
-      );
+      const formData = new FormData();
+      formData.append('complaint', JSON.stringify(complaintData));
+      formData.append('file', file);
+
+      return this.http.post<any>(this.backendUrl + '/newComplaint', formData, {
+        headers,
+      });
     } else {
       console.error('Token not available');
 
-      return of(null); // You can return an observable with a null value
+      return of(null);
     }
   }
+
   updateTenantsComplaints(data: any) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;

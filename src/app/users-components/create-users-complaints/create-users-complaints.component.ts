@@ -24,34 +24,34 @@ import { AsyncSpinnerComponent } from '../../components';
         <ng-container *ngIf="!isAsyncCall">
           <h1 style="text-align:center; font-weight:bold">Create Complaint</h1>
 
-          <!-- Your component template -->
-          <div class="centered-container">
-            <div style="margin-left: 50px;margin-bottom:5%;">
-              <h2 class="preview-header">Preview</h2>
-              <div class="icon-preview-container">
-                <img
-                  [src]="selectedImage || 'assets/samplepic.jpg'"
-                  alt="Selected Image Preview"
-                  class="icon-preview"
+          <form [formGroup]="tenantsComplaintsForm">
+            <!-- Your component template -->
+            <div class="centered-container">
+              <div style="margin-left: 50px;margin-bottom:5%;">
+                <h2 class="preview-header">Preview</h2>
+                <div class="icon-preview-container">
+                  <img
+                    [src]="selectedImage || 'assets/samplepic.jpg'"
+                    alt="Selected Image Preview"
+                    class="icon-preview"
+                  />
+                </div>
+              </div>
+              <div>
+                <button mat-raised-button (click)="fileInput.click()">
+                  Upload Picture
+                </button>
+                <input
+                  #fileInput
+                  style="display: none"
+                  type="file"
+                  name="icon"
+                  (change)="onFileSelected(fileInput)"
+                  accept="image/*"
                 />
               </div>
             </div>
-            <div>
-              <button mat-raised-button (click)="fileInput.click()">
-                Upload Picture
-              </button>
-              <input
-                #fileInput
-                style="display: none"
-                type="file"
-                name="icon"
-                (change)="onFileSelected($event)"
-                accept="image/*"
-              />
-            </div>
-          </div>
 
-          <form [formGroup]="tenantsComplaintsForm">
             <mat-form-field appearance="outline" class="full">
               <mat-label>Tenant ID</mat-label>
               <input
@@ -139,13 +139,14 @@ import { AsyncSpinnerComponent } from '../../components';
 })
 export class CreateUsersComplaintsComponent {
   isAsyncCall = false;
-  // tenantName: any[] = [];
+
   tenantIdData: any[] = [];
   userId: any;
-  selectedImage!: string;
+  selectedImage: string | ArrayBuffer | null = null; // Updated type to handle both file and base64 string
   @ViewChild('fileInput') fileInputRef!: ElementRef;
 
   tenantsComplaintsForm = this.formBuilder.group({
+    file: [null as unknown as File], // Cast 'null' to 'unknown' and then to 'File'
     tenantId: ['', Validators.required],
     title: ['', Validators.required],
     details: ['', Validators.required],
@@ -176,11 +177,13 @@ export class CreateUsersComplaintsComponent {
     return this.tenantsComplaintsForm.controls.details;
   }
 
-  onFileSelected(event: any): void {
-    const inputElement = event.target as HTMLInputElement;
-    const file = inputElement.files ? inputElement.files[0] : null;
+  get file() {
+    return this.tenantsComplaintsForm.controls.file;
+  }
 
-    if (file) {
+  onFileSelected(fileInput: HTMLInputElement): void {
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target) {
@@ -188,6 +191,12 @@ export class CreateUsersComplaintsComponent {
         }
       };
       reader.readAsDataURL(file);
+
+      this.tenantsComplaintsForm.patchValue({
+        file: file,
+      });
+    } else {
+      console.error('No file selected');
     }
   }
 
@@ -212,8 +221,15 @@ export class CreateUsersComplaintsComponent {
       details: this.details.value,
     };
 
+    const file = this.tenantsComplaintsForm.value.file;
+
+    if (!file) {
+      console.error('No file selected');
+      return; // Handle the case where no file is selected
+    }
+
     this.isAsyncCall = true;
-    this.authService.createTenantsComplaints(createdData).subscribe(
+    this.authService.createTenantsComplaints(createdData, file).subscribe(
       (result) => {
         if (result) {
           this.createSnackabr();
