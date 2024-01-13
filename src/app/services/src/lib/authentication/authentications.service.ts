@@ -640,6 +640,26 @@ export class AuthenticationService {
     }
   }
 
+  getImage(complaintId: string) {
+    const currentUser = localStorage.getItem('currentUser');
+    const results = currentUser ? JSON.parse(currentUser) : null;
+
+    if (results && results.results) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${results.results}`,
+      });
+
+      return this.http.get<any>(
+        this.backendUrl + `/getComplaintImage?complaintId=${complaintId}`,
+        { headers } // Pass the headers in the request options
+      );
+    } else {
+      console.error('Token not available');
+
+      return of(null); // You can return an observable with a null value
+    }
+  }
+
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);

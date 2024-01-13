@@ -9,6 +9,7 @@ import { TenantsComplaintsDialogComponent } from '../tenants-complaints-dialog/t
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 import { MatSort } from '@angular/material/sort';
+import { saveAs } from 'file-saver';
 
 export interface TenantComplaints {
   complaintId: string;
@@ -180,6 +181,12 @@ export interface TenantComplaints {
                 style="width: 160px"
               >
                 <mat-select #select placeholder="Select">
+                  <mat-option (click)="getTenantImage(row.complaintId)">
+                    Download Image<mat-icon style="color:#2196F3"
+                      >cloud_download</mat-icon
+                    >
+                  </mat-option>
+
                   <mat-option (click)="updateTenantsComplaintsDialog(row)">
                     Update<mat-icon style="color:#2E7D32">update</mat-icon>
                   </mat-option>
@@ -266,6 +273,7 @@ export interface TenantComplaints {
 })
 export class TenantComplaintsComponent implements OnInit {
   isAsyncCall = false;
+  complaintId: any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -381,6 +389,20 @@ export class TenantComplaintsComponent implements OnInit {
           this.isAsyncCall = false;
         }
       );
+  }
+
+  getTenantImage(complaintId: string) {
+    this.isAsyncCall = true;
+    this.authService.getImage(complaintId).subscribe((res) => {
+      if (res) {
+        console.log('Image downloaded successfully:', res);
+
+        // Use file-saver to save the image
+        const blob = new Blob([res], { type: 'image/png' });
+        saveAs(blob, `image_${complaintId}.jpeg`);
+      }
+      this.isAsyncCall = false;
+    });
   }
 
   onPageChange(event: PageEvent) {

@@ -16,7 +16,7 @@ export interface TenantsPayment {
   areaMaintainienceFee: number;
   isLate: boolean;
   lateFee: number;
-  rentPayedAt: Date;
+  rentPayedAt: string;
   month: string;
 }
 
@@ -183,7 +183,7 @@ export interface TenantsPayment {
                 Rent Payed At
               </th>
               <td mat-cell *matCellDef="let element">
-                {{ element.rentPayedAt | date : 'dd-MM-yyyy' }}
+                {{ element.rentPayedAt }}
               </td>
             </ng-container>
 

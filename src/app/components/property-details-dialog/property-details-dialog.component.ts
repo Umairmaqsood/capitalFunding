@@ -74,6 +74,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
                 min="0"
                 formControlName="numberofBedrooms"
                 placeholder="Number of Bedrooms"
+                [min]="0"
               />
             </mat-form-field>
 
@@ -82,9 +83,9 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
               <input
                 matInput
                 type="number"
-                min="0"
                 formControlName="numberofBathrooms"
                 placeholder="Number of Bathrooms"
+                [min]="0"
               />
             </mat-form-field>
 

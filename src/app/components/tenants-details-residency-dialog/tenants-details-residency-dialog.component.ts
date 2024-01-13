@@ -63,6 +63,17 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full">
+            <mat-label>Rent/Month</mat-label>
+            <input
+              matInput
+              formControlName="rentPerMonth"
+              placeholder="Rent Per Month"
+              type="number"
+              [min]="0"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full">
             <mat-label>Moved In</mat-label>
             <input
               matInput
@@ -120,6 +131,7 @@ export class TenantsDetailsResidencyDialogComponent {
     id: [''],
     userId: ['', Validators.required],
     propertyId: ['', Validators.required],
+    rentPerMonth: ['', Validators.required],
     movedIn: ['', Validators.required],
     movedOut: [''],
   });
@@ -133,6 +145,11 @@ export class TenantsDetailsResidencyDialogComponent {
   get propertyId() {
     return this.tenantsDetailsForm.controls.propertyId;
   }
+
+  get rentPerMonth() {
+    return this.tenantsDetailsForm.controls.rentPerMonth;
+  }
+
   get movedIn() {
     return this.tenantsDetailsForm.controls.movedIn;
   }
@@ -217,6 +234,8 @@ export class TenantsDetailsResidencyDialogComponent {
       this.tenantsDetailsForm.patchValue({
         id: data.item.id,
         movedIn: data.item.movedIn,
+        rentPerMonth: data.item.rentPerMonth,
+
         movedOut: data.item.movedOut,
       });
     }
@@ -235,6 +254,7 @@ export class TenantsDetailsResidencyDialogComponent {
       id: this.id.value,
       userId: this.userId.value,
       propertyId: this.propertyId.value,
+      rentPerMonth: this.rentPerMonth.value,
       movedIn: this.movedIn.value,
       movedOut: this.movedOut.value,
     };
@@ -255,6 +275,8 @@ export class TenantsDetailsResidencyDialogComponent {
       id: this.id.value,
       userId: this.userId.value,
       propertyId: this.propertyId.value,
+      rentPerMonth: this.rentPerMonth.value,
+
       movedIn: this.movedIn.value,
       movedOut: this.movedOut.value,
     };

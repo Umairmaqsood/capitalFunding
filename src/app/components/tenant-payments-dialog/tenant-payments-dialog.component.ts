@@ -57,6 +57,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
                 type="number"
                 formControlName="rent"
                 placeholder="Rent"
+                [min]="0"
               />
             </mat-form-field>
 
@@ -67,6 +68,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
                 type="number"
                 formControlName="areaMaintainienceFee"
                 placeholder="Area Maintenance Fee"
+                [min]="0"
               />
             </mat-form-field>
 
@@ -83,6 +85,7 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
               <input
                 matInput
                 type="number"
+                [min]="0"
                 formControlName="lateFee"
                 placeholder="Late Fee"
               />
@@ -98,20 +101,22 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
               </mat-form-field>
             </ng-container>
 
-            <mat-form-field appearance="outline" class="full">
-              <mat-label>Rent Payed At</mat-label>
-              <input
-                matInput
-                [matDatepicker]="picker"
-                formControlName="rentPayedAt"
-                placeholder="Rent Payed At"
-              />
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="picker"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
+            <ng-container *ngIf="selectedRequestType !== 'create'">
+              <mat-form-field appearance="outline" class="full">
+                <mat-label>Rent Payed At</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  formControlName="rentPayedAt"
+                  placeholder="Rent Payed At"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </ng-container>
 
             <mat-form-field appearance="outline" class="full">
               <mat-label>Month</mat-label>
@@ -149,7 +154,7 @@ export class TenantPaymentsDialogComponent {
     isLate: ['', Validators.required],
     lateFee: ['', Validators.required],
     isPayable: [''],
-    rentPayedAt: ['', Validators.required],
+    rentPayedAt: [''],
     month: ['', Validators.required],
   });
 
