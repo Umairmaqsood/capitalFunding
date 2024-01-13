@@ -140,7 +140,7 @@ export interface TenantComplaints {
                   class="custom-badge"
                   [ngClass]="element.isFixed ? 'true' : 'false'"
                 >
-                  {{ element.isFixed ? 'Pending' : 'Fixed' }}
+                  {{ element.isFixed ? 'Fixed' : 'Pending' }}
                 </span>
               </td>
             </ng-container>
@@ -245,12 +245,12 @@ export interface TenantComplaints {
         }
       }
 
-      .true {
+      .false {
         background-color: red;
         color: white;
       }
 
-      .false {
+      .true {
         background-color: green;
         color: white;
       }
