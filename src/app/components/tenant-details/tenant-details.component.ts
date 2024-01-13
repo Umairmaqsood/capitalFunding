@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MaterialModule } from '../../material/src/public-api';
 import { TenantsDetailsResidencyDialogComponent } from '../tenants-details-residency-dialog/tenants-details-residency-dialog.component';
@@ -10,6 +10,7 @@ import { PropertyDetails } from '../property-details/property-details.component'
 import { TenantComplaints } from '../tenant-complaints/tenant-complaints.component';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
+import { MatSort } from '@angular/material/sort';
 
 export interface TenantResidencyInfo {
   id: string;
@@ -59,7 +60,12 @@ export interface TenantResidencyInfo {
         </div>
 
         <div>
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="mat-elevation-z8"
+          >
             <!-- Define your columns as per your requirements -->
             <!-- ID Column -->
             <ng-container matColumnDef="id">
@@ -179,10 +185,11 @@ export interface TenantResidencyInfo {
           </table>
 
           <mat-paginator
-            #paginator
-            [pageSize]="10"
-            [pageSizeOptions]="[5, 10, 20, 100]"
-            showFirstLastButtons
+            [length]="resultsLength"
+            [pageIndex]="pageIndex"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="onPageChange($event)"
           ></mat-paginator>
         </div>
       </ng-container>
@@ -200,6 +207,14 @@ export interface TenantResidencyInfo {
 })
 export class TenantDetailsComponent implements OnInit {
   isAsyncCall = false;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  resultsLength = 0;
+  pageIndex = 0;
+  pageSize = 10;
+  pageSizeOptions: number[] = [2, 5, 10, 20, 100];
 
   displayedColumns: string[] = [
     'id',
@@ -222,12 +237,6 @@ export class TenantDetailsComponent implements OnInit {
 
   dataSource = new MatTableDataSource([]);
 
-  @ViewChild(MatPaginator, { static: false })
-  set paginator(value: MatPaginator) {
-    if (this.dataSource) {
-      this.dataSource.paginator = value;
-    }
-  }
   truncateText(text: string, maxLength: number): string {
     if (text?.length > maxLength) {
       return text.substring(0, maxLength) + '...';
@@ -240,23 +249,36 @@ export class TenantDetailsComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  page = 1;
-  pageSize = 10;
+
   getTenantsDetailsResidency() {
     this.isAsyncCall = true;
-    this.authService.getTenantsResidency(this.page, this.pageSize).subscribe(
-      (res) => {
-        if (res) {
-          const data = res?.results?.items;
-          this.dataSource = new MatTableDataSource(data);
+    this.authService
+      .getTenantsResidency(this.pageIndex + 1, this.pageSize)
+      .subscribe(
+        (res) => {
+          if (res) {
+            const data = res?.results?.items;
+            this.dataSource = new MatTableDataSource(data);
+            this.resultsLength = res?.results?.totalCount;
+            this.isAsyncCall = false;
+
+            // Reset paginator after filtering
+            if (this.paginator) {
+              this.paginator.firstPage();
+            }
+          }
+        },
+        (error: any) => {
+          this.error();
           this.isAsyncCall = false;
         }
-      },
-      (error: any) => {
-        this.error();
-        this.isAsyncCall = false;
-      }
-    );
+      );
+  }
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.sort.sortChange.emit(this.sort);
+    this.getTenantsDetailsResidency();
   }
 
   createTenantPaymentResidency(item: any) {

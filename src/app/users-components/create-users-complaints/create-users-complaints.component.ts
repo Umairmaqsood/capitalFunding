@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
@@ -19,12 +19,39 @@ import { AsyncSpinnerComponent } from '../../components';
     <div>
       <mat-card
         style=" padding: 20px 40px; 
-         display:block; margin:20px auto;border-radius: 10px;width:600px;background-color:#eaf3ff"
+         display:block; margin:20px auto;border-radius: 10px;width:500px;background-color:#eaf3ff"
       >
         <ng-container *ngIf="!isAsyncCall">
           <h1 style="text-align:center; font-weight:bold">Create Complaint</h1>
 
           <form [formGroup]="tenantsComplaintsForm">
+            <!-- Your component template -->
+            <div class="centered-container">
+              <div style="margin-left: 50px;margin-bottom:5%;">
+                <h2 class="preview-header">Preview</h2>
+                <div class="icon-preview-container">
+                  <img
+                    [src]="selectedImage || 'assets/samplepic.jpg'"
+                    alt="Selected Image Preview"
+                    class="icon-preview"
+                  />
+                </div>
+              </div>
+              <div>
+                <button mat-raised-button (click)="fileInput.click()">
+                  Upload Picture
+                </button>
+                <input
+                  #fileInput
+                  style="display: none"
+                  type="file"
+                  name="icon"
+                  (change)="onFileSelected(fileInput)"
+                  accept="image/*"
+                />
+              </div>
+            </div>
+
             <mat-form-field appearance="outline" class="full">
               <mat-label>Tenant ID</mat-label>
               <input
@@ -65,15 +92,61 @@ import { AsyncSpinnerComponent } from '../../components';
       </mat-card>
     </div>
   `,
-  styles: ['.full{width:100%}'],
+  styles: [
+    `
+      .centered-container {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+
+        border-radius: 8px;
+
+        height: 180px;
+        justify-content: center;
+      }
+
+      .full {
+        width: 100%;
+      }
+      .icon-preview-container {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-top: 20px;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0px auto;
+        background-color: #fff;
+      }
+      .icon-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+      .preview-header {
+        font-size: 20px;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+    `,
+  ],
 })
 export class CreateUsersComplaintsComponent {
   isAsyncCall = false;
-  // tenantName: any[] = [];
+
   tenantIdData: any[] = [];
   userId: any;
+  selectedImage: string | ArrayBuffer | null = null; // Updated type to handle both file and base64 string
+  @ViewChild('fileInput') fileInputRef!: ElementRef;
 
   tenantsComplaintsForm = this.formBuilder.group({
+    file: [null as unknown as File], // Cast 'null' to 'unknown' and then to 'File'
     tenantId: ['', Validators.required],
     title: ['', Validators.required],
     details: ['', Validators.required],
@@ -94,9 +167,6 @@ export class CreateUsersComplaintsComponent {
     }
   }
 
-  page = 1;
-  pageSize = 10;
-
   get tenantId() {
     return this.tenantsComplaintsForm.controls.tenantId;
   }
@@ -105,6 +175,29 @@ export class CreateUsersComplaintsComponent {
   }
   get details() {
     return this.tenantsComplaintsForm.controls.details;
+  }
+
+  get file() {
+    return this.tenantsComplaintsForm.controls.file;
+  }
+
+  onFileSelected(fileInput: HTMLInputElement): void {
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target) {
+          this.selectedImage = e.target.result as string;
+        }
+      };
+      reader.readAsDataURL(file);
+
+      this.tenantsComplaintsForm.patchValue({
+        file: file,
+      });
+    } else {
+      console.error('No file selected');
+    }
   }
 
   getTenantId() {
@@ -128,8 +221,15 @@ export class CreateUsersComplaintsComponent {
       details: this.details.value,
     };
 
+    const file = this.tenantsComplaintsForm.value.file;
+
+    if (!file) {
+      console.error('No file selected');
+      return; // Handle the case where no file is selected
+    }
+
     this.isAsyncCall = true;
-    this.authService.createTenantsComplaints(createdData).subscribe(
+    this.authService.createTenantsComplaints(createdData, file).subscribe(
       (result) => {
         if (result) {
           this.createSnackabr();

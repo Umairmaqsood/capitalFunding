@@ -4,9 +4,10 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AsyncSpinnerComponent } from '../../components/async-spinner/async-spinner.component';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/src/public-api';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-get-users-complaints',
@@ -17,7 +18,26 @@ import { MatPaginator } from '@angular/material/paginator';
         <h1 style="font-weight:bold">Complaints History</h1>
 
         <div>
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="mat-elevation-z8"
+          >
+            <ng-container matColumnDef="icon">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                style="background-color:#2c3e50; color:white"
+              >
+                Icon
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <mat-icon *ngIf="element.icon">visibility</mat-icon>
+                <mat-icon *ngIf="!element.icon">visibility_off</mat-icon>
+              </td>
+            </ng-container>
+
             <ng-container matColumnDef="createdAt">
               <th
                 mat-header-cell
@@ -88,10 +108,11 @@ import { MatPaginator } from '@angular/material/paginator';
           </table>
 
           <mat-paginator
-            #paginator
-            [pageSize]="10"
-            [pageSizeOptions]="[5, 10, 20, 100]"
-            showFirstLastButtons
+            [length]="resultsLength"
+            [pageIndex]="pageIndex"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="onPageChange($event)"
           ></mat-paginator>
         </div>
       </ng-container>
@@ -146,17 +167,23 @@ import { MatPaginator } from '@angular/material/paginator';
 export class GetUsersComplaintsComponent {
   isAsyncCall = false;
   userId: any;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['createdAt', 'title', 'details', 'isFixed'];
+  resultsLength = 0;
+  pageIndex = 0;
+  pageSize = 10;
+  pageSizeOptions: number[] = [2, 5, 10, 20, 100];
+
+  displayedColumns: string[] = [
+    'icon',
+    'createdAt',
+    'title',
+    'details',
+    'isFixed',
+  ];
 
   dataSource = new MatTableDataSource([]);
-
-  @ViewChild(MatPaginator, { static: false })
-  set paginator(value: MatPaginator) {
-    if (this.dataSource) {
-      this.dataSource.paginator = value;
-    }
-  }
 
   constructor(
     private snackBar: MatSnackBar,
@@ -176,9 +203,6 @@ export class GetUsersComplaintsComponent {
     }
   }
 
-  page = 1;
-  pageSize = 10;
-
   getUsersComplaints() {
     this.isAsyncCall = true;
     this.authService.getUsersComplaints(this.userId).subscribe(
@@ -186,7 +210,13 @@ export class GetUsersComplaintsComponent {
         if (res) {
           const data = res?.results;
           this.dataSource = new MatTableDataSource(data);
+          this.resultsLength = res?.results?.totalCount;
           this.isAsyncCall = false;
+
+          // Reset paginator after filtering
+          if (this.paginator) {
+            this.paginator.firstPage();
+          }
         }
       },
       (error) => {
@@ -195,6 +225,13 @@ export class GetUsersComplaintsComponent {
         this.error();
       }
     );
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.sort.sortChange.emit(this.sort);
+    this.getUsersComplaints();
   }
 
   error(): void {

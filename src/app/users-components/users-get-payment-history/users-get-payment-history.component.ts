@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AsyncSpinnerComponent } from '../../components/async-spinner/async-spinner.component';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/src/public-api';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-users-get-payment-history',
@@ -16,7 +18,12 @@ import { MatTableDataSource } from '@angular/material/table';
       <ng-container *ngIf="!isAsyncCall">
         <h1 style="font-weight:bold">Payment History</h1>
         <div>
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="mat-elevation-z8"
+          >
             <!-- ID Column -->
             <ng-container matColumnDef="id">
               <th
@@ -34,23 +41,6 @@ import { MatTableDataSource } from '@angular/material/table';
                 {{ truncateText(element.id, 8) }}
               </td>
             </ng-container>
-
-            <!-- <ng-container matColumnDef="tenantId">
-              <th
-                mat-header-cell
-                *matHeaderCellDef
-                style="background-color:#2c3e50; color:white"
-              >
-                Tenant ID
-              </th>
-              <td
-                mat-cell
-                *matCellDef="let element"
-                [matTooltip]="truncateText(element.tenantId, 100)"
-              >
-                {{ truncateText(element.tenantId, 8) }}
-              </td>
-            </ng-container> -->
 
             <ng-container matColumnDef="rent">
               <th
@@ -75,24 +65,6 @@ import { MatTableDataSource } from '@angular/material/table';
                 {{ element.areaMaintainienceFee }}
               </td>
             </ng-container>
-
-            <!-- <ng-container matColumnDef="isLate">
-              <th
-                mat-header-cell
-                *matHeaderCellDef
-                style="background-color: #2c3e50; color: white"
-              >
-                Is Late
-              </th>
-              <td mat-cell *matCellDef="let element">
-                <span
-                  class="custom-badge"
-                  [ngClass]="element.isLate ? 'false' : 'true'"
-                >
-                  {{ element.isLate ? 'Late' : 'On Time' }}
-                </span>
-              </td>
-            </ng-container> -->
 
             <!-- Late Fee Column -->
             <ng-container matColumnDef="lateFee">
@@ -161,10 +133,11 @@ import { MatTableDataSource } from '@angular/material/table';
           </table>
 
           <mat-paginator
-            #paginator
-            [pageSize]="10"
-            [pageSizeOptions]="[5, 10, 20, 100]"
-            showFirstLastButtons
+            [length]="resultsLength"
+            [pageIndex]="pageIndex"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="onPageChange($event)"
           ></mat-paginator>
         </div>
       </ng-container>
@@ -208,6 +181,13 @@ import { MatTableDataSource } from '@angular/material/table';
 export class UsersGetPaymentHistoryComponent {
   isAsyncCall = false;
   userId: any;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  resultsLength = 0;
+  pageIndex = 0;
+  pageSize = 10;
+  pageSizeOptions: number[] = [2, 5, 10, 20, 100];
   displayedColumns: string[] = [
     'id',
     'rent',
@@ -237,19 +217,22 @@ export class UsersGetPaymentHistoryComponent {
 
   dataSource = new MatTableDataSource([]);
 
-  page = 1;
-  pageSize = 10;
-
   getPaymentHistory() {
     this.isAsyncCall = true;
     this.authService
-      .getPaymentHistory(this.userId, this.page, this.pageSize)
+      .getPaymentHistory(this.userId, this.pageIndex + 1, this.pageSize)
       .subscribe(
         (res) => {
           if (res) {
             const data = res?.results?.items;
             this.dataSource = new MatTableDataSource(data);
+            this.resultsLength = res?.results?.totalCount;
             this.isAsyncCall = false;
+
+            // Reset paginator after filtering
+            if (this.paginator) {
+              this.paginator.firstPage();
+            }
           }
         },
         (error) => {
@@ -263,5 +246,12 @@ export class UsersGetPaymentHistoryComponent {
     const config = new MatSnackBarConfig();
     config.duration = 5000;
     this.snackBar.open(`AN ERROR OCCURED!`, 'X', config);
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.sort.sortChange.emit(this.sort);
+    this.getPaymentHistory();
   }
 }

@@ -4,11 +4,11 @@ import { MaterialModule } from '../../material/src/public-api';
 import { TenantPaymentsDialogComponent } from '../tenant-payments-dialog/tenant-payments-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { AsyncSpinnerComponent } from '../async-spinner/async-spinner.component';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AuthenticationService } from '../../services/src/lib/authentication/authentications.service';
-
+import { MatSort } from '@angular/material/sort';
 export interface TenantsPayment {
   id: string;
   tenantId: string;
@@ -60,7 +60,12 @@ export interface TenantsPayment {
         </div>
 
         <div>
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="mat-elevation-z8"
+          >
             <!-- ID Column -->
             <ng-container matColumnDef="id">
               <th
@@ -241,10 +246,11 @@ export interface TenantsPayment {
           </table>
 
           <mat-paginator
-            #paginator
-            [pageSize]="10"
-            [pageSizeOptions]="[5, 10, 20, 100]"
-            showFirstLastButtons
+            [length]="resultsLength"
+            [pageIndex]="pageIndex"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="onPageChange($event)"
           ></mat-paginator>
         </div>
       </ng-container>
@@ -303,6 +309,14 @@ export interface TenantsPayment {
 export class TenantPaymentsComponent implements OnInit {
   isAsyncCall = false;
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  resultsLength = 0;
+  pageIndex = 0;
+  pageSize = 10;
+  pageSizeOptions: number[] = [2, 5, 10, 20, 100];
+
   displayedColumns: string[] = [
     'id',
     'tenantName',
@@ -325,12 +339,6 @@ export class TenantPaymentsComponent implements OnInit {
   ngOnInit() {
     this.getTenantsPaymentsInformations();
   }
-  @ViewChild(MatPaginator, { static: false })
-  set paginator(value: MatPaginator) {
-    if (this.dataSource) {
-      this.dataSource.paginator = value;
-    }
-  }
 
   truncateText(text: string, maxLength: number): string {
     if (text?.length > maxLength) {
@@ -347,24 +355,37 @@ export class TenantPaymentsComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  page = 1;
-  pageSize = 10;
   getTenantsPaymentsInformations() {
     this.isAsyncCall = true;
-    this.authService.getTenantsPaymentsInfo(this.page, this.pageSize).subscribe(
-      (res) => {
-        if (res) {
-          console.log(res, 'responseoftenantspayments');
-          const data = res?.results?.items;
-          this.dataSource = new MatTableDataSource(data);
+
+    this.authService
+      .getTenantsPaymentsInfo(this.pageIndex + 1, this.pageSize)
+      .subscribe(
+        (res: any) => {
+          if (res && res.isSuccess && res.results.totalCount) {
+            const data = res?.results?.items;
+            this.dataSource = new MatTableDataSource(data);
+            this.resultsLength = res?.results?.totalCount;
+            this.isAsyncCall = false;
+
+            // Reset paginator after filtering
+            if (this.paginator) {
+              this.paginator.firstPage();
+            }
+          }
+        },
+        (error: any) => {
+          this.error();
+          this.isAsyncCall = false;
         }
-        this.isAsyncCall = false;
-      },
-      (error: any) => {
-        this.error(); // Handle the error as required
-        this.isAsyncCall = false;
-      }
-    );
+      );
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.sort.sortChange.emit(this.sort);
+    this.getTenantsPaymentsInformations();
   }
 
   createTenantPaymentDialog(item: any) {
