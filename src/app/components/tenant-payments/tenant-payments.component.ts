@@ -362,7 +362,7 @@ export class TenantPaymentsComponent implements OnInit {
       .getTenantsPaymentsInfo(this.pageIndex + 1, this.pageSize)
       .subscribe(
         (res: any) => {
-          if (res && res.isSuccess && res.results.totalCount) {
+          if (res) {
             const data = res?.results?.items;
             this.dataSource = new MatTableDataSource(data);
             this.resultsLength = res?.results?.totalCount;

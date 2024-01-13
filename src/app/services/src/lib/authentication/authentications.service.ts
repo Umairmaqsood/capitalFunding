@@ -171,7 +171,9 @@ export class AuthenticationService {
       });
 
       const formData = new FormData();
-      formData.append('complaint', JSON.stringify(complaintData));
+      formData.append('tenantId', complaintData.tenantId);
+      formData.append('title', complaintData.title);
+      formData.append('details', complaintData.details);
       formData.append('file', file);
 
       return this.http.post<any>(this.backendUrl + '/newComplaint', formData, {
