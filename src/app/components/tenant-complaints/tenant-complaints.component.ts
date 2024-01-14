@@ -161,7 +161,7 @@ export interface TenantComplaints {
                 Date
               </th>
               <td mat-cell *matCellDef="let element">
-                {{ element.complainDate | date : 'dd-MM-yyyy' }}
+                {{ element.complainDate | date : 'MMMM dd, yyyy' }}
               </td>
             </ng-container>
 
@@ -243,8 +243,7 @@ export interface TenantComplaints {
         display: inline-block;
         padding: 2px 10px;
         border-radius: 5px;
-        font-weight: bold;
-        animation: blink 1.5s infinite;
+        font-weight: 500;
       }
 
       @keyframes blink {
@@ -259,14 +258,15 @@ export interface TenantComplaints {
         }
       }
 
-      .false {
-        background-color: red;
+      .true {
+        background-color: #31aa70;
         color: white;
       }
 
-      .true {
-        background-color: green;
+      .false {
+        background-color: #d5294d;
         color: white;
+        animation: blink 1.5s infinite;
       }
     `,
   ],
@@ -393,15 +393,34 @@ export class TenantComplaintsComponent implements OnInit {
 
   getTenantImage(complaintId: string) {
     this.isAsyncCall = true;
-    this.authService.getImage(complaintId).subscribe((res) => {
-      if (res) {
-        console.log('Image downloaded successfully:', res);
+    this.authService.getImage(complaintId).subscribe({
+      next: (res) => {
+        if (res && res.results.fileContents) {
+          console.log('Image downloaded successfully.');
+          console.log('Image size:', res.results.fileContents.length);
 
-        // Use file-saver to save the image
-        const blob = new Blob([res], { type: 'image/png' });
-        saveAs(blob, `image_${complaintId}.jpeg`);
-      }
-      this.isAsyncCall = false;
+          // Decode base64-encoded image data
+          const decodedImage = atob(res.results.fileContents);
+
+          // Create Uint8Array from decoded data
+          const uint8Array = new Uint8Array(decodedImage.length);
+          for (let i = 0; i < decodedImage.length; i++) {
+            uint8Array[i] = decodedImage.charCodeAt(i);
+          }
+
+          // Create Blob from Uint8Array
+          const blob = new Blob([uint8Array], {
+            type: res.results.contentType,
+          });
+
+          saveAs(blob, res.results.fileDownloadName);
+        }
+        this.isAsyncCall = false;
+      },
+      error: (error) => {
+        console.error('Error downloading image:', error);
+        this.isAsyncCall = false;
+      },
     });
   }
 

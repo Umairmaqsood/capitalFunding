@@ -276,9 +276,8 @@ export class TenantsDetailsResidencyDialogComponent {
       userId: this.userId.value,
       propertyId: this.propertyId.value,
       rentPerMonth: this.rentPerMonth.value,
-
       movedIn: this.movedIn.value,
-      movedOut: this.movedOut.value,
+      movedOut: this.movedOut.value ?? '',
     };
 
     this.isAsyncCall = true;

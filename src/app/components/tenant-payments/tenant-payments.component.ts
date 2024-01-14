@@ -136,7 +136,7 @@ export interface TenantsPayment {
               <td mat-cell *matCellDef="let element">
                 <span
                   class="custom-badge"
-                  [ngClass]="element.isLate ? 'late' : 'not-late'"
+                  [ngClass]="element.isLate ? 'false' : 'true'"
                 >
                   {{ element.isLate ? 'Late' : 'On Time' }}
                 </span>
@@ -166,7 +166,7 @@ export interface TenantsPayment {
               <td mat-cell *matCellDef="let element">
                 <span
                   class="custom-badge"
-                  [ngClass]="element.isPayable ? 'true' : 'false'"
+                  [ngClass]="element.isPayable ? 'false' : 'true'"
                 >
                   {{ element.isPayable ? 'Payable' : 'Payed' }}
                 </span>
@@ -182,8 +182,14 @@ export interface TenantsPayment {
               >
                 Rent Payed At
               </th>
+
               <td mat-cell *matCellDef="let element">
-                {{ element.rentPayedAt }}
+                <ng-container *ngIf="element.rentPayedAt; else inResidence">
+                  {{ element.rentPayedAt | date : 'MMMM dd, yyyy' }}
+                </ng-container>
+                <ng-template #inResidence>
+                  <span class="outstanding-badge">outstanding</span>
+                </ng-template>
               </td>
             </ng-container>
 
@@ -268,8 +274,7 @@ export interface TenantsPayment {
         display: inline-block;
         padding: 2px 10px;
         border-radius: 5px;
-        font-weight: bold;
-        animation: blink 1s infinite;
+        font-weight: 500;
       }
 
       @keyframes blink {
@@ -284,24 +289,24 @@ export interface TenantsPayment {
         }
       }
 
-      .late {
-        background-color: red;
-        color: white;
-      }
-
-      .not-late {
-        background-color: green;
-        color: white;
-      }
-
       .true {
-        background-color: red;
+        background-color: #31aa70;
         color: white;
       }
 
       .false {
-        background-color: green;
+        background-color: #d5294d;
         color: white;
+        animation: blink 1.5s infinite;
+      }
+
+      .outstanding-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        background-color: #f1975b;
+        color: white;
+        border-radius: 7px;
+        font-weight: 500;
       }
     `,
   ],

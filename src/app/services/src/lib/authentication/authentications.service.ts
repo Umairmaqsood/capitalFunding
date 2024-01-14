@@ -598,7 +598,7 @@ export class AuthenticationService {
     }
   }
 
-  getUsersComplaints(userId: string) {
+  getUsersComplaints(userId: string, page: number, pageSize: number) {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
@@ -608,7 +608,8 @@ export class AuthenticationService {
       });
 
       return this.http.get<any>(
-        this.backendUrl + `/getComplaints?userId=${userId}`,
+        this.backendUrl +
+          `/getComplaints?userId=${userId}&page=${page}&pageSize=${pageSize}`,
 
         { headers }
       );
@@ -651,12 +652,12 @@ export class AuthenticationService {
 
       return this.http.get<any>(
         this.backendUrl + `/getComplaintImage?complaintId=${complaintId}`,
-        { headers } // Pass the headers in the request options
+        { headers }
       );
     } else {
       console.error('Token not available');
 
-      return of(null); // You can return an observable with a null value
+      return of(null);
     }
   }
 

@@ -262,8 +262,7 @@ export interface PropertyDetails {
         display: inline-block;
         padding: 2px 10px;
         border-radius: 5px;
-        font-weight: bold;
-        animation: blink 1s infinite;
+        font-weight: 500;
       }
 
       @keyframes blink {
@@ -278,13 +277,14 @@ export interface PropertyDetails {
         }
       }
 
-      .false {
-        background-color: red;
+      .true {
+        background-color: #31aa70;
         color: white;
+        animation: blink 1.5s infinite;
       }
 
-      .true {
-        background-color: green;
+      .false {
+        background-color: #d5294d;
         color: white;
       }
     `,

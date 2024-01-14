@@ -185,15 +185,14 @@ export class GetUsersComplaintsComponent {
 
   getUsersComplaints() {
     this.isAsyncCall = true;
-    this.authService.getUsersComplaints(this.userId).subscribe(
+    this.authService.getUsersComplaints(this.userId, 1, 10).subscribe(
       (res) => {
         if (res) {
-          const data = res?.results;
+          const data = res?.results?.items;
           this.dataSource = new MatTableDataSource(data);
           this.resultsLength = res?.results?.totalCount;
           this.isAsyncCall = false;
 
-          // Reset paginator after filtering
           if (this.paginator) {
             this.paginator.firstPage();
           }

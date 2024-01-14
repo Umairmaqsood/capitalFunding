@@ -134,7 +134,7 @@ export interface TenantResidencyInfo {
                 Moved In
               </th>
               <td mat-cell *matCellDef="let element">
-                {{ element.movedIn | date : 'dd-MM-yyyy' }}
+                {{ element.movedIn | date : 'MMMM dd,yyyy' }}
               </td>
             </ng-container>
 
@@ -148,7 +148,12 @@ export interface TenantResidencyInfo {
                 Moved Out
               </th>
               <td mat-cell *matCellDef="let element">
-                {{ element.movedOut | date : 'dd-MM-yyyy' }}
+                <ng-container *ngIf="element.movedOut; else inResidence">
+                  {{ element.movedOut | date : 'MMMM dd,yyyy' }}
+                </ng-container>
+                <ng-template #inResidence>
+                  <span class="in-residence-badge">In Residence</span>
+                </ng-template>
               </td>
             </ng-container>
 
@@ -216,6 +221,15 @@ export interface TenantResidencyInfo {
         cursor: pointer;
         background-color: lightgreen !important;
       }
+
+      .in-residence-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        background-color: #3a70f7;
+        color: white;
+        border-radius: 7px;
+        font-weight: 500;
+      }
     `,
   ],
 })
@@ -235,10 +249,8 @@ export class TenantDetailsComponent implements OnInit {
     'userName',
     'propertyName',
     'rentPerMonth',
-
     'movedIn',
     'movedOut',
-
     'action',
   ];
 

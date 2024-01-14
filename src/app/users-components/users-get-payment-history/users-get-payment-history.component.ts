@@ -91,7 +91,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
                   class="custom-badge"
                   [ngClass]="element.isPayable ? 'true' : 'false'"
                 >
-                  {{ element.isPayable ? 'Unpayed' : 'Payed' }}
+                  {{ element.isPayable ? 'unpayed' : 'payed' }}
                 </span>
               </td>
             </ng-container>
@@ -106,7 +106,12 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
                 Rent Payed At
               </th>
               <td mat-cell *matCellDef="let element">
-                {{ element.rentPayedAt | date : 'dd-MM-yyyy' }}
+                <ng-container *ngIf="element.rentPayedAt; else inResidence">
+                  {{ element.rentPayedAt | date : 'MMMM dd, yyyy' }}
+                </ng-container>
+                <ng-template #inResidence>
+                  <span class="outstanding-badge">outstanding</span>
+                </ng-template>
               </td>
             </ng-container>
 
@@ -149,8 +154,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
         display: inline-block;
         padding: 2px 10px;
         border-radius: 5px;
-        font-weight: bold;
-        animation: blink 1.5s infinite;
+        font-weight: 500;
       }
 
       @keyframes blink {
@@ -158,21 +162,31 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
           opacity: 1;
         }
         50% {
-          opacity: 0;
+          opacity: 0.5;
         }
         100% {
           opacity: 1;
         }
       }
 
+      .false {
+        background-color: #31aa70;
+        color: white;
+        animation: blink 1.5s infinite;
+      }
+
       .true {
-        background-color: red;
+        background-color: #d5294d;
         color: white;
       }
 
-      .false {
-        background-color: green;
+      .outstanding-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        background-color: #f1975b;
         color: white;
+        border-radius: 7px;
+        font-weight: 500;
       }
     `,
   ],

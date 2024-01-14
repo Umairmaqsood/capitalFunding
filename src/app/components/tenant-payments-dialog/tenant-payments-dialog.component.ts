@@ -120,7 +120,11 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
 
             <mat-form-field appearance="outline" class="full">
               <mat-label>Month</mat-label>
-              <input matInput formControlName="month" placeholder="Month" />
+              <mat-select formControlName="month" placeholder="Select Month">
+                <mat-option *ngFor="let month of months" [value]="month.value">
+                  {{ month.viewValue }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
 
             <div style="margin-top: 20px;">
@@ -144,6 +148,20 @@ import { AuthenticationService } from '../../services/src/lib/authentication/aut
 export class TenantPaymentsDialogComponent {
   isAsyncCall = false;
   tenantArrayData: any[] = [];
+  months: { value: string; viewValue: string }[] = [
+    { value: 'January', viewValue: 'January' },
+    { value: 'February', viewValue: 'February' },
+    { value: 'March', viewValue: 'March' },
+    { value: 'April', viewValue: 'April' },
+    { value: 'May', viewValue: 'May' },
+    { value: 'June', viewValue: 'June' },
+    { value: 'July', viewValue: 'July' },
+    { value: 'August', viewValue: 'August' },
+    { value: 'September', viewValue: 'September' },
+    { value: 'October', viewValue: 'October' },
+    { value: 'November', viewValue: 'November' },
+    { value: 'December', viewValue: 'December' },
+  ];
 
   selectedRequestType!: requestType;
   tenantPaymentsForm = this.formBuilder.group({

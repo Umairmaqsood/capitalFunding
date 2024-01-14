@@ -4,8 +4,6 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material/src/public-api';
 import { AsyncSpinnerComponent } from '../../components/async-spinner/async-spinner.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-users-get-monthly-fair',
@@ -17,8 +15,14 @@ import { MatPaginator } from '@angular/material/paginator';
           <div style="display:flex; justify-content:space-between">
             <span class="subheading">Your Current Balance</span>
 
-            <span class="custom-badge" [ngClass]="isLate ? 'late' : 'not-late'">
-              {{ isLate ? 'Late' : 'On Time' }}
+            <span
+              *ngIf="
+                !(conditionalRendring === 0 || conditionalRendring == null)
+              "
+              class="custom-badge"
+              [ngClass]="isLate ? 'late' : 'outstanding-badge'"
+            >
+              {{ isLate ? 'Late' : 'Outstanding Amount' }}
             </span>
           </div>
 
@@ -44,7 +48,7 @@ import { MatPaginator } from '@angular/material/paginator';
                 <td>$ {{ rent ?? 0 }}</td>
               </tr>
               <tr>
-                <td>Common Area Maintenance</td>
+                <td>Maintenance</td>
                 <td>$ {{ areaMaintainienceFee ?? 0 }}</td>
               </tr>
 
@@ -95,10 +99,10 @@ import { MatPaginator } from '@angular/material/paginator';
       }
       .custom-badge {
         display: inline-block;
-        padding: 2px 10px;
-        border-radius: 5px;
-        font-weight: bold;
-        animation: blink 1.5s infinite;
+        padding: 4px 8px;
+        color: white;
+        border-radius: 7px;
+        font-weight: 500;
       }
 
       @keyframes blink {
@@ -114,13 +118,15 @@ import { MatPaginator } from '@angular/material/paginator';
       }
 
       .late {
-        background-color: red;
+        background-color: #d5294d;
         color: white;
+        animation: blink 1.5s infinite;
       }
 
-      .not-late {
-        background-color: green;
+      .outstanding-badge {
+        background-color: #f1975b;
         color: white;
+        animation: blink 1.5s infinite;
       }
 
       .center-div {
@@ -177,6 +183,7 @@ export class UsersGetMonthlyFairComponent {
   isLate: any;
   lateFee: any;
   sum: any;
+  conditionalRendring: any;
 
   displayedColumns: string[] = [
     'id',
@@ -234,8 +241,6 @@ export class UsersGetMonthlyFairComponent {
           this.areaMaintainienceFee = res?.results?.areaMaintainienceFee;
           this.isLate = res?.results?.isLate;
           this.lateFee = res?.results?.lateFee;
-
-          // this.dataSource = new MatTableDataSource(data);
           this.isAsyncCall = false;
         }
       },

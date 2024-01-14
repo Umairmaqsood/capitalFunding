@@ -83,6 +83,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
               <input
                 matInput
                 type="number"
+                min="0"
                 formControlName="numberofBathrooms"
                 placeholder="Number of Bathrooms"
                 [min]="0"
@@ -230,6 +231,7 @@ export class PropertyDetailsDialogComponent implements OnInit {
       isAvailable: this.isAvailable.value,
       description: this.description.value,
     };
+
     this.isAsyncCall = true;
     this.authService.updatepropertyDetails(updatedData).subscribe((result) => {
       if (result) {
