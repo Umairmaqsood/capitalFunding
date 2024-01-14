@@ -270,7 +270,7 @@ export interface PropertyDetails {
           opacity: 1;
         }
         50% {
-          opacity: 0;
+          opacity: 0.3;
         }
         100% {
           opacity: 1;

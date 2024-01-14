@@ -116,8 +116,7 @@ import { MatSort } from '@angular/material/sort';
         display: inline-block;
         padding: 2px 10px;
         border-radius: 5px;
-        font-weight: bold;
-        animation: blink 1.5s infinite;
+        font-weight: 500;
       }
 
       @keyframes blink {
@@ -125,21 +124,22 @@ import { MatSort } from '@angular/material/sort';
           opacity: 1;
         }
         50% {
-          opacity: 0;
+          opacity: 0.3;
         }
         100% {
           opacity: 1;
         }
       }
 
-      .false {
-        background-color: red;
+      .true {
+        background-color: #31aa70;
         color: white;
       }
 
-      .true {
-        background-color: green;
+      .false {
+        background-color: #d5294d;
         color: white;
+        animation: blink 1.5s infinite;
       }
     `,
   ],

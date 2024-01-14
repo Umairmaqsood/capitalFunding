@@ -162,7 +162,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
           opacity: 1;
         }
         50% {
-          opacity: 0.5;
+          opacity: 0.3;
         }
         100% {
           opacity: 1;
@@ -172,12 +172,12 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
       .false {
         background-color: #31aa70;
         color: white;
-        animation: blink 1.5s infinite;
       }
 
       .true {
         background-color: #d5294d;
         color: white;
+        animation: blink 1.5s infinite;
       }
 
       .outstanding-badge {
