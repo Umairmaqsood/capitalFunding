@@ -182,9 +182,8 @@ export interface TenantComplaints {
               >
                 <mat-select #select placeholder="Select">
                   <mat-option (click)="getTenantImage(row.complaintId)">
-                    Download Image<mat-icon style="color:#2196F3"
-                      >cloud_download</mat-icon
-                    >
+                    Download Image
+                    <mat-icon style="color:#2196F3">cloud_download</mat-icon>
                   </mat-option>
 
                   <mat-option (click)="updateTenantsComplaintsDialog(row)">
@@ -392,28 +391,13 @@ export class TenantComplaintsComponent implements OnInit {
   }
 
   getTenantImage(complaintId: string) {
-    this.isAsyncCall = true;
+    this.isAsyncCall = true; // Track async operations
+
     this.authService.getImage(complaintId).subscribe({
-      next: (res) => {
-        if (res && res.results.fileContents) {
+      next: (blob) => {
+        if (blob) {
           console.log('Image downloaded successfully.');
-          console.log('Image size:', res.results.fileContents.length);
-
-          // Decode base64-encoded image data
-          const decodedImage = atob(res.results.fileContents);
-
-          // Create Uint8Array from decoded data
-          const uint8Array = new Uint8Array(decodedImage.length);
-          for (let i = 0; i < decodedImage.length; i++) {
-            uint8Array[i] = decodedImage.charCodeAt(i);
-          }
-
-          // Create Blob from Uint8Array
-          const blob = new Blob([uint8Array], {
-            type: res.results.contentType,
-          });
-
-          saveAs(blob, res.results.fileDownloadName);
+          saveAs(blob, 'Complaint_image.jpg');
         }
         this.isAsyncCall = false;
       },

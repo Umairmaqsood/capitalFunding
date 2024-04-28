@@ -15,7 +15,7 @@ import { jwtDecode } from 'jwt-decode';
   providedIn: 'root',
 })
 export class AuthenticationService {
-  private backendUrl = 'https://localhost:7139/api';
+  private backendUrl = 'http://localhost:5180/api';
 
   // Behavior Subject to hold current user information
   private currentUserSubject = new BehaviorSubject<any>(null);
@@ -641,7 +641,7 @@ export class AuthenticationService {
     }
   }
 
-  getImage(complaintId: string) {
+  getImage(complaintId: string): Observable<Blob | null> {
     const currentUser = localStorage.getItem('currentUser');
     const results = currentUser ? JSON.parse(currentUser) : null;
 
@@ -650,13 +650,12 @@ export class AuthenticationService {
         Authorization: `Bearer ${results.results}`,
       });
 
-      return this.http.get<any>(
-        this.backendUrl + `/getComplaintImage?complaintId=${complaintId}`,
-        { headers }
+      return this.http.get<Blob>(
+        `${this.backendUrl}/getComplaintImage?complaintId=${complaintId}`,
+        { headers, responseType: 'blob' as 'json' }
       );
     } else {
-      console.error('Token not available');
-
+      console.error('Authorization token not available');
       return of(null);
     }
   }
